@@ -2,8 +2,7 @@ package com.inyoon.bookkureomi.domain;
 
 import lombok.Data;
 
-public @Data
-class Users {
+public @Data class User {
     private int userNo;
     private String id;
     private String name;
