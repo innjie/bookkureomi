@@ -10,4 +10,5 @@ public interface UserMapper {
     public void updateUser(int userNo, User user);
     public void deleteUser(int userNo);
     public void login(User user);
+    public void logout(User user);
 }
