@@ -3,7 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
-<mapper namespace="com.inyoon.bookkureomi.dao.TestDAO">
+<mapper namespace="com.inyoon.bookkureomi.mapper.TestMapper">
 	<select id="findUser" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Test">
         SELECT id, phone FROM users where id = #{id}
     </select>

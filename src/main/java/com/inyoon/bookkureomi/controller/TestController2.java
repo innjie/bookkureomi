@@ -15,14 +15,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.inyoon.bookkureomi.domain.Test;
 import com.inyoon.bookkureomi.service.TestService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @Controller
+//@RestController
+@Api(value = "TestController2")
 public class TestController2 {
 
 	@Autowired
 	private TestService testService;
 
-	@GetMapping("/test2")
+	
 	@ResponseBody //@RestController 시 생략 가능
+	@GetMapping("/test2")
 	public Map<String, Object> testPage2(
 			@RequestParam("id") String id) {
 		Test test = new Test();
