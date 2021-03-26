@@ -13,6 +13,9 @@ public class PointService {
 	@Autowired
 	private PointMapper pointMapper;
 
+	public int getRechargeNo(int userNo) {
+		return pointMapper.getRechargeNo(userNo);
+	}
 	public int checkPoint(int userNo){
 		return pointMapper.checkPoint(userNo);
 	}

@@ -8,6 +8,7 @@ import com.inyoon.bookkureomi.domain.Order;
 
 @Mapper
 public interface OrderMapper {
+	public int getOrderNo();
 	public void orderBook(Order order);
 	public List<Order> getOrderList(int userNo);
 	public Order getOrder(int orderNo);
