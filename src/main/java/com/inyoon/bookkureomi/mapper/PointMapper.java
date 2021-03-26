@@ -8,6 +8,8 @@ import com.inyoon.bookkureomi.domain.Recharge;
 
 @Mapper
 public interface PointMapper {
+	public int getRechargeNo(int userNo);
+
 	public int checkPoint(int userNo);
 	public void rechargePoint(Recharge recharge);
 	public List<Recharge> getRechargeList(int userNo);

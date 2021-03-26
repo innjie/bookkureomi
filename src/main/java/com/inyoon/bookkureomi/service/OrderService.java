@@ -13,6 +13,10 @@ public class OrderService {
 	@Autowired
 	private OrderMapper orderMapper;
 
+	public int getOrderNo() {
+		return orderMapper.getOrderNo();
+	}
+
 	public void orderBook(Order order){
 		orderMapper.orderBook(order);
 	}

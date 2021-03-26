@@ -13,6 +13,10 @@ public class SaleService {
 	@Autowired
 	private SaleMapper saleMapper;
 
+	public int getSaleNo() {
+		return saleMapper.getSaleNo();
+	}
+	
 	public List<Sale> getSaleList(){
 		return saleMapper.getSaleList();
 	}
