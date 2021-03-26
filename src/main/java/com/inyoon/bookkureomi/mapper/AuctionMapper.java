@@ -13,5 +13,5 @@ public interface AuctionMapper {
     public void insertAuction(Auction auction);
     public void updateAuction(int auctionNo, Auction auction);
     public void deleteAuction(int auctionNo);
-    public void findAuction(String title);
+    public List<Auction> findAuction(String title);
 }
