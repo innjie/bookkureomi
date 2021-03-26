@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.inyoon.bookkureomi.mapper.ImmediBuyMapper">
+    <!--
+    public List<Order> getImmediBuyListByUserNo(int userNo);
+    public Order getImmediBuy(int orderNo);
+    public void insertImmediBuy(Order order);
+    -->
+    <select id="getImmediBuyListByUserNo" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
+        SELECT
+        orderNo, auctionNo, userNo, pAddress, orderDate, rAddress, rName, rPhone
+        FROM
+        Orders
+        WHERE
+        userNo = #{userNo}
+        ORDER BY
+        orderNo
+    </select>
+    <select id="getImmediBuy" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
+        SELECT
+            orderNo, auctionNo, userNo, pAddress, orderDate, rAddress, rName, rPhone
+        FROM
+            Orders
+        WHERE
+            orderNo = #{orderNo}
+    </select>
+    <insert id="insertImmediBuy" parameterType="Order">
+        Insert into Orders (orderNo,  auctionNo, userNo, pAddress, rAddress, rName, rPhone)
+        Values (#{orderNo},  #{auction.auctionNo}, #{user.userNo}, #{pAddress}, #{rAddress}, #{rName}, #{rPhone})
+    </insert>
+</mapper>
