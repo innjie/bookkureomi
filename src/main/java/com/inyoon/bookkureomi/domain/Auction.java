@@ -6,7 +6,7 @@ import java.util.Date;
 
 public @Data class Auction {
     private int auctionNo;
-    private int saleUserNo;
+    private int userNo;
     private String title;
     private String publisher;
     private String image;
