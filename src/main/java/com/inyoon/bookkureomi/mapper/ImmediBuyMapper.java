@@ -1,14 +1,14 @@
 package com.inyoon.bookkureomi.mapper;
 
 import com.inyoon.bookkureomi.domain.ImmediBuy;
+import com.inyoon.bookkureomi.domain.Order;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface ImmediBuyMapper {
-    public List<ImmediBuy> getImmediBuyList(int userNo);
-    public List<ImmediBuy> getImmediBuyListByUserNo(int userNo);
-    public ImmediBuy getImmediBuy(int immediNo);
-    public void insertImmediBuy(ImmediBuy immediBuy);
+    public List<Order> getImmediBuyListByUserNo(int userNo);
+    public Order getImmediBuy(int orderNo);
+    public void insertImmediBuy(Order order);
 }

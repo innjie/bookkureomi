@@ -12,9 +12,7 @@ public class BidService {
     @Autowired
     private BidMapper bidMapper;
 
-    public List<Bid> getBidList(int userNo) {
-        return bidMapper.getBidList(userNo);
-    }
+
     public List<Bid> getBidListByAuctionNo(int auctionNo) {
         return bidMapper.getBidListByAuctionNo(auctionNo);
     }

@@ -18,14 +18,11 @@ public class ReviewService {
     public List<Review> receivedReviewList (int userNo) {
         return reviewMapper.receivedReviewList(userNo);
     }
-    public Review getReview(int reviewNo) {
-        return reviewMapper.getReview(reviewNo);
-    }
     public void insertReview(Review review) {
         reviewMapper.insertReview(review);
     }
     public void removeReview(int reviewNo) {
-        reviewMapper.removeReview(reviewNo);
+        reviewMapper.deleteReview(reviewNo);
     }
 
 }

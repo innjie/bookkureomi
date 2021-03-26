@@ -8,7 +8,6 @@ import java.util.List;
 public interface ReviewMapper {
     public List<Review> getReviewList(int userNo);
     public List<Review> receivedReviewList (int userNo);
-    public Review getReview(int reviewNo);
     public void insertReview(Review review);
-    public void removeReview(int reviewNo);
+    public void deleteReview(int reviewNo);
 }

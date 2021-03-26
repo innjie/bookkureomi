@@ -38,12 +38,6 @@ public class ReviewController {
 //                    review, BindingResult result) throws Exception {
 //    }
 //
-//    //view review
-//    @RequestMapping(“/review/view.do”)
-//    public String viewImmediBuy (@RequestParam("reviewNo") int reviewNo,
-//                                 ModelMap model) throws Exception {
-//    }
-//
 //    //insert review form
 //    @RequestMapping(value = “/review/insert.do”, method = RequestMethod.GET)
 //    public String insertReviewForm(@ModelAttribute("reiveCommand")
