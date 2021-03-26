@@ -19,21 +19,22 @@ public class SaleService {
 	public Sale getSale(int saleNo){
 		return saleMapper.getSale(saleNo);
 	}
-	public List<Sale> findSaleByName(String name){
-		return saleMapper.findSaleByName(name);
+	public List<Sale> findSaleByTitle(String title){
+		return saleMapper.findSaleByTitle(title);
 	}
-	public List<Sale> findSaleByGenre(String genre){
-		return saleMapper.findSaleByGenre(genre);
+	public List<Sale> findSaleByGenre(String type){
+		return saleMapper.findSaleByGenre(type);
 	}
 	
 	public void saleBook(Sale sale){
 		saleMapper.saleBook(sale);
 	}
-	public void updateSale(int saleNo, Sale sale){
-		saleMapper.updateSale(saleNo, sale);
+	public void updateSale(Sale sale){
+		saleMapper.updateSale(sale);
 	}
 	public void deleteSale(int saleNo){
 		saleMapper.deleteSale(saleNo);
+		saleMapper.updateSaleStateClose(saleNo);
 	}
 	
 	public List<Sale> getMySaleList(int userNo){
