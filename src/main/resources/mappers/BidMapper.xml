@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inyoon.bookkureomi.mapper.BidMapper">
+
+    <select id="getBidNo" parameterType="integer" resultType="integer">
+        SELECT
+            NVL(MAX(bidNo), 0) + 1
+        FROM
+            Bid
+        WHERE
+            userNo = #{userNo}
+    </select>
+    <select id="getBidListByAuctionNo" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Bid">
+        SELECT
+            bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone
+        FROM Bid
+        WHERE auctionNo = #{auctionNo}
+    </select>
+    <select id="getBidListByUserNo" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Bid">
+        SELECT
+            bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone
+        FROM Bid
+        WHERE userNo = #{userNo}
+    </select>
+    <select id="getBid" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Bid">
+        SELECT
+            bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone
+        FROM Bid
+        WHERE bidNo = #{bidNo}
+    </select>
+    <insert id="insertBid" parameterType="com.inyoon.bookkureomi.domain.Bid">
+        INSERT INTO Bid (bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone)
+        VALUES (#{bidNo}, #{auctionNo}, #{userNo}, #{bidPrice}, #{bidDate}, #{userAddress}, #{receiveAddress}, #{receiver}, #{receiverPhone})
+    </insert>
+
+    <select id="getSuccessBidList" parameterMap="integer" resultType="com.inyoon.bookkureomi.domain.Order">
+        SELECT
+        orderNo, auctionNo, userNo, pAddress, orderDate, rAddress, rName, rPhone
+        FROM
+        Orders
+        WHERE
+        userNo = #{userNo} AND saleNo = NULL
+    </select>
+</mapper>
