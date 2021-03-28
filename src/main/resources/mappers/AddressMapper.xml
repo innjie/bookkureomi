@@ -5,7 +5,7 @@
 <mapper namespace="com.inyoon.bookkureomi.mapper.AddressMapper">
     <select id="getAddressNo" parameterType="integer" resultType="integer">
         SELECT
-            NVL(MAX(bidNo), 0) + 1
+            NVL(MAX(addrNo), 0) + 1
         FROM
             Address
     </select>

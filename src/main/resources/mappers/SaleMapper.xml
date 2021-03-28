@@ -12,14 +12,14 @@
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
-			Sale <!-- User 추가 -->
+			Sale <!-- Users 추가 -->
     </select>
     
     <select id="getSale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
-			Sale <!-- User 추가 -->
+			Sale <!-- Users 추가 -->
 		where
 			saleNo = #{saleNo}
     </select>
@@ -28,7 +28,7 @@
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
-			Sale <!-- User, genre 추가 -->
+			Sale <!-- Users, genre 추가 -->
 		where
 			title = #{title}
     </select>
@@ -37,7 +37,7 @@
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
-			Sale, Genre <!-- User, genre 추가 -->
+			Sale, Genre <!-- Users, genre 추가 -->
 		where
 			Sale.genreNo = Genre.genreNo 
 			AND genre.type = #{type}
@@ -79,7 +79,7 @@
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
-			Sale <!-- User 추가 -->
+			Sale <!-- Users 추가 -->
 		where
 			userNo = #{user.userNo}
     </select>
@@ -88,7 +88,7 @@
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
-			Sale <!-- User 추가 -->
+			Sale <!-- Users 추가 -->
 		where
 			saleNo = #{saleNo}
     </select>
@@ -97,7 +97,7 @@
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
-			Sale <!-- User 추가 -->
+			Sale <!-- Users 추가 -->
 		where
 			genreNo = #{genreNo}
     </select>
