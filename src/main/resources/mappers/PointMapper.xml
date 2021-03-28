@@ -6,7 +6,7 @@
 <mapper namespace="com.inyoon.bookkureomi.mapper.PointMapper">
 	<select id="getRechargeNo" parameterType="integer" resultType="integer">
         SELECT 
-        	NVL(MAX(bidNo), 0) + 1
+        	NVL(MAX(rechargeNo), 0) + 1
         FROM 
         	Recharge
         WHERE
@@ -17,7 +17,7 @@
         SELECT 
 			rechargeNo, userNo, rcPoint, totalPoint, rcDate, rcMethod
 		FROM 
-			Recharge <!-- Sale, User 추가 -->
+			Recharge <!-- Sale, Users 추가 -->
 		where
 			userNo = #{userNo}
     </select>
@@ -26,7 +26,7 @@
         SELECT 
 			max(totalPoint)
 		FROM 
-			Recharge <!-- Sale, User 추가 -->
+			Recharge <!-- Sale, Users 추가 -->
 		where
 			userNo = #{userNo}
     </select>
