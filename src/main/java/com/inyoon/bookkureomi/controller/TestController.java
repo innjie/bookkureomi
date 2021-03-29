@@ -15,7 +15,7 @@ public class TestController {
 
 	@Autowired
 	private TestService testService;
-	
+
 	@GetMapping("/test")
     public String testPage1(Model model) {	
 		System.out.println("test11111111111 - get");

@@ -1,0 +1,8 @@
+@charset "UTF-8";
+
+#hello{font-size:100px;}
+
+.header { background-color: Gray; height: 20% } 
+.content { height:60%; } 
+.footer { background-color: yellow; height: 20% }
+

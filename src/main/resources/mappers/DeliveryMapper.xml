@@ -13,7 +13,7 @@
 			orderNo = #{orderNo}
     </select>
     
-    <insert id="getDelivery" parameterType="com.inyoon.bookkureomi.domain.Delivery">
+    <insert id="addDelivery" parameterType="com.inyoon.bookkureomi.domain.Delivery">
     	Insert into Delivery (orderNo, company, waybill)
     	Values (#{order.orderNo}, #{company}, #{waybill})
     </insert>

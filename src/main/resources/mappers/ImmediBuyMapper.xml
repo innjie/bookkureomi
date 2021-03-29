@@ -8,7 +8,7 @@
     public List<Order> getImmediBuyListByUserNo(int userNo);
     public Order getImmediBuy(int orderNo);
     public void insertImmediBuy(Order order);
-    -->
+    
     <select id="getImmediBuyListByUserNo" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
         SELECT
         orderNo, auctionNo, userNo, pAddress, orderDate, rAddress, rName, rPhone
@@ -31,4 +31,5 @@
         Insert into Orders (orderNo,  auctionNo, userNo, pAddress, rAddress, rName, rPhone)
         Values (#{orderNo},  #{auction.auctionNo}, #{user.userNo}, #{pAddress}, #{rAddress}, #{rName}, #{rPhone})
     </insert>
+    -->
 </mapper>
