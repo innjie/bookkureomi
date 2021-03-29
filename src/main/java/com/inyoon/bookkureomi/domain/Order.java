@@ -12,9 +12,9 @@ public class Order {
 	private Sale sale;
 	private Auction auction;
 	private User user;
-	private Address pAddress;
+	private String pAddress;
 	private Date orderDate;
-	private Address rAddress;
+	private String rAddress;
 	private String rName;
 	private String rPhone;
 }

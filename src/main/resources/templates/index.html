@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layouts/default}">
+	
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<!--    thymeleaf layout dialect가 contents페이지의 head태그를 layout의 head태그에 자동으로 추가해준다. -->
+	<!--    필요 css, script 추가영역 -->
 </head>
+
 <body>
-<h1>hello!</h1>
+	<div layout:fragment="content">
+    	<div style="border: 1px solid red">
+      		index.html 입니다. 즉 컨텐츠 영역
+   		</div>
+  	</div>
 </body>
 </html>

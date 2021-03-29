@@ -17,8 +17,8 @@
 			userNo = #{userNo}
 		ORDER BY
 			orderNo
-				
-		<!--  paging
+			
+		 <!--  paging
 		SELECT
 			F.*
 		FROM
@@ -30,7 +30,7 @@
 					SELECT 
 						orderNo, saleNo, auctionNo, userNo, pAddress, orderDate, rAddress, rName, rPhone
 					FROM 
-						Orders <!-- Sale, Auction, User 추가 
+						Orders 
 					where
 						userNo = #{userNo}
 					ORDER BY
@@ -40,7 +40,8 @@
 			F.ROW_NUM BETWEEN #{start} and #{end}
 		 --> 
     </select>
-    
+   
+		 
     <select id="getOrder" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
         SELECT 
 			orderNo, saleNo, auctionNo, userNo, pAddress, orderDate, rAddress, rName, rPhone
