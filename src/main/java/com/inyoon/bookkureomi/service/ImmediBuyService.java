@@ -17,9 +17,11 @@ public class ImmediBuyService {
     public List<Order> getImmediBuyListByUserNo(int userNo) {
         return immediBuyMapper.getImmediBuyListByUserNo(userNo);
     }
+
     public Order getImmediBuy(int orderNo) {
         return immediBuyMapper.getImmediBuy(orderNo);
     }
+
     public void insertImmediBuy(Order order) {
         immediBuyMapper.insertImmediBuy(order);
     }

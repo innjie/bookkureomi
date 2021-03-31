@@ -1,6 +1,5 @@
 package com.inyoon.bookkureomi.mapper;
 
-import com.inyoon.bookkureomi.domain.ImmediBuy;
 import com.inyoon.bookkureomi.domain.Order;
 import org.apache.ibatis.annotations.Mapper;
 
