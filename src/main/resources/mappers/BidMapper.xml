@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.inyoon.bookkureomi.mapper.BidMapper">
 
-    <select id="getBidNo" parameterType="integer" resultType="integer">
+    <select id="getBidNo" resultType="integer">
         SELECT
             NVL(MAX(bidNo), 0) + 1
         FROM
@@ -34,7 +34,7 @@
         INSERT INTO Bid (bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone)
         VALUES (#{bidNo}, #{auctionNo}, #{userNo}, #{bidPrice}, #{bidDate}, #{userAddress}, #{receiveAddress}, #{receiver}, #{receiverPhone})
     </insert>
-
+<!--
     <select id="getSuccessBidList" parameterMap="integer" resultType="com.inyoon.bookkureomi.domain.Order">
         SELECT
         orderNo, auctionNo, userNo, pAddress, orderDate, rAddress, rName, rPhone
@@ -43,4 +43,5 @@
         WHERE
         userNo = #{userNo} AND saleNo = NULL
     </select>
+    -->
 </mapper>
