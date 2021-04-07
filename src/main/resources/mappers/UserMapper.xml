@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.inyoon.bookkureomi.mapper.UserMapper">
+<mapper namespace="com.inyoon.bookkureomi.user.UserMapper">
     <select id = "getUserNo" resultType="integer">
         SELECT USERSSEQ.nextval from dual
     </select>
-    <select id = "getUser" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.User">
+    <select id = "getUser" parameterType="integer" resultType="com.inyoon.bookkureomi.user.User">
         SELECT
             userNo, ID, password, point, first, second, third, name
         FROM
@@ -15,12 +15,20 @@
             userNo = #{userNo}
     </select>
 
-    <insert id = "insertUser" parameterType = "com.inyoon.bookkureomi.domain.User">
+    <select id = "getUserById" parameterType="String" resultType="com.inyoon.bookkureomi.user.User">
+        SELECT
+            userNo, ID, password, point, first, second, third, name
+        FROM
+            Users
+        WHERE
+            ID = #{id}
+    </select>
+    <insert id = "insertUser" parameterType = "com.inyoon.bookkureomi.user.User">
         INSERT INTO Users (userNo, ID, password, phone, point, first, second, third, name)
         VALUES (#{userNo}, #{id}, #{pw}, #{phone}, #{point}, #{firstGenre}, #{secondGenre}, #{thirdGenre}, #{name})
     </insert>
 
-    <update id="updateUser" parameterType="com.inyoon.bookkureomi.domain.User">
+    <update id="updateUser" parameterType="com.inyoon.bookkureomi.user.User">
         UPDATE Users
         SET
             password = #{pw}

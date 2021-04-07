@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.inyoon.bookkureomi.mapper.AddressMapper">
+<mapper namespace="com.inyoon.bookkureomi.address.AddressMapper">
     <select id="getAddressNo" parameterType="integer" resultType="integer">
         SELECT
             NVL(MAX(addrNo), 0) + 1
@@ -10,19 +10,19 @@
             Address
     </select>
 
-    <select id = "getAddressList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Address">
+    <select id = "getAddressList" parameterType="integer" resultType="com.inyoon.bookkureomi.address.Address">
         SELECT addrNo, userNo, addr, aName, zipcode
         FROM Address
         WHERE userNo = #{userNo}
     </select>
 
-    <select id="getAddress" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Address">
+    <select id="getAddress" parameterType="integer" resultType="com.inyoon.bookkureomi.address.Address">
         SELECT addrNo, userNo, addr, aName, zipcode
         FROM Address
         WHERE addrNo = #{addrNo}
     </select>
 
-    <insert id="insertAddress" parameterType="com.inyoon.bookkureomi.domain.Address">
+    <insert id="insertAddress" parameterType="com.inyoon.bookkureomi.address.Address">
         INSERT INTO Address (addrNo, userNo, addr, aName, zipcode)
         VALUES (#{addrNo}, #{userNo}, #{address}, #{aName}, #{zipcode})
     </insert>

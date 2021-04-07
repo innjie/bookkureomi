@@ -3,19 +3,19 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
-<mapper namespace="com.inyoon.bookkureomi.mapper.SaleMapper">
+<mapper namespace="com.inyoon.bookkureomi.sale.SaleMapper">
 	<select id="getSaleNo" resultType="integer">
         SELECT SALESEQ.nextval from dual
     </select>
 
-	<select id="getSaleList" resultType="com.inyoon.bookkureomi.domain.Sale">
+	<select id="getSaleList" resultType="com.inyoon.bookkureomi.sale.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
 			Sale <!-- Users 추가 -->
     </select>
     
-    <select id="getSale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
+    <select id="getSale" parameterType="integer" resultType="com.inyoon.bookkureomi.sale.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
@@ -24,7 +24,7 @@
 			saleNo = #{saleNo}
     </select>
     
-    <select id="findSaleByName" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
+    <select id="findSaleByName" parameterType="String" resultType="com.inyoon.bookkureomi.sale.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
@@ -33,7 +33,7 @@
 			title = #{title}
     </select>
     
-    <select id="findSaleByGenre" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
+    <select id="findSaleByGenre" parameterType="String" resultType="com.inyoon.bookkureomi.sale.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
@@ -43,7 +43,7 @@
 			AND genre.type = #{type}
     </select>    
     
-    <insert id="saleBook" parameterType="com.inyoon.bookkureomi.domain.Sale">
+    <insert id="saleBook" parameterType="com.inyoon.bookkureomi.sale.Sale">
     	Insert into Sale (saleNo, publisher, title, costPrice, salePrice, image, info, userNo, state, genreNo)
     	Values (#{saleNo}, #{publisher}, #{title}, #{costPrice}, #{salePrice}, #{image}, #{info}, #{user.userNo}, #{state}, #{genre.genreNo})
     </insert>
@@ -75,7 +75,7 @@
         	saleNo = #{saleNo}
     </update>
     
-    <select id="getMySaleList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
+    <select id="getMySaleList" parameterType="integer" resultType="com.inyoon.bookkureomi.sale.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
@@ -84,7 +84,7 @@
 			userNo = #{user.userNo}
     </select>
     
-    <select id="getMySale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
+    <select id="getMySale" parameterType="integer" resultType="com.inyoon.bookkureomi.sale.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
@@ -93,7 +93,7 @@
 			saleNo = #{saleNo}
     </select>
     
-    <select id="recommend" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
+    <select id="recommend" parameterType="integer" resultType="com.inyoon.bookkureomi.sale.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
