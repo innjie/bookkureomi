@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org">
+  <!--	xmlns:sec="http://www.thymeleaf.org/extras/spring-security4">-->
+	
+    <nav th:fragment="navigation" class="" id="nav">
+		<ul class="navbar-nav sidebar" id="accordionSidebar">
+
+            <!-- Nav Item -->
+            <li class="nav-item nav-line active">
+                <a class="nav-link" href="/book/sale/salelist">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>중고책 거래</span></a>
+            </li>
+            <li class="nav-item nav-line active">
+                <a class="nav-link" href="">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>중고책 경매</span></a>
+            </li>
+            <li class="nav-item nav-line active">
+                <a class="nav-link" href="/#recommend">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>관심 장르 추천</span></a>
+            </li>
+			<li class="nav-item nav-line">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMypage"
+                    aria-expanded="true" aria-controls="collapseMypage">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>마이페이지</span>
+                </a>
+                <div id="collapseMypage" class="nav-collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="">
+                        <a class="nav-collapse-item" href="">나의 정보</a>
+                        <a class="nav-collapse-item" href="">나의 주소록</a>
+                        <a class="nav-collapse-item" href="">나의 판매</a>
+                        <a class="nav-collapse-item" href="">나의 경매</a>
+                        <a class="nav-collapse-item" href="">나의 주문</a>
+                        <a class="nav-collapse-item" href="">나의 리뷰</a>
+                    </div>
+                </div>
+            </li>
+                        
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+		</ul>
+	<!--  
+		<div class="container">
+	         
+	        <div class="nav-menu" id="navbarResponsive">
+	        	<ul class="nav-menu-list ml-auto" id="sideMenu">
+	            	<li class="nav-menu-item"><a class="nav-link js-scroll-trigger" href="#services">중고책 거래</a></li>
+	                <li class="nav-menu-item"><a class="nav-link js-scroll-trigger" href="#portfolio">중고책 경매</a></li>
+	                <li class="nav-menu-item"><a class="nav-link js-scroll-trigger" href="#about">관심 장르 추천</a></li>
+	                <li class="nav-menu-item"><a class="nav-link js-scroll-trigger" href="book/mypage">마이페이지</a></li>
+	            </ul>
+	        </div>
+	        <div class="nav-menu" id="navbarResponsive">
+	        	<ul class="nav-menu-list ml-auto">
+	            	<li class="nav-menu-item"><a class="nav-link js-scroll-trigger" href="#services">나의 정보</a></li>
+	                <li class="nav-menu-item"><a class="nav-link js-scroll-trigger" href="#portfolio">나의 주소록</a></li>
+	                <li class="nav-menu-item"><a class="nav-link js-scroll-trigger" href="#about">나의 판매</a></li>
+	                <li class="nav-menu-item"><a class="nav-link js-scroll-trigger" href="#abou">나의 경매</a></li>
+	                <li class="nav-menu-item"><a class="nav-link js-scroll-trigger" href="#abou">나의 주문</a></li>
+	                <li class="nav-menu-item"><a class="nav-link js-scroll-trigger" href="#abou">나의 리뷰</a></li>
+	            </ul>
+	        </div>
+	   </div>
+	   -->
+	</nav>
+</html>
