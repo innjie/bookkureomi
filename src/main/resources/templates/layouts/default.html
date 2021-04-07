@@ -6,15 +6,36 @@
 	<head>
     	<meta charset="UTF-8" />
     	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-    	<link rel="stylesheet" th:href="@{/css/main.css}" href="../static/css/main.css" />
-    	
+   		<link rel="stylesheet" th:href="@{/css/main.css}" href="../../static/css/main.css" />
+   	<!--	<link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/styles.css" />
+       	 -->
     	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   	</head>
-	
-	<header th:replace="fragments/header :: headerFragment"></header>
+	<body>
+	<!--  	<ul style="display: flex;flex-direction: row;">
+			<list>
+				<nav th:replace="fragments/nav :: navigation"></nav> 
+			</list>
+			<list>
+				<header th:replace="fragments/header :: headerFragment"></header>
 
-	<div layout:fragment="content"></div>
+		<div layout:fragment="content"></div>
 
-	<footer th:replace="fragments/footer :: footerFragment"></footer>
+		<footer th:replace="fragments/footer :: footerFragment"></footer>
+			</list>
+		</ul>
+		-->
+		
+		
+		
+		<header th:replace="fragments/header :: headerFragment"></header>
+
+		<nav th:replace="fragments/nav :: navigation"></nav> 
+
+		<div layout:fragment="content"></div>
+
+		<footer th:replace="fragments/footer :: footerFragment"></footer>
+		
+	</body>
 </html>
