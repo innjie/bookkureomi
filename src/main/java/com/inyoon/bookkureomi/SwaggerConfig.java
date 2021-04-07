@@ -33,7 +33,7 @@ public class SwaggerConfig {
 	      "API TOS",	//version
 	      "https://github.com/im57/bookkureomi", 	//termsOfServiceUrl
 	      new Contact("Im", "https://github.com/im57/bookkureomi", "eovhehd1986@gmail.com"),		//contact 
-	      "ⓒ InyOonTeam",		//license
+	      "ⓒ InyOon",		//license
 	      "https://github.com/im57/bookkureomi",	//licenseUrl
 	      Collections.emptyList());		//vendorExtensions
 	}

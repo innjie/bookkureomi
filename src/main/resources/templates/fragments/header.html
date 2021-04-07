@@ -1,11 +1,107 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:th="http://www.thymeleaf.org"> 
+	xmlns:th="http://www.thymeleaf.org">
+  <!--	xmlns:sec="http://www.thymeleaf.org/extras/spring-security4">-->
 	
-	<header th:fragment="headerFragment">
-    	<div style="border: 1px solid green">
-      		header.html 입니다.
-    	</div>
+	<header th:fragment="headerFragment" class="header-margin " id="header">
+    	<div class="container">
+        	<a class="header-logo js-scroll-trigger" href="/#header">
+	        	<img src="../../images/book_logo1.png" class="img-logo" />
+	        </a>
+	        <div class="header-menu">
+	        	<ul class="header-logon-menu-list mr-auto">
+	            	<li class="header-logon-menu-item-button"><a class="js-scroll-trigger" href="">로그인</a></li>
+	                <li class="header-logon-menu-item-button"><a class="js-scroll-trigger" href="">회원가입</a></li>
+	            </ul>
+	        	<ul class="header-logon-menu-list mr-auto">
+	            	<li class="header-logon-menu-item"><a class="js-scroll-trigger" href="">누구</a>님</li>
+	                <li class="header-logon-menu-item"><a class="js-scroll-trigger" href="">0포인트</a></li>
+	                <li class="header-logon-menu-item-button"><a class="js-scroll-trigger" href=""> 로그아웃</a></li>
+	            </ul>
+	        </div>
+		</div>
+ 
+ 
+     <!--   
+        <h1><a th:href="@{/}">북 꾸러미</a></h1>
+		<ul class="menu">
+			<li>
+				<a href="#">중고책 거래</a>
+				<ul class="subMenu">
+					<li><a th:href="@{/?flag=3}">중고책 구매</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#">경매</a>
+				<ul class="subMenu">
+					<li><a th:href="@{/?flag=4}">경매</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#">후불자동수납관리</a>
+				<ul class="subMenu">
+					<li><a th:href="@{/charge/autoPayment}">후불자동수납 관리</a></li>
+				</ul>
+			</li>
+		</ul>
+
+		<ul class="btns">
+			<li class="mbHide" sec:authorize="hasAnyRole('USER')" th:text="|${#authentication.principal.name}님 (${#authentication.principal.id})|">회원</li>
+			<li class="lginBtn" sec:authorize="isAnonymous()"><a th:href="@{/login}">로그인<span class="mbView">해주세요</span></a></li>
+			<li class="sgupBtn" sec:authorize="isAnonymous()"><a th:href="@{/registration/s1}">회원가입</a></li>
+			<li class="lginBtn mbHide" sec:authorize="hasAnyRole('USER')"><a th:href="@{/mypage/info}">마이페이지</a></li>
+			<li class="lgotBtn" sec:authorize="hasAnyRole('USER')"><a th:href="@{/logout}"><span class="mbView" sec:authorize="hasAnyRole('USER')" th:text="|${#authentication.principal.name}님 (${#authentication.principal.id})|"></span><span class="mbHide">로그아웃</span></a></li>
+			<li class="mpBtn mbView" sec:authorize="hasAnyRole('ROLE_IND_USER', 'ROLE_RENT_USER', 'ROLE_RENT_USER_INIT')"><a th:href="@{/mypage/info}">마이페이지</a></li>
+			<li sec:authorize="hasAnyRole('TEMP')"><a th:href="@{/logout}">비회원로그아웃</a></li>
+		</ul>
+		<a href="#" class="mobileMenu">메뉴 열기</a>
+		-->
+		
+		 <!-- Topbar 
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) 
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                   <ul>
+                        <!-- Nav Item - User Information 
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <img class="img-profile rounded-circle"
+                                    src="img/undraw_profile.svg">
+                            </a>
+                            
+                            <!-- Dropdown - User Information 
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Activity Log
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                 End of Topbar -->
 	</header>
 	
 </html>

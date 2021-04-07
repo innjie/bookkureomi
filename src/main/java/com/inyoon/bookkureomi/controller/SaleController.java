@@ -4,7 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +15,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.inyoon.bookkureomi.domain.Sale;
 
 @Controller
+@RequestMapping("/book/sale")
 public class SaleController{
+	
+	@GetMapping("/salelist")
+    public String testPage1(Model model) {	
+        return "sale/saleList";
+    }
+	
 /*
 	//SaleCommand
 
