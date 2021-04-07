@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.inyoon.bookkureomi.mapper.BidMapper">
+<mapper namespace="com.inyoon.bookkureomi.auction.BidMapper">
 
     <select id="getBidNo" resultType="integer">
         SELECT
@@ -12,30 +12,30 @@
         WHERE
             userNo = #{userNo}
     </select>
-    <select id="getBidListByAuctionNo" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Bid">
+    <select id="getBidListByAuctionNo" parameterType="integer" resultType="com.inyoon.bookkureomi.auction.Bid">
         SELECT
             bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone
         FROM Bid
         WHERE auctionNo = #{auctionNo}
     </select>
-    <select id="getBidListByUserNo" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Bid">
+    <select id="getBidListByUserNo" parameterType="integer" resultType="com.inyoon.bookkureomi.auction.Bid">
         SELECT
             bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone
         FROM Bid
         WHERE userNo = #{userNo}
     </select>
-    <select id="getBid" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Bid">
+    <select id="getBid" parameterType="integer" resultType="com.inyoon.bookkureomi.auction.Bid">
         SELECT
             bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone
         FROM Bid
         WHERE bidNo = #{bidNo}
     </select>
-    <insert id="insertBid" parameterType="com.inyoon.bookkureomi.domain.Bid">
+    <insert id="insertBid" parameterType="com.inyoon.bookkureomi.auction.Bid">
         INSERT INTO Bid (bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone)
         VALUES (#{bidNo}, #{auctionNo}, #{userNo}, #{bidPrice}, #{bidDate}, #{userAddress}, #{receiveAddress}, #{receiver}, #{receiverPhone})
     </insert>
 <!--
-    <select id="getSuccessBidList" parameterMap="integer" resultType="com.inyoon.bookkureomi.domain.Order">
+    <select id="getSuccessBidList" parameterMap="integer" resultType="com.inyoon.bookkureomi.order.Order">
         SELECT
         orderNo, auctionNo, userNo, pAddress, orderDate, rAddress, rName, rPhone
         FROM

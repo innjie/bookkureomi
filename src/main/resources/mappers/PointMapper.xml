@@ -3,7 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
-<mapper namespace="com.inyoon.bookkureomi.mapper.PointMapper">
+<mapper namespace="com.inyoon.bookkureomi.point.PointMapper">
 	<select id="getRechargeNo" parameterType="integer" resultType="integer">
         SELECT 
         	NVL(MAX(rechargeNo), 0) + 1
@@ -13,7 +13,7 @@
         	userNo = #{userNo}
     </select>
     
-	<select id="getRechargeList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Recharge">
+	<select id="getRechargeList" parameterType="integer" resultType="com.inyoon.bookkureomi.point.Recharge">
         SELECT 
 			rechargeNo, userNo, rcPoint, totalPoint, rcDate, rcMethod
 		FROM 
@@ -31,7 +31,7 @@
 			userNo = #{userNo}
     </select>
     
-    <insert id="rechargePoint" parameterType="com.inyoon.bookkureomi.domain.Recharge">
+    <insert id="rechargePoint" parameterType="com.inyoon.bookkureomi.point.Recharge">
     	Insert into Recharge (rechargeNo, userNo, rcPoint, totalPoint, rcMethod)
     	Values (#{rechargeNo}, #{user.userNo}, #{rcPoint}, #{totalPoint}, #{rcMethod})
     </insert>
