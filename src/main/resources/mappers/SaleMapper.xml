@@ -8,14 +8,14 @@
         SELECT SALESEQ.nextval from dual
     </select>
 
-	<select id="getSaleList" resultType="com.inyoon.bookkureomi.sale.Sale">
+	<select id="getSaleList" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
 			Sale <!-- Users 추가 -->
     </select>
     
-    <select id="getSale" parameterType="integer" resultType="com.inyoon.bookkureomi.sale.Sale">
+    <select id="getSale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
@@ -24,7 +24,7 @@
 			saleNo = #{saleNo}
     </select>
     
-    <select id="findSaleByTitle" parameterType="String" resultType="com.inyoon.bookkureomi.sale.Sale">
+    <select id="findSaleByTitle" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
@@ -33,7 +33,7 @@
 			title like  '%'|| #{title} ||'%' 
     </select>
     
-    <select id="findSaleByGenre" parameterType="String" resultType="com.inyoon.bookkureomi.sale.Sale">
+    <select id="findSaleByGenre" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, Sale.genreNo
 		FROM 
@@ -43,7 +43,7 @@
 			AND genre.type = #{type}
     </select>    
     
-    <insert id="saleBook" parameterType="com.inyoon.bookkureomi.sale.Sale">
+    <insert id="saleBook" parameterType="com.inyoon.bookkureomi.domain.Sale">
     	Insert into Sale (saleNo, publisher, title, costPrice, salePrice, image, info, userNo, state, genreNo)
     	Values (#{saleNo}, #{publisher}, #{title}, #{costPrice}, #{salePrice}, #{image}, #{info}, #{user.userNo}, #{state}, #{genre.genreNo})
     </insert>
@@ -75,7 +75,7 @@
         	saleNo = #{saleNo}
     </update>
     
-    <select id="getMySaleList" parameterType="integer" resultType="com.inyoon.bookkureomi.sale.Sale">
+    <select id="getMySaleList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
@@ -84,7 +84,7 @@
 			userNo = #{user.userNo}
     </select>
     
-    <select id="getMySale" parameterType="integer" resultType="com.inyoon.bookkureomi.sale.Sale">
+    <select id="getMySale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
@@ -93,7 +93,7 @@
 			saleNo = #{saleNo}
     </select>
     
-    <select id="recommend" parameterType="integer" resultType="com.inyoon.bookkureomi.sale.Sale">
+    <select id="recommend" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 

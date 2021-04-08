@@ -13,7 +13,7 @@
         	userNo = #{userNo}
     </select>
     
-	<select id="getRechargeList" parameterType="integer" resultType="com.inyoon.bookkureomi.point.Recharge">
+	<select id="getRechargeList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Recharge">
         SELECT 
 			rechargeNo, userNo, rcPoint, totalPoint, rcDate, rcMethod
 		FROM 
@@ -31,7 +31,7 @@
 			userNo = #{userNo}
     </select>
     
-    <insert id="rechargePoint" parameterType="com.inyoon.bookkureomi.point.Recharge">
+    <insert id="rechargePoint" parameterType="com.inyoon.bookkureomi.domain.Recharge">
     	Insert into Recharge (rechargeNo, userNo, rcPoint, totalPoint, rcMethod)
     	Values (#{rechargeNo}, #{user.userNo}, #{rcPoint}, #{totalPoint}, #{rcMethod})
     </insert>

@@ -6,7 +6,7 @@
     <select id = "getUserNo" resultType="integer">
         SELECT USERSSEQ.nextval from dual
     </select>
-    <select id = "getUser" parameterType="integer" resultType="com.inyoon.bookkureomi.user.User">
+    <select id = "getUser" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.User">
         SELECT
             userNo, ID, password, point, first, second, third, name
         FROM
@@ -15,7 +15,7 @@
             userNo = #{userNo}
     </select>
 
-    <select id = "getUserById" parameterType="String" resultType="com.inyoon.bookkureomi.user.User">
+    <select id = "getUserById" parameterType="String" resultType="com.inyoon.bookkureomi.domain.User">
         SELECT
             userNo, ID, password, point, first, second, third, name
         FROM
@@ -23,12 +23,12 @@
         WHERE
             ID = #{id}
     </select>
-    <insert id = "insertUser" parameterType = "com.inyoon.bookkureomi.user.User">
+    <insert id = "insertUser" parameterType = "com.inyoon.bookkureomi.domain.User">
         INSERT INTO Users (userNo, ID, password, phone, point, first, second, third, name)
         VALUES (#{userNo}, #{id}, #{pw}, #{phone}, #{point}, #{firstGenre}, #{secondGenre}, #{thirdGenre}, #{name})
     </insert>
 
-    <update id="updateUser" parameterType="com.inyoon.bookkureomi.user.User">
+    <update id="updateUser" parameterType="com.inyoon.bookkureomi.domain.User">
         UPDATE Users
         SET
             password = #{pw}

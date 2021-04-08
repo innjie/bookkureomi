@@ -8,7 +8,7 @@
         SELECT ORDERSEQ.nextval from dual
     </select>
     
-	<select id="getOrderList" parameterType="integer" resultType="com.inyoon.bookkureomi.order.Order">
+	<select id="getOrderList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
         SELECT 
 			orderNo, saleNo, auctionNo, userNo, pAddress, orderDate, rAddress, rName, rPhone
 		FROM 
@@ -42,7 +42,7 @@
     </select>
    
 		 
-    <select id="getOrder" parameterType="integer" resultType="com.inyoon.bookkureomi.order.Order">
+    <select id="getOrder" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
         SELECT 
 			orderNo, saleNo, auctionNo, userNo, pAddress, orderDate, rAddress, rName, rPhone
 		FROM 
@@ -51,7 +51,7 @@
 			orderNo = #{orderNo}
     </select>
     
-    <insert id="orderBook" parameterType="com.inyoon.bookkureomi.order.Order">
+    <insert id="orderBook" parameterType="com.inyoon.bookkureomi.domain.Order">
     	Insert into Orders (orderNo, saleNo, auctionNo, userNo, pAddress, rAddress, rName, rPhone)
     	Values (#{orderNo}, #{sale.saleNo}, #{auction.auctionNo}, #{user.userNo}, #{pAddress}, #{rAddress}, #{rName}, #{rPhone})
     </insert>
