@@ -2,6 +2,8 @@ package com.inyoon.bookkureomi.user;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.inyoon.bookkureomi.domain.User;
+
 @Mapper
 public interface UserMapper {
     public User getUser(int userNo);

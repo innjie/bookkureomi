@@ -1,4 +1,4 @@
-package com.inyoon.bookkureomi.address;
+package com.inyoon.bookkureomi.domain;
 
 import lombok.Data;
 

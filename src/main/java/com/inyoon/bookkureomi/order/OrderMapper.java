@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.inyoon.bookkureomi.domain.Order;
+
 @Mapper
 public interface OrderMapper {
 	public int getOrderNo();

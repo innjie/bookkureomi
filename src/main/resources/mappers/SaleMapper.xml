@@ -24,18 +24,18 @@
 			saleNo = #{saleNo}
     </select>
     
-    <select id="findSaleByName" parameterType="String" resultType="com.inyoon.bookkureomi.sale.Sale">
+    <select id="findSaleByTitle" parameterType="String" resultType="com.inyoon.bookkureomi.sale.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
 			Sale <!-- Users, genre 추가 -->
 		where
-			title = #{title}
+			title like  '%'|| #{title} ||'%' 
     </select>
     
     <select id="findSaleByGenre" parameterType="String" resultType="com.inyoon.bookkureomi.sale.Sale">
         SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
+			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, Sale.genreNo
 		FROM 
 			Sale, Genre <!-- Users, genre 추가 -->
 		where

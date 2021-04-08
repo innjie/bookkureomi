@@ -1,10 +1,7 @@
-package com.inyoon.bookkureomi.order;
+package com.inyoon.bookkureomi.domain;
 
 import java.util.Date;
 
-import com.inyoon.bookkureomi.auction.Auction;
-import com.inyoon.bookkureomi.sale.Sale;
-import com.inyoon.bookkureomi.user.User;
 import lombok.Getter;
 import lombok.Setter;
 

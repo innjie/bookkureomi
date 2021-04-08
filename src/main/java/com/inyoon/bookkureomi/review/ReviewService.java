@@ -3,6 +3,8 @@ package com.inyoon.bookkureomi.review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.inyoon.bookkureomi.domain.Review;
+
 import java.util.List;
 
 @Service

@@ -1,8 +1,9 @@
 package com.inyoon.bookkureomi.auction;
 
-import com.inyoon.bookkureomi.order.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.inyoon.bookkureomi.domain.Order;
 
 import java.util.List;
 

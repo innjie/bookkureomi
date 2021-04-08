@@ -1,4 +1,4 @@
-package com.inyoon.bookkureomi.user;
+package com.inyoon.bookkureomi.domain;
 
 import lombok.Data;
 import org.springframework.data.jpa.repository.JpaRepository;

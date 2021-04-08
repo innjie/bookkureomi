@@ -3,6 +3,8 @@ package com.inyoon.bookkureomi.delivery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.inyoon.bookkureomi.domain.Delivery;
+
 @Service
 public class DeliveryService {
 	@Autowired

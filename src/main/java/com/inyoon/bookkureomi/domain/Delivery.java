@@ -1,6 +1,5 @@
-package com.inyoon.bookkureomi.delivery;
+package com.inyoon.bookkureomi.domain;
 
-import com.inyoon.bookkureomi.order.Order;
 import lombok.Getter;
 import lombok.Setter;
 

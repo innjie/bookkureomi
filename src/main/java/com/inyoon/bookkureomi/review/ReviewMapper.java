@@ -2,6 +2,8 @@ package com.inyoon.bookkureomi.review;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.inyoon.bookkureomi.domain.Review;
+
 import java.util.List;
 @Mapper
 public interface ReviewMapper {
