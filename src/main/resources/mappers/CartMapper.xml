@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.inyoon.bookkureomi.cart.CartMapper">
-	<select id="checkCart" parameterType="integer" resultType="com.inyoon.bookkureomi.sale.Sale">
+	<select id="checkCart" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
 		FROM 
@@ -13,12 +13,12 @@
 			userNo = #{userNo}
     </select>
     
-    <insert id="addCartItem" parameterType="com.inyoon.bookkureomi.cart.CartItem">
+    <insert id="addCartItem" parameterType="com.inyoon.bookkureomi.domain.CartItem">
     	Insert into Cart (saleNo, userNo)
     	Values (#{sale.saleNo}, #{user.userNo})
     </insert>
     
-    <delete id="deleteCartItem" parameterType="com.inyoon.bookkureomi.cart.CartItem">
+    <delete id="deleteCartItem" parameterType="com.inyoon.bookkureomi.domain.CartItem">
         DELETE FROM Cart
         WHERE userNo = #{user.userNo} and saleNo = #{sale.saleNo}
     </delete>

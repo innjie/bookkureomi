@@ -10,19 +10,19 @@
             Address
     </select>
 
-    <select id = "getAddressList" parameterType="integer" resultType="com.inyoon.bookkureomi.address.Address">
+    <select id = "getAddressList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Address">
         SELECT addrNo, userNo, addr, aName, zipcode
         FROM Address
         WHERE userNo = #{userNo}
     </select>
 
-    <select id="getAddress" parameterType="integer" resultType="com.inyoon.bookkureomi.address.Address">
+    <select id="getAddress" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Address">
         SELECT addrNo, userNo, addr, aName, zipcode
         FROM Address
         WHERE addrNo = #{addrNo}
     </select>
 
-    <insert id="insertAddress" parameterType="com.inyoon.bookkureomi.address.Address">
+    <insert id="insertAddress" parameterType="com.inyoon.bookkureomi.domain.Address">
         INSERT INTO Address (addrNo, userNo, addr, aName, zipcode)
         VALUES (#{addrNo}, #{userNo}, #{address}, #{aName}, #{zipcode})
     </insert>
