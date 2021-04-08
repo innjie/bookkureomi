@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.inyoon.bookkureomi.domain.Recharge;
+
 @Mapper
 public interface PointMapper {
 	public int getRechargeNo(int userNo);

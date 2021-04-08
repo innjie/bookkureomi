@@ -3,6 +3,8 @@ package com.inyoon.bookkureomi.auction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.inyoon.bookkureomi.domain.Bid;
+
 import java.util.List;
 
 @Service

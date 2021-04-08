@@ -2,7 +2,7 @@ package com.inyoon.bookkureomi.delivery;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.inyoon.bookkureomi.delivery.Delivery;
+import com.inyoon.bookkureomi.domain.Delivery;
 
 @Mapper
 public interface DeliveryMapper {

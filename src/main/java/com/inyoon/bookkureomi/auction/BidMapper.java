@@ -2,6 +2,8 @@ package com.inyoon.bookkureomi.auction;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.inyoon.bookkureomi.domain.Bid;
+
 import java.util.List;
 
 @Mapper

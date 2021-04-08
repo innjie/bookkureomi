@@ -2,6 +2,8 @@ package com.inyoon.bookkureomi.address;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.inyoon.bookkureomi.domain.Address;
+
 import java.util.List;
 
 @Mapper

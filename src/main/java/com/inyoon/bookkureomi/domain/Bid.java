@@ -1,4 +1,4 @@
-package com.inyoon.bookkureomi.auction;
+package com.inyoon.bookkureomi.domain;
 
 import lombok.Data;
 

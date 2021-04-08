@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.inyoon.bookkureomi.domain.Order;
+
 @Service
 public class OrderService {
 	@Autowired

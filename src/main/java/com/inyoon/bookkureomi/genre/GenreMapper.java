@@ -1,6 +1,9 @@
 package com.inyoon.bookkureomi.genre;
 
 import org.apache.ibatis.annotations.Mapper;
+
+import com.inyoon.bookkureomi.domain.Genre;
+
 import java.util.List;
 
 @Mapper

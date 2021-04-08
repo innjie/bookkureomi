@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.inyoon.bookkureomi.sale.Sale;
+import com.inyoon.bookkureomi.domain.CartItem;
+import com.inyoon.bookkureomi.domain.Sale;
 
 @Mapper
 public interface CartMapper {

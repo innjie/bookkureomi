@@ -1,9 +1,7 @@
-package com.inyoon.bookkureomi.sale;
+package com.inyoon.bookkureomi.domain;
 
 import java.util.Date;
 
-import com.inyoon.bookkureomi.genre.Genre;
-import com.inyoon.bookkureomi.user.User;
 import lombok.Getter;
 import lombok.Setter;
 

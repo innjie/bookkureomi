@@ -1,8 +1,7 @@
-package com.inyoon.bookkureomi.point;
+package com.inyoon.bookkureomi.domain;
 
 import java.util.Date;
 
-import com.inyoon.bookkureomi.user.User;
 import lombok.Getter;
 import lombok.Setter;
 

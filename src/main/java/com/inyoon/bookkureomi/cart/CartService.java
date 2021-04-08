@@ -5,7 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.inyoon.bookkureomi.sale.Sale;
+import com.inyoon.bookkureomi.domain.CartItem;
+import com.inyoon.bookkureomi.domain.Sale;
 
 @Service
 public class CartService {
