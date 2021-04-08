@@ -35,31 +35,41 @@ public class SaleController{
 	@Autowired
 	private SaleService saleService;
 	
-	@GetMapping("/sale/salelist")
-    public String testPage1(Model model) {	
+	@GetMapping("/sale/view")
+    public String viewSale(Model model) {	
         return "sale/saleList";
     }
 	
 	@ResponseBody //@RestController 시 생략 가능
+	@GetMapping("/sale/saleList")
+	public Map<String, Object> listSale() {
+
+		List<Sale> saleList = new ArrayList<>();	
+		saleList = saleService.getSaleList();
+	
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("saleList", saleList);
+		
+        return map;
+    }
+	
+	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/sale/findSale")
-	public Map<String, Object> testPage2(
+	public Map<String, Object> findSale(
 			@RequestParam("title") String title,
 			@RequestParam("genre") String genre) {
-		System.out.println("find : ");
 
-		List<Sale> salelist = new ArrayList<Sale>();
+		List<Sale> saleList = new ArrayList<>();
 		
 		if(!title.equals("") && title != null) {
-			salelist = saleService.findSaleByTitle(title);
+			saleList = saleService.findSaleByTitle(title);
 		} else if(!genre.equals("") && genre != null) {
-			salelist = saleService.findSaleByGenre(genre);
+			saleList = saleService.findSaleByGenre(genre);
 		} 
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("salelist", salelist);
+		map.put("saleList", saleList);
 		
-		System.out.println("find : " + title);
-
         return map;
     }
 	

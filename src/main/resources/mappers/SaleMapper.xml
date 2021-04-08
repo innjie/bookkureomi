@@ -10,9 +10,15 @@
 
 	<select id="getSaleList" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
+			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, 
+			Sale.genreNo AS "genre.genreNo", type AS "genre.type"<!--  , 
+			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"-->
 		FROM 
-			Sale <!-- Users 추가 -->
+			Sale, Genre, Users <!-- Users 추가 -->
+		where
+			Sale.userNo = Users.userNo
+			AND Sale.genreNo = Genre.genreNo
+		ORDER BY saleNo desc
     </select>
     
     <select id="getSale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
@@ -26,21 +32,28 @@
     
     <select id="findSaleByTitle" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
+			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, 
+			Sale.genreNo AS "genre.genreNo", type AS "genre.type"<!--  , 
+			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"-->
 		FROM 
-			Sale <!-- Users, genre 추가 -->
+			Sale, Genre, Users <!-- Users, genre 추가 -->
 		where
-			title like  '%'|| #{title} ||'%' 
+			Sale.userNo = Users.userNo
+			AND Sale.genreNo = Genre.genreNo		
+			AND title like  '%'|| #{title} ||'%' 
+		ORDER BY saleNo desc
     </select>
     
     <select id="findSaleByGenre" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, Sale.genreNo
+			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, 
+			Sale.genreNo AS "genre.genreNo", type AS "genre.type"
 		FROM 
 			Sale, Genre <!-- Users, genre 추가 -->
 		where
 			Sale.genreNo = Genre.genreNo 
-			AND genre.type = #{type}
+			AND type like  '%'|| #{type} ||'%'
+		ORDER BY saleNo desc
     </select>    
     
     <insert id="saleBook" parameterType="com.inyoon.bookkureomi.domain.Sale">
