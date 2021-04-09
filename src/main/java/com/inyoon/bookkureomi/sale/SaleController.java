@@ -24,22 +24,26 @@ import com.inyoon.bookkureomi.genre.GenreService;
 import com.inyoon.bookkureomi.test.Test;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 
 
 
 @Controller
 @RequestMapping("/book")
-@Api(value = "SaleController")
+@Api(value = "SaleController", description = "일반 중고 거래 API")
 public class SaleController{
 	
 	@Autowired
 	private SaleService saleService;
 	
+	@ApiOperation(value="중고거래 화면 이동", notes="중고거래 목록화면으로 이동한다.")
 	@GetMapping("/sale/view")
     public String viewSale(Model model) {	
         return "sale/saleList";
     }
 	
+	@ApiOperation(value="중고거래 목록", notes="중고거래 전체 목록을 보여준다.")
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/sale/saleList")
 	public Map<String, Object> listSale() {
@@ -53,6 +57,7 @@ public class SaleController{
         return map;
     }
 	
+	@ApiOperation(value="중고거래 찾기", notes="제목/장르로 중고거래를 찾는다.")
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/sale/findSale")
 	public Map<String, Object> findSale(

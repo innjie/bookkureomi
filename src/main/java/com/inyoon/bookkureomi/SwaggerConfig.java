@@ -30,11 +30,11 @@ public class SwaggerConfig {
 	    return new ApiInfo(
 	      "북꾸러미's REST API",		//title
 	      "In&Yoon custom description of API.",		//description
-	      "API TOS",	//version
+	      "1.0",	//version
 	      "https://github.com/im57/bookkureomi", 	//termsOfServiceUrl
 	      new Contact("Im", "https://github.com/im57/bookkureomi", "eovhehd1986@gmail.com"),		//contact 
 	      "ⓒ InyOon",		//license
-	      "https://github.com/im57/bookkureomi",	//licenseUrl
+	      "http://localhost:8000",	//licenseUrl
 	      Collections.emptyList());		//vendorExtensions
 	}
 }
