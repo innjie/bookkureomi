@@ -10,7 +10,7 @@
 
 	<select id="getSaleList" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, 
+			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, author,
 			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"<!--  , 
 			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"-->
 		FROM 
@@ -23,16 +23,18 @@
     
     <select id="getSale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
+			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state,
+			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"
 		FROM 
-			Sale <!-- Users 추가 -->
+			Sale, Genre <!-- Users 추가 -->
 		where
-			saleNo = #{saleNo}
+			Sale.genreNo = Genre.genreNo 
+			AND saleNo = #{saleNo}
     </select>
     
     <select id="findSaleByTitle" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, 
+			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, author,
 			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"<!--  , 
 			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"-->
 		FROM 
@@ -46,7 +48,7 @@
     
     <select id="findSaleByGenre" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, 
+			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, author, 
 			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"
 		FROM 
 			Sale, Genre <!-- Users, genre 추가 -->
@@ -57,7 +59,7 @@
     </select>    
     
     <insert id="saleBook" parameterType="com.inyoon.bookkureomi.domain.Sale">
-    	Insert into Sale (saleNo, publisher, title, costPrice, salePrice, image, info, userNo, state, genreNo)
+    	Insert into Sale (saleNo, publisher, title, costPrice, salePrice, image, info, userNo, state, author, genreNo)
     	Values (#{saleNo}, #{publisher}, #{title}, #{costPrice}, #{salePrice}, #{image}, #{info}, #{user.userNo}, #{state}, #{genre.genreNo})
     </insert>
     
@@ -65,6 +67,7 @@
         UPDATE Sale
         SET
             publisher = #{publisher},
+            author = #{author},
             title = #{title},
             costPrice = #{costPrice},
             salePrice = #{salePrice},
@@ -90,16 +93,18 @@
     
     <select id="getMySaleList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
+			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, author,
+			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"
 		FROM 
-			Sale <!-- Users 추가 -->
+			Sale, Genre <!-- Users 추가 -->
 		where
-			userNo = #{user.userNo}
+			Sale.genreNo = Genre.genreNo 
+			AND userNo = #{user.userNo}
     </select>
     
     <select id="getMySale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
+			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, author, genreNo
 		FROM 
 			Sale <!-- Users 추가 -->
 		where
@@ -108,7 +113,7 @@
     
     <select id="recommend" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
+			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, author, genreNo
 		FROM 
 			Sale <!-- Users 추가 -->
 		where

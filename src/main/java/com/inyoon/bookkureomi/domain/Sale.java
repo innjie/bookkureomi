@@ -33,5 +33,6 @@ public class Sale {
 	private String state;
 	@ApiModelProperty(value = "장르", dataType = "Genre")
 	private Genre genre;
-	
+	@ApiModelProperty(value = "저자", dataType = "String")
+	private String author;
 }
