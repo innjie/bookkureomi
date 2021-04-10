@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
   <!--	xmlns:sec="http://www.thymeleaf.org/extras/spring-security4">-->
 	
 	<header th:fragment="headerFragment" class="header-margin " id="header">
@@ -10,8 +10,8 @@
 	        </a>
 	        <div class="header-menu">
 	        	<ul class="header-logon-menu-list mr-auto">
-	            	<li class="header-logon-menu-item-button"><a class="js-scroll-trigger" href="">로그인</a></li>
-	                <li class="header-logon-menu-item-button"><a class="js-scroll-trigger" href="">회원가입</a></li>
+	            	<li class="header-logon-menu-item-button"><a class="js-scroll-trigger" sec:authorize="isAnonymous()" href="/book/user/login">로그인</a></li>
+	                <li class="header-logon-menu-item-button"><a class="js-scroll-trigger" sec:authorize="isAnonymous()" href="/book/user/join">회원가입</a></li>
 	            </ul>
 	        	<ul class="header-logon-menu-list mr-auto">
 	            	<li class="header-logon-menu-item"><a class="js-scroll-trigger" href="">누구</a>님</li>

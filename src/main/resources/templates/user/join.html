@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+
+<head>
+    <title>Sign Up</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/dist/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/user/genre.js}" src="../../static/js/user/genre.js"></script>
+    <script type="text/javascript" th:src="@{/js/user/user.js}" src="../../static/js/user/user.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>Join us</h2>
+    <div>
+        <form action="/user/join" method="post">
+            id <input type="text" name="id" id="id"/> <br>
+<!--            <span id="overlapError">This ID is already Using</span><br>-->
+
+            password <input type="password" name="pw" id="pw"/> <br>
+            <span id="passwordLen">Passwords are up to 8 characters long.</span><br>
+
+            confirm password <input type="password" name="confirmPw" id="confirmPw"/> <br>
+            <span id = "notSameError">mismatch to password</span><br>
+
+            name <input type="text" name="name" id="name"/> <br>
+
+            phone <input type="text" name="phone" id="phone"/> <br>
+            <span id = "phoneFormatError">Use only number</span><br>
+
+            <!-- Using checkbox tag -->
+            <div id="result"></div>
+            <span id = "overChecked">You can choose up to 3</span><br>
+
+            <button type="button" onClick="checkForm()" >sign up</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

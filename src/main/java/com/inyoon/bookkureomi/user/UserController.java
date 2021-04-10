@@ -1,28 +1,67 @@
 package com.inyoon.bookkureomi.user;
 
+import com.inyoon.bookkureomi.domain.Genre;
+import com.inyoon.bookkureomi.genre.GenreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import com.inyoon.bookkureomi.domain.User;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
+@RequestMapping("/book")
 public class UserController {
 
-    private static final String USERFORM = "/user/signUp";
+    private static final String JOINFORM = "user/join";
     //insert userForm
-    @RequestMapping(value = "/user/insertForm", method = RequestMethod.GET)
-    public String userForm(@ModelAttribute("user") User userCommand, HttpServletRequest request) {
-        return USERFORM;
+
+    @Autowired
+    private GenreService genreService;
+    @Autowired
+    private UserService userService;
+
+    @ResponseBody
+    @GetMapping("/genre/list")
+    public Map<String, Object> genreList() {
+        System.out.println("genreList in");
+        List<Genre> genreList = new ArrayList<>();
+        genreList = genreService.getGenreList();
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("genreList", genreList);
+
+        System.out.println(genreList);
+        return map;
     }
 
+    //join
+    @GetMapping("/user/join")
+    public String userForm(@ModelAttribute("user") User user, HttpServletRequest request) {
+        return JOINFORM;
+    }
+
+    @PostMapping("/user/overlapId")
+    @ResponseBody
+    public String overlapId(@RequestParam String inputId) throws Exception {
+        System.out.println("overlapId in");
+        User user = userService.getUserById(inputId);
+        String usable = user != null ? "" : "Y";
+        return usable;
+    }
     //insert user
-//    @RequestMapping(value="/user/insert.do", method = RequestMethod.POST)
-//    public String insert( @Validated @ModelAttribute("userCommand") User user, BindingResult result) throws Exception {
-//    }
+    @PostMapping("/user/join")
+    public String insert(@Validated @ModelAttribute("userCommand") User user, BindingResult result) throws Exception {
+
+        return "good";
+    }
 
 //    //update user
 //    @RequestMapping(value = “/user/update.do”,
