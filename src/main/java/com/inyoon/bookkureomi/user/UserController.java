@@ -20,7 +20,7 @@ import java.util.Map;
 @RequestMapping("/book")
 public class UserController {
 
-    private static final String JOINFORM = "user/join";
+    private static final String JOINFORM = "user/all/join";
     //insert userForm
 
     @Autowired
@@ -48,18 +48,20 @@ public class UserController {
         return JOINFORM;
     }
 
-    @PostMapping("/user/overlapId")
-    @ResponseBody
-    public String overlapId(@RequestParam String inputId) throws Exception {
-        System.out.println("overlapId in");
-        User user = userService.getUserById(inputId);
-        String usable = user != null ? "" : "Y";
-        return usable;
-    }
+//    @PostMapping("/user/overlapId")
+//    @ResponseBody
+//    public String overlapId(@RequestParam String inputId) throws Exception {
+//        System.out.println("overlapId in");
+//        User user = userService.getUserById(inputId);
+//        String usable = user != null ? "" : "Y";
+//        return usable;
+//    }
+
     //insert user
     @PostMapping("/user/join")
+    @ResponseBody
     public String insert(@Validated @ModelAttribute("userCommand") User user, BindingResult result) throws Exception {
-
+        System.out.println("insert join");
         return "good";
     }
 
