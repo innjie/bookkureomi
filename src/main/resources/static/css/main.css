@@ -11,19 +11,21 @@
 	font-weight:300;
 }
 
-#hello{font-size:100px;}
 
 html, body {
-    margin: 0;
-    height: 100%;
-    overflow: hidden;
+	height: 100%;
 }
 
 
 
 /* nav */
-.nav {
-	background-color: #525252; 
+nav {
+	height: 8%;
+	
+	background-color: #000031;
+  	background-size: cover;
+  	border-top: 1px solid #eaecf4;
+  	border-bottom: 1px solid #eaecf4;
 }
 .nav-margin {
 	margin-top: 20px;
@@ -68,10 +70,6 @@ html, body {
   	list-style: none;
   	position: static;
   	float: none;
-  	background-color: #000031;
-  	background-size: cover;
-  	border-top: 1px solid #eaecf4;
-  	border-bottom: 1px solid #eaecf4;
 }
 .nav-item {
 	margin: 10px;
@@ -104,8 +102,11 @@ html, body {
 
 
 /* header */
-.header { 
-	height: 20%; 
+header { 
+	height: 15%;
+	
+	padding-top: 25px;
+	padding-bottom: 25px;
 } 
 .header-logo {
     float: left;
@@ -118,14 +119,6 @@ html, body {
  	background-attachment: scroll;
   	background-position: center center;
   	background-size: cover;
-}
-.header-padding { 
-	padding-top: 25px;
-	padding-bottom: 25px;
-}
-.header-margin { 
-	margin-top: 25px;
-	margin-bottom: 25px;
 }
 .header-menu {
   	display: flex;
@@ -155,31 +148,28 @@ html, body {
 
 
 /* content */
-.content { 
-	height:70%; 
+section { 
+	min-height: 62%;
 } 
 
 
 /* footer */
-.footer { 
-	background-color: yellow; 
-	height: 10%; 
-}
-.footer-padding { 
-	padding-top: 25px;
-	padding-bottom: 25px;
-}
-.footer-margin { 
-	margin-top: 25px;
-	margin-bottom: 25px;
-}
-.footer-background {
+footer { 
+	height: 15%;
+	
+	border-top: 2px solid #000031;
+	
 	background-color: #ffffff;
   	background-repeat: no-repeat;
- 	background-attachment: scroll;
   	background-position: center center;
   	background-size: cover;
 }
+.footer-div { 
+	padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+
 
 .container {
   	margin-right: auto;
@@ -253,6 +243,11 @@ html, body {
 
 
 /* back */
+
+
+
+
+/* index */
 .index-background {
 	background-image: url("../images/header3.jpg");
   	background-repeat: no-repeat;
@@ -260,10 +255,10 @@ html, body {
   	background-position: center center;
   	background-size: cover;
 }
-
-
-
-/* index */
+.index-padding { 
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
 .index-text1 {
 	color: #d1d1d1;
 	font-size:40px;
