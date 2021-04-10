@@ -22,7 +22,7 @@ public class UserConfig extends WebSecurityConfigurerAdapter {
                         "/img/**",
                         "/templates/fragments/**",
                         "templates/layouts/**",
-                        "/user/signup",
+                        "/user/join",
                         "/user/login"
                 ).permitAll()
                 //.antMatchers("").hasRole("USERS")
