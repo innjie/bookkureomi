@@ -78,6 +78,21 @@ public class SaleController{
         return map;
     }
 	
+	@ApiOperation(value="중고 책 상세 보기", notes="판매되는 중고 책을 상세히 본다.")
+	@ResponseBody //@RestController 시 생략 가능
+	@GetMapping("/sale/getSale")
+	public Map<String, Object> getSale(
+				@RequestParam("saleNo") int saleNo) throws Exception {
+
+		Sale sale = new Sale();
+		sale = saleService.getSale(saleNo);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sale", sale);
+		
+        return map;
+	}
+	
 /*
 	//SaleCommand
 

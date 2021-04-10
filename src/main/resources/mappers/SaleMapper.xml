@@ -23,8 +23,9 @@
     
     <select id="getSale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state,
-			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"
+			saleNo, publisher, title, costPrice, salePrice, image, info, author, regiDate, state,
+			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"<!--  , 
+			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"-->
 		FROM 
 			Sale, Genre <!-- Users 추가 -->
 		where
