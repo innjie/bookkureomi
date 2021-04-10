@@ -27,10 +27,6 @@ nav {
   	border-top: 1px solid #eaecf4;
   	border-bottom: 1px solid #eaecf4;
 }
-.nav-margin {
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
 .nav-menu {
   	flex-basis: 100%;
   	flex-grow: 1;  	
@@ -147,11 +143,6 @@ header {
 }
 
 
-/* content */
-section { 
-	min-height: 62%;
-} 
-
 
 /* footer */
 footer { 
@@ -164,11 +155,25 @@ footer {
   	background-position: center center;
   	background-size: cover;
 }
-.footer-div { 
+.footer-div {
+	flex: 0 0 33.3333333333%;
+    max-width: 33.3333333333%;
+}
+.footer-content { 
 	padding-top: 5%;
     padding-bottom: 5%;
+    
+    text-align: center;
+
+  	width: 33.33333333%;
+  	float: left;
 }
 
+
+/* content */
+section { 
+	min-height: 62%;
+} 
 
 
 .container {
