@@ -11,7 +11,7 @@
 	<select id="getSaleList" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, 
-			Sale.genreNo AS "genre.genreNo", type AS "genre.type"<!--  , 
+			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"<!--  , 
 			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"-->
 		FROM 
 			Sale, Genre, Users <!-- Users 추가 -->
@@ -33,7 +33,7 @@
     <select id="findSaleByTitle" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, 
-			Sale.genreNo AS "genre.genreNo", type AS "genre.type"<!--  , 
+			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"<!--  , 
 			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"-->
 		FROM 
 			Sale, Genre, Users <!-- Users, genre 추가 -->
@@ -47,12 +47,12 @@
     <select id="findSaleByGenre" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, 
-			Sale.genreNo AS "genre.genreNo", type AS "genre.type"
+			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"
 		FROM 
 			Sale, Genre <!-- Users, genre 추가 -->
 		where
 			Sale.genreNo = Genre.genreNo 
-			AND type like  '%'|| #{type} ||'%'
+			AND genreType like  '%'|| #{genreType} ||'%'
 		ORDER BY saleNo desc
     </select>    
     

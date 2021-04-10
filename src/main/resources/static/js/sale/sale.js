@@ -22,7 +22,7 @@ function listSaleBook(){
 					+"<li>" + data.saleList[i].info + "</li>"
 				//	+"<li>" + data.saleList[i].user.name + "</li>"
 					+"<li>" + data.saleList[i].regiDate + "</li>"
-					+"<li>" + data.saleList[i].genre.type + "</li>"
+					+"<li>" + data.saleList[i].genre.genreType + "</li>"
 					+"<li>" + data.saleList[i].state + "</li>";
 			result += sale;
 		}
@@ -69,7 +69,7 @@ function findSaleBook(){
 					+"<li>" + data.saleList[i].info + "</li>"
 				//	+"<li>" + data.saleList[i].user.name + "</li>"
 					+"<li>" + data.saleList[i].regiDate + "</li>"
-					+"<li>" + data.saleList[i].genre.type + "</li>"
+					+"<li>" + data.saleList[i].genre.genreType + "</li>"
 					+"<li>" + data.saleList[i].state + "</li>";
 			result += sale;
 		}
