@@ -7,36 +7,37 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public @Data class User implements UserDetails {
     private int userNo;
     private String id;
     private String name;
     private String pw;
+    private String confirmPw;
     private String phone;
-    private int firstGenre;
-    private int secondGenre;
-    private int thirdGenre;
-
-    private String userAuth;
+//    private int firstGenre;
+//    private int secondGenre;
+//    private int thirdGenre;
+    private Set<String> genres;
+    private String auth;
     private boolean enabled;
+    private String userRole;
+    private Collection<? extends GrantedAuthority> authorities;
 
-    ArrayList<GrantedAuthority> auth = new ArrayList<>();
-
-    public User(String id, String password, List<GrantedAuthority> auth) {
+    public User(String id, String password, String auth) {
         this.id = id;
         this.pw = password;
-        this.auth = (ArrayList<GrantedAuthority>) auth;
+        this.auth =  auth;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
-        auth.add(new SimpleGrantedAuthority(userAuth));
-        return auth;
+        Set<GrantedAuthority> roles = new HashSet<>();
+        for (String role : auth.split(",")) {
+            roles.add(new SimpleGrantedAuthority(role));
+        }
+        return roles;
     }
 
     @Override

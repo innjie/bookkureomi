@@ -5,7 +5,7 @@
 <mapper namespace="com.inyoon.bookkureomi.genre.GenreMapper">
     <select id="getGenreList" resultType="com.inyoon.bookkureomi.domain.Genre">
         SELECT
-            genreNo, type
+            genreNo, genreType
         FROM
             Genre
     </select>

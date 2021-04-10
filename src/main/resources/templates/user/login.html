@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+
+<head>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <!-- Services-->
+    <div>
+        <form action="/user/login" th:object="${login}" method="post">
+            <input type="text" name="username" placeholder="id"/> <br>
+            <input type="password" name="password" placeholder="pw"/> <br>
+
+
+            <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

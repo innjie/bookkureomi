@@ -1,5 +1,6 @@
 package com.inyoon.bookkureomi.user;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,6 +15,7 @@ import com.inyoon.bookkureomi.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
@@ -48,14 +50,13 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         User user = userMapper.getUserById(id);
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-        List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
-        if((user.getId()).equals(id)) {
-            auth.add(new SimpleGrantedAuthority("USER"));
-        }else {
-            ;
+        if(user != null) {
+            authorities.add(new SimpleGrantedAuthority(user.getUserRole()));
+            user.setAuthorities(authorities);
         }
-        return new User(user.getId(), user.getPassword(), auth);
+        return user;
     }
 
 }
