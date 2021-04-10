@@ -336,6 +336,13 @@ section {
 	font-size:15px;
   	font-family: bookkureomi_main_font;
 }
+.table-list-content-btn-style {
+	flex: 1 1 auto;
+	padding: 5% 0% 0% 0%;
+	font-size:15px;
+  	font-family: bookkureomi_main_font;
+  	text-align: center;
+}
 
 
 <!-- table -->
@@ -354,12 +361,16 @@ section {
 	float:left;
 	width:65%;
 	height: 100%;
-    padding: 10% 5% 10% 5%;;
+    padding: 5% 5% 5% 5%;;
 }
 
 
 
 <!-- div -->
+.div-list-head {
+	width:1130px;
+	height: 30px;
+}
 .div-list-result {
 	margin: 2% 0% 2% 0%;
 }
@@ -368,10 +379,12 @@ section {
 
 <!-- find -->
 .find-style {
+	float:left;
 	list-style:none;
 	display: flex;
 	flex-direction: row;
 	height: 30px;
+	padding-inline-start: 0px;
 }
 .find-select {
 	width: 70px;
@@ -385,6 +398,93 @@ section {
 	margin-left: 10px;
 }
 .find-btn {
+	width: 100px;
+	height: 30px;
+		
+	color: #495057;
+  	font-size:15px;
+  	background-color: yellow;
+  	border-color: #fed136;
+	border-radius: 0.35rem;  	
+  	font-family: bookkureomi_main_font;
+}
+
+
+<!-- insert -->
+.insert-style {
+	float:right;
+	height: 30px;
+}
+.insert-btn-style {
+	margin-right: 10px;
+}
+.insert-btn {
+	width: 100px;
+	height: 30px;
+		
+	color: #495057;
+  	font-size:15px;
+  	background-color: yellow;
+  	border-color: #fed136;
+	border-radius: 0.35rem;  	
+  	font-family: bookkureomi_main_font;
+}
+
+
+<!-- view -->
+.view-btn {
+	width: 150px;
+	height: 30px;
+		
+	color: #495057;
+  	font-size:15px;
+  	background-color: yellow;
+  	border-color: #fed136;
+	border-radius: 0.35rem;  	
+  	font-family: bookkureomi_main_font;
+}
+
+
+<!-- pop -->
+.pop {
+	display:none;
+	position:relative; 
+	width:700px; 
+	height: 700px;
+	background-color: #fafbfc;
+	margin-right: auto;
+  	margin-left: auto;
+	padding:67px 70px 76.5px;
+}
+.pop-style1 {
+	list-style:none;
+	height: 400px;
+	width:700px;
+	padding-inline-start: 0px;
+}
+.pop-style2 {
+	list-style:none;
+	display: flex;
+	flex-direction: row;
+	height: 200px;
+	width:300px;
+	padding-inline-start: 0px;
+}
+.pop-style3 {
+	list-style:none;
+	height: 200px;
+	width:300px;
+	padding-inline-start: 0px;
+}
+.pop-img {
+	height: 180px;
+	width:250px;
+	padding: 10px 25px 10px 25px
+}
+.pop-btn-style {
+	
+}
+.pop-btn {
 	width: 100px;
 	height: 30px;
 		
