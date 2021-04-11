@@ -11,6 +11,8 @@ function listSaleBook(){
 		data: {
 		}
 	}).done(function( data ) {
+		$('#result')[0].innerHTML = '';
+		
 		var result = 
 		//	"<table class=\"table-list\">"; //style=\"width: 100%;\"
 			"<table class=\"table-list\" style=\"width: 100%;\">"
@@ -55,6 +57,12 @@ function listSaleBook(){
 			
 			result += "</ul></td>";
 			
+			if (i==0 && data.saleList.length==1){
+				result += "<td></td><td></td>";
+			} else if (i==1 && data.saleList.length==2) {
+				result += "<td></td>";
+			}
+			
 			if(i%3==0  && i != 0){
 				result += "</tr>";
 			}
@@ -89,12 +97,15 @@ function findSaleBook(){
 			genre : genre
 		}
 	}).done(function( data ) {
-		var result = 
-			//	"<table class=\"table-list\">"; //style=\"width: 100%;\"
-				"<table class=\"table-list\" style=\"width: 100%;\">"
-				+ "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
-			var sale;
-			
+		$('#result')[0].innerHTML = '';
+		var result;
+		
+		if(data.saleList.length > 0) {
+			result = 
+				//	"<table class=\"table-list\">"; //style=\"width: 100%;\"
+					"<table class=\"table-list\" style=\"width: 100%;\">"
+					+ "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
+							
 			for(var i=0; i<data.saleList.length; i++){
 				if(i%3 == 0 && i != 0){
 					result += "<tr>";
@@ -133,13 +144,22 @@ function findSaleBook(){
 				
 				result += "</ul></td>";
 				
+				if (i==0 && data.saleList.length==1){
+					result += "<td></td><td></td>";
+				} else if (i==1 && data.saleList.length==2) {
+					result += "<td></td>";
+				}
+				
 				if(i%3==0  && i != 0){
 					result += "</tr>";
 				}
 			}
 			result += "</tbody></table>";
+		} else {
+			result = "<p class=\"find-nothing\">검색결과가 없습니다.</p>";
+		}
 			
-			$('#result').append(result);
+		$('#result').append(result);
     })
     .fail( function( textStatus ) {
         alert( "Request failed: " + textStatus );
