@@ -125,7 +125,7 @@ function findSaleBook(){
 							+ "<li class=\"table-list-content-list-style\">" + data.saleList[i].author + " / " + data.saleList[i].publisher + "</li>"
 							+ "<li class=\"table-list-content-list-style\"> \\" + data.saleList[i].costPrice + " -> \\" + data.saleList[i].salePrice + "</li>"
 							+ "<li class=\"table-list-content-list-style\">" + data.saleList[i].state + "</li>"
-							+ "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale"+ data.saleList[i].saleNo +"\" class=\"view-btn\" onClick=\"getSale()\">상세보기</button><li>"
+							+ "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale"+ data.saleList[i].saleNo +"\" class=\"view-btn\" onClick=\"getSale("+ data.saleList[i].saleNo +")\">상세보기</button><li>"
 							+ "</ul></li>";
 				
 	/*			sale = "<li><h3>" + data.saleList[i].saleNo + "</h3></li>"
@@ -180,6 +180,8 @@ function getSale(saleNo) {
 		
 		$("#viewImage").attr("src", data.sale.image);
 		
+		$("#viewSaleNo").val(data.sale.saleNo);
+		//$("#viewUser").val(data.sale.user.id);
 		$("#viewTitle").val(data.sale.title);
 		$("#viewPublisher").val(data.sale.publisher);
 		$("#viewAuthor").val(data.sale.author);
@@ -190,11 +192,27 @@ function getSale(saleNo) {
 		$("#viewState").val(data.sale.state);
 		$("#viewInfo").val(data.sale.info);
 		
+		//구매자만 readonly로 수정필요
+    	//$('#viewSalePrice').prop('readonly', true);
+    	//$('#viewInfo').prop('readonly', true);
+
 
     })
     .fail( function( textStatus ) {
         alert( "Request failed: " + textStatus );
     });
+}
+
+function setDefault() {
+	$("#insertTitle").val();
+	$("#insertPublisher").val();
+	$("#insertAuthor").val();
+	$("#insertCostPrice").val();
+	$("#insertSalePrice").val();
+	$("#insertRegiDate").val();
+	$("#insertGenre").val();
+	$("#insertState").val();
+	$("#insertInfo").val();
 }
 
 function closeView() {
@@ -205,10 +223,74 @@ function closeView() {
 
 //중고 서적 판매
 function saleBookForm(){
+	setDefault();
 	$("#pop-sale-insert").css("display", "block");
 }
 function saleBook() {
+	var publisher = $("#insertPublisher").val();
+	var title = $("#insertTitle").val();
+	var costPrice = $("#insertCostPrice").val();
+	var userNo = 1;
+	var author = $("#insertAuthor").val();
+	var genreType = $("#insertGenreType").val();
+	//var image = ''; //폼처리?
+	var salePrice = $("#insertSalePrice").val();
+	var info = $("#insertInfo").val();
 	
+	$.ajax({
+		url: "/book/sale/saleBook", 
+		method: 'POST',
+	    dataType: "json",
+		data: {
+			title : title,
+			publisher : publisher,
+			salePrice : salePrice,
+			info : info, 
+			costPrice : costPrice,
+			//image : image,
+			userNo : userNo,
+			author : author,
+			genreType : genreType
+		}
+	}).done(function( data ) {
+		if(data.result == success){
+			window.alert("중고 책을 등록하였습니다.");
+	        
+			getSale();
+		}
+	})
+    .fail( function( textStatus ) {
+        alert( "Request failed: " + textStatus );
+    });
+}
+
+//수정
+function updateBook() {
+	var saleNo = $("#viewSaleNo").val();
+	var image = $("#viewImage").attr("src"); //폼처리?
+	var salePrice = $("#viewSalePrice").val();
+	var info = $("#viewInfo").val();
+	
+	$.ajax({
+		url: "/book/sale/updateSale", 
+		method: 'PUT',
+	    dataType: "json",
+		data: {
+			saleNo : saleNo,
+			image : image,
+			salePrice : salePrice,
+			info : info
+		}
+	}).done(function( data ) {
+		if(data.result == success){
+			window.alert("중고 책 판매를 수정하였습니다.");
+	        
+			//$("#pop-sale-view").css("display", "none");
+		}
+	})
+    .fail( function( textStatus ) {
+        alert( "Request failed: " + textStatus );
+    });
 }
 
 //구매

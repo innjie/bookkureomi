@@ -24,12 +24,13 @@
     <select id="getSale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, author, regiDate, state,
-			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"<!--  , 
+			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"<!--, 
 			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"-->
 		FROM 
-			Sale, Genre <!-- Users 추가 -->
+			Sale, Genre<!--  , Users-->
 		where
-			Sale.genreNo = Genre.genreNo 
+			<!--  Sale.userNo = Users.userNo
+			AND -->Sale.genreNo = Genre.genreNo 
 			AND saleNo = #{saleNo}
     </select>
     
@@ -60,17 +61,13 @@
     </select>    
     
     <insert id="saleBook" parameterType="com.inyoon.bookkureomi.domain.Sale">
-    	Insert into Sale (saleNo, publisher, title, costPrice, salePrice, image, info, userNo, state, author, genreNo)
-    	Values (#{saleNo}, #{publisher}, #{title}, #{costPrice}, #{salePrice}, #{image}, #{info}, #{user.userNo}, #{state}, #{genre.genreNo})
+    	Insert into Sale (saleNo, publisher, title, costPrice, salePrice, image, info, userNo, author, genreNo)
+    	Values (#{saleNo}, #{publisher}, #{title}, #{costPrice}, #{salePrice}, #{image}, #{info}, 1<!--  #{user.userNo}-->, #{author}, #{genre.genreNo})
     </insert>
     
     <update id="updateSale"> <!--  parameterType="hashmap" -->
         UPDATE Sale
         SET
-            publisher = #{publisher},
-            author = #{author},
-            title = #{title},
-            costPrice = #{costPrice},
             salePrice = #{salePrice},
             image = #{image},
             info = #{info}

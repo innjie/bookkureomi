@@ -14,12 +14,16 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.inyoon.bookkureomi.domain.Genre;
 import com.inyoon.bookkureomi.domain.Sale;
+import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.genre.GenreService;
 import com.inyoon.bookkureomi.test.Test;
 
@@ -36,6 +40,8 @@ public class SaleController{
 	
 	@Autowired
 	private SaleService saleService;
+	@Autowired
+	private GenreService genreService;
 	
 	@ApiOperation(value="중고거래 화면 이동", notes="중고거래 목록화면으로 이동한다.")
 	@GetMapping("/sale/view")
@@ -89,6 +95,70 @@ public class SaleController{
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sale", sale);
+		
+        return map;
+	}
+	
+	
+	@ApiOperation(value="판매 책 등록 ", notes="중고 책을 판매한다.")
+	@ResponseBody //@RestController 시 생략 가능
+	@PostMapping("/sale/saleBook")
+	public Map<String, Object> saleBook(
+			@RequestParam("title") String title,
+			@RequestParam("publisher") String publisher,
+			@RequestParam("salePrice") int salePrice,
+			@RequestParam("info") String info,
+			@RequestParam("costPrice") int costPrice,
+			//@RequestParam("image") String image,
+			@RequestParam("userNo") int userNo,
+			@RequestParam("author") String author,
+			@RequestParam("genreType") String genreType) throws Exception {
+		
+		Sale sale = new Sale();
+		User user = new User();
+		user.setUserNo(userNo);
+		Genre genre = genreService.getGenreByName(genreType);
+		
+		sale.setSaleNo(saleService.getSaleNo());
+		//sale.setImage(image);
+		sale.setTitle(title);
+		sale.setPublisher(publisher);
+		sale.setSalePrice(salePrice);
+		sale.setInfo(info);
+		sale.setCostPrice(costPrice);
+		sale.setAuthor(author);
+		sale.setUser(user);
+		sale.setGenre(genre);
+		
+		saleService.saleBook(sale);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", "success");
+		map.put("saleNo", sale.getSaleNo());
+		
+        return map;
+	}
+	
+	
+	@ApiOperation(value="판매 등록 책 수정 ", notes="판매하는 중고 책을 수정한다.")
+	@ResponseBody //@RestController 시 생략 가능
+	@PostMapping("/sale/updateSale")
+	public Map<String, Object> updateSale(
+			@RequestParam("saleNo") String saleNo,
+			@RequestParam("image") String image,
+			@RequestParam("salePrice") String salePrice,
+			@RequestParam("info") String info) throws Exception {
+
+		Sale sale = new Sale();
+		sale.setSaleNo(Integer.parseInt(saleNo));
+		sale.setImage(image);
+		sale.setSalePrice(Integer.parseInt(salePrice));
+		sale.setInfo(info);
+		
+		saleService.updateSale(sale);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", "success");
 		
         return map;
 	}
