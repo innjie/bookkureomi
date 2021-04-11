@@ -203,18 +203,6 @@ function getSale(saleNo) {
     });
 }
 
-function setDefault() {
-	$("#insertTitle").val();
-	$("#insertPublisher").val();
-	$("#insertAuthor").val();
-	$("#insertCostPrice").val();
-	$("#insertSalePrice").val();
-	$("#insertRegiDate").val();
-	$("#insertGenre").val();
-	$("#insertState").val();
-	$("#insertInfo").val();
-}
-
 function closeView() {
 	$("#pop-sale-view").css("display", "none");
 	$("#pop-sale-insert").css("display", "none");
@@ -298,3 +286,15 @@ function buyBook() {
 	
 }
 
+
+function setDefault() {
+	$("#insertTitle").val('');
+	$("#insertPublisher").val('');
+	$("#insertAuthor").val('');
+	$("#insertCostPrice").val('');
+	$("#insertSalePrice").val('');
+	$("#insertRegiDate").val('');
+	$("#insertGenre").val('');
+	$("#insertState").val('');
+	$("#insertInfo").val('');
+}
