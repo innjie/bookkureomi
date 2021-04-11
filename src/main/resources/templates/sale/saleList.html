@@ -96,14 +96,15 @@ background-color: #ffffe3;
 										판매가 <input type="text" id="insertSalePrice" />
 									</li>
 									<li>
-										장르 <input type="text" id="insertGenre" />
+										장르 <input type="text" id="insertGenreType" />
 									</li>
 								</ul>
 							</li>
 						</ul>
 					</li>
 					<li>
-						정보 <input type="text" id="viewInfo" readonly />
+						정보<br>
+						<textarea id="insertInfo"></textarea>
 					</li>
 				</ul>
 				<div class="pop-btn-style" style="float:left;height: 30px;">
@@ -114,14 +115,18 @@ background-color: #ffffe3;
 			
 			<div id="pop-sale-view" class="pop" style="display:none;position:relative;width:700px;height: 700px;background:#fafbfc;margin:-500px auto;padding:67px 70px 76.5px;">
 				<h2>중고 서적 뷰</h2>
+				<input type="hidden" id="viewSaleNo" />
 				<ul class="pop-style1">
-					<li>
+					<li class="pop-style1-list">
 						<ul class="pop-style2">
-							<li>
+							<li class="pop-style2-list">
 								<img src="" id="viewImage" class="pop-img"/>
 							</li>
-							<li>
+							<li class="pop-style2-list">
 								<ul class="pop-style3">
+									<li>
+										판매자 <input type="text" id="viewUser" readonly />
+									</li>
 									<li>
 										제목 <input type="text" id="viewTitle" readonly />
 									</li>
@@ -135,7 +140,7 @@ background-color: #ffffe3;
 										원가 <input type="text" id="viewCostPrice" readonly />
 									</li>
 									<li>
-										판매가 <input type="text" id="viewSalePrice" readonly />
+										판매가 <input type="text" id="viewSalePrice" />
 									</li>
 									<li>
 										등록일 <input type="text" id="viewRegiDate" readonly />
@@ -150,12 +155,14 @@ background-color: #ffffe3;
 							</li>
 						</ul>
 					</li>
-					<li>
-						정보 <input type="text" id="viewInfo" readonly />
+					<li class="pop-style1-list">
+						정보<br>
+						<textarea id="viewInfo"></textarea>
 					</li>
 				</ul>
-				<div class="pop-btn-style" style="float:left;height: 30px;">
+				<div class="pop-btn-style">
 	    			<button type="button" class="pop-btn" onClick="buyBook()">구매하기</button>
+	    			<button type="button" class="pop-btn" onClick="updateBook()">수정하기</button>
 	    			<button type="button" class="pop-btn" onClick="closeView()">닫기</button>
 	    		</div>
 			</div>

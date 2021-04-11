@@ -465,34 +465,44 @@ section {
 .pop-style1 {
 	list-style:none;
 	height: 400px;
-	width:700px;
+	width:560px;
 	padding-inline-start: 0px;
+	display: flex;
+	flex-direction: column;
+}
+.pop-style1-list {
+	flex: 1 1 auto;
+	margin-top: 10px;
 }
 .pop-style2 {
 	list-style:none;
 	display: flex;
 	flex-direction: row;
-	height: 200px;
-	width:300px;
 	padding-inline-start: 0px;
+}
+.pop-style2-list {
+	flex: 1 1 auto;
 }
 .pop-style3 {
 	list-style:none;
-	height: 200px;
 	width:300px;
 	padding-inline-start: 0px;
 }
 .pop-img {
-	height: 180px;
+	height: 200px;
 	width:250px;
 	padding: 10px 25px 10px 25px
 }
 .pop-btn-style {
-	
+	display: flex;
+	flex-direction: row;
+	height: 30px;
+	width: 560px;
 }
 .pop-btn {
-	width: 100px;
 	height: 30px;
+	width: 100px;
+	flex: 1 1 auto;
 		
 	color: #495057;
   	font-size:15px;
