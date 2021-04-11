@@ -372,6 +372,7 @@ section {
 	height: 30px;
 }
 .div-list-result {
+	min-height: 400px;
 	margin: 2% 0% 2% 0%;
 }
 
@@ -407,6 +408,11 @@ section {
   	border-color: #fed136;
 	border-radius: 0.35rem;  	
   	font-family: bookkureomi_main_font;
+}
+.find-nothing {
+	margin-top: 200px;
+    text-align: center;
+    color: red;
 }
 
 
