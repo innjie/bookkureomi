@@ -10,6 +10,8 @@
     <script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/dist/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/user/genre.js}" src="../../../static/js/user/genre.js"></script>
     <script type="text/javascript" th:src="@{/js/user/join.js}" src="../../../static/js/user/join.js"></script>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 <div layout:fragment="content">
@@ -36,7 +38,8 @@
             <div id="result"></div>
             <span id = "overChecked">You can choose up to 3</span><br>
 
-            <input type = "hidden" id = "token" value = "false"/>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
             <button type="button" onClick="checkForm()" >sign up</button>
         </form>
     </div>

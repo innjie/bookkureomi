@@ -35,7 +35,7 @@ public class UserConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("id")
                 .passwordParameter("pw")
                 .permitAll();
-
+//        http.csrf().disable();
 //        http.logout()
 //                .logoutSuccessUrl("/")
 //                .permitAll();
