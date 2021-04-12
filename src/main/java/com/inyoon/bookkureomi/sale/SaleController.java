@@ -12,6 +12,7 @@ import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +46,7 @@ public class SaleController{
 	
 	@ApiOperation(value="중고거래 화면 이동", notes="중고거래 목록화면으로 이동한다.")
 	@GetMapping("/sale/view")
-    public String viewSale(Model model) {	
+    public String viewSale() {	
         return "sale/saleList";
     }
 	
@@ -138,8 +139,7 @@ public class SaleController{
 		
         return map;
 	}
-	
-	
+		
 	@ApiOperation(value="판매 등록 책 수정 ", notes="판매하는 중고 책을 수정한다.")
 	@ResponseBody //@RestController 시 생략 가능
 	@PutMapping("/sale/update")
@@ -163,18 +163,41 @@ public class SaleController{
         return map;
 	}
 	
+	@ApiOperation(value="판매 등록 책 삭제 ", notes="판매하는 중고 책을 삭제한다.")
+	@ResponseBody //@RestController 시 생략 가능
+	@DeleteMapping("/sale/delete")
+	public Map<String, Object> deleteSale(
+			@RequestParam("saleNo") String saleNo) throws Exception {
+
+		saleService.deleteSale(Integer.parseInt(saleNo));
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", "success");
+		
+        return map;
+	}
 	
 	
 	@ApiOperation(value="나의 판매 화면 이동", notes="나의 판매 화면으로 이동한다.")
 	@GetMapping("/mypage/sale/view")
-    public String viewMySale(Model model) {	
-        return "sale/mySaleList";
+    public String viewMySale() {	
+        return "mypage/saleList";
     }
 	
 	@ApiOperation(value="나의 판매 목록", notes="나의 판매 전체 목록을 보여준다.")
+	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/mypage/sale/list")
-    public String listMySale(Model model) {	
-        return "sale/mySaleList";
+	public Map<String, Object> listMySale() {
+
+		int userNo = 1;
+		
+		List<Sale> saleList = new ArrayList<>();	
+		saleList = saleService.getMySaleList(userNo);
+	
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("saleList", saleList);
+		
+        return map;
     }
 	
 /*

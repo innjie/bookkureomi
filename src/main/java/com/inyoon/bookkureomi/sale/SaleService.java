@@ -38,14 +38,13 @@ public class SaleService {
 	}
 	public void deleteSale(int saleNo){
 		saleMapper.deleteSale(saleNo);
+	}
+	public void closeSale(int saleNo){
 		saleMapper.updateSaleStateClose(saleNo);
 	}
 	
 	public List<Sale> getMySaleList(int userNo){
 		return saleMapper.getMySaleList(userNo);
-	}
-	public Sale getMySale(int saleNo){
-		return saleMapper.getMySale(saleNo);
 	}
 	public List<Sale> recommend(int genreNo) {
 		return saleMapper.recommend(genreNo);
