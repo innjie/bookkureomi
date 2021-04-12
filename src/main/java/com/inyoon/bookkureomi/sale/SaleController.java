@@ -12,6 +12,7 @@ import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,13 +46,13 @@ public class SaleController{
 	
 	@ApiOperation(value="중고거래 화면 이동", notes="중고거래 목록화면으로 이동한다.")
 	@GetMapping("/sale/view")
-    public String viewSale(Model model) {	
+    public String viewSale() {	
         return "sale/saleList";
     }
 	
 	@ApiOperation(value="중고거래 목록", notes="중고거래 전체 목록을 보여준다.")
 	@ResponseBody //@RestController 시 생략 가능
-	@GetMapping("/sale/saleList")
+	@GetMapping("/sale/list")
 	public Map<String, Object> listSale() {
 
 		List<Sale> saleList = new ArrayList<>();	
@@ -65,7 +66,7 @@ public class SaleController{
 	
 	@ApiOperation(value="중고거래 찾기", notes="제목/장르로 중고거래를 찾는다.")
 	@ResponseBody //@RestController 시 생략 가능
-	@GetMapping("/sale/findSale")
+	@GetMapping("/sale/find")
 	public Map<String, Object> findSale(
 			@RequestParam("title") String title,
 			@RequestParam("genre") String genre) {
@@ -86,8 +87,8 @@ public class SaleController{
 	
 	@ApiOperation(value="중고 책 상세 보기", notes="판매되는 중고 책을 상세히 본다.")
 	@ResponseBody //@RestController 시 생략 가능
-	@GetMapping("/sale/getSale")
-	public Map<String, Object> getSale(
+	@GetMapping("/sale/detail")
+	public Map<String, Object> detailSale(
 				@RequestParam("saleNo") int saleNo) throws Exception {
 
 		Sale sale = new Sale();
@@ -102,14 +103,14 @@ public class SaleController{
 	
 	@ApiOperation(value="판매 책 등록 ", notes="중고 책을 판매한다.")
 	@ResponseBody //@RestController 시 생략 가능
-	@PostMapping("/sale/saleBook")
-	public Map<String, Object> saleBook(
+	@PostMapping("/sale/create")
+	public Map<String, Object> createSale(
 			@RequestParam("title") String title,
 			@RequestParam("publisher") String publisher,
 			@RequestParam("salePrice") int salePrice,
 			@RequestParam("info") String info,
 			@RequestParam("costPrice") int costPrice,
-			//@RequestParam("image") String image,
+			@RequestParam("image") String image,
 			@RequestParam("userNo") int userNo,
 			@RequestParam("author") String author,
 			@RequestParam("genreType") String genreType) throws Exception {
@@ -120,7 +121,7 @@ public class SaleController{
 		Genre genre = genreService.getGenreByName(genreType);
 		
 		sale.setSaleNo(saleService.getSaleNo());
-		//sale.setImage(image);
+		sale.setImage(image);
 		sale.setTitle(title);
 		sale.setPublisher(publisher);
 		sale.setSalePrice(salePrice);
@@ -138,11 +139,10 @@ public class SaleController{
 		
         return map;
 	}
-	
-	
+		
 	@ApiOperation(value="판매 등록 책 수정 ", notes="판매하는 중고 책을 수정한다.")
 	@ResponseBody //@RestController 시 생략 가능
-	@PostMapping("/sale/updateSale")
+	@PutMapping("/sale/update")
 	public Map<String, Object> updateSale(
 			@RequestParam("saleNo") String saleNo,
 			@RequestParam("image") String image,
@@ -162,6 +162,43 @@ public class SaleController{
 		
         return map;
 	}
+	
+	@ApiOperation(value="판매 등록 책 삭제 ", notes="판매하는 중고 책을 삭제한다.")
+	@ResponseBody //@RestController 시 생략 가능
+	@DeleteMapping("/sale/delete")
+	public Map<String, Object> deleteSale(
+			@RequestParam("saleNo") String saleNo) throws Exception {
+
+		saleService.deleteSale(Integer.parseInt(saleNo));
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", "success");
+		
+        return map;
+	}
+	
+	
+	@ApiOperation(value="나의 판매 화면 이동", notes="나의 판매 화면으로 이동한다.")
+	@GetMapping("/mypage/sale/view")
+    public String viewMySale() {	
+        return "mypage/saleList";
+    }
+	
+	@ApiOperation(value="나의 판매 목록", notes="나의 판매 전체 목록을 보여준다.")
+	@ResponseBody //@RestController 시 생략 가능
+	@GetMapping("/mypage/sale/list")
+	public Map<String, Object> listMySale() {
+
+		int userNo = 1;
+		
+		List<Sale> saleList = new ArrayList<>();	
+		saleList = saleService.getMySaleList(userNo);
+	
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("saleList", saleList);
+		
+        return map;
+    }
 	
 /*
 	//SaleCommand

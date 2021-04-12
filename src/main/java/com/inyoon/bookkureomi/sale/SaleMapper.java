@@ -21,6 +21,5 @@ public interface SaleMapper {
 	public void updateSaleStateClose(int saleNo);
 
 	public List<Sale> getMySaleList(int userNo);
-	public Sale getMySale(int saleNo);
 	public List<Sale> recommend(int genreNo);
 }

@@ -1,15 +1,13 @@
 $(document).ready(function(){
-	listSale();
+	listMySale();
 });
 
 //판매 중고 서적 나열
-function listSale(){
+function listMySale(){
 	$.ajax({
-		url: "/book/sale/list", 
+		url: "/book/mypage/sale/list", 
 		method: 'GET',
-	    dataType: "json",
-		data: {
-		}
+	    dataType: "json"
 	}).done(function( data ) {
 		$('#result')[0].innerHTML = '';
 		
@@ -57,84 +55,6 @@ function listSale(){
 		}
 		result += "</tbody></table>";
 		
-		$('#result').append(result);
-    })
-    .fail( function( textStatus ) {
-        alert( "Request failed: " + textStatus );
-    });
-}
-
-//판매 중고 서적 찾기
-function findSale(){
-	var title = '';
-	var genre = '';
-	var type = $("#findType").val();
-	
-	if(type == "title"){
-		title = $("#findText").val();
-	}else if(type == "genre"){
-		genre = $("#findText").val();
-	}
-		
-	$.ajax({
-		url: "/book/sale/find", 
-		method: 'GET',
-	    dataType: "json",
-		data: {
-			title : title,
-			genre : genre
-		}
-	}).done(function( data ) {
-		$('#result')[0].innerHTML = '';
-		var result;
-		
-		if(data.saleList.length > 0) {
-			result = 
-				//	"<table class=\"table-list\">"; //style=\"width: 100%;\"
-					"<table class=\"table-list\" style=\"width: 100%;\">"
-					+ "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
-							
-			for(var i=0; i<data.saleList.length; i++){
-				if(i%3 == 0){
-					result += "</tr><tr>";
-				} else if(i == 0){
-					result += "<tr>";
-				}
-				
-				//result += "<td><ul class=\"list-style\">";
-				result += "<td><ul class=\"list-style\" style=\"background-color: #ffffe3;border-color: #ffffe3;border-radius: 1rem; list-style:none; height: 250px;padding-inline-start: 0px; margin: 10px 10px 10px 10px;\">";
-				
-				//image
-				result += "<li class=\"table-list-image\">"
-							+ "<img src=\"" + data.saleList[i].image + "\" class=\"img-fit\"/>"
-							+ "</li>";
-				
-				//info
-				result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
-							+ "<li class=\"table-list-content-list-style\"><strong>" + data.saleList[i].title + "</strong></li>"
-							+ "<li class=\"table-list-content-list-style\">" + data.saleList[i].author + " / " + data.saleList[i].publisher + "</li>"
-							+ "<li class=\"table-list-content-list-style\"> \\" + data.saleList[i].costPrice + " -> \\" + data.saleList[i].salePrice + "</li>"
-							+ "<li class=\"table-list-content-list-style\">" + data.saleList[i].state + "</li>"
-							+ "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale"+ data.saleList[i].saleNo +"\" class=\"view-btn\" onClick=\"detailSale("+ data.saleList[i].saleNo +")\">상세보기</button><li>"
-							+ "</ul></li>";
-				
-				result += "</ul></td>";
-				
-				if (i==0 && data.saleList.length==1){
-					result += "<td></td><td></td>";
-				} else if (i==1 && data.saleList.length==2) {
-					result += "<td></td>";
-				}
-				
-				if(i == data.saleList.length-1){
-					result += "</tr>";
-				}
-			}
-			result += "</tbody></table>";
-		} else {
-			result = "<p class=\"find-nothing\">검색결과가 없습니다.</p>";
-		}
-			
 		$('#result').append(result);
     })
     .fail( function( textStatus ) {
@@ -274,7 +194,7 @@ function createSale() {
 	        
 			$("#pop-sale-insert").css("display", "none");
 			
-			listSale();
+			listMySale();
 			detailSale(data.saleNo);
 		}
 	})
@@ -350,7 +270,7 @@ function deleteSale() {
     			window.alert("중고 책 판매를 삭제하였습니다.");
     	        
     			closeDetailPopup();
-    			listSale();
+    			listMySale();
     		}
     	})
         .fail( function( textStatus ) {
@@ -358,9 +278,3 @@ function deleteSale() {
         });
     }
 }
-
-//구매
-function createOrder() {
-	
-}
-
