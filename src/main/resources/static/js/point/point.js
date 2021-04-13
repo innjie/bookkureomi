@@ -10,10 +10,10 @@ function listRecharge(){
 		method: 'GET',
 	    dataType: "json"
 	}).done(function( data ) {
-		var result";
+		var result;
 		var recharge;
 		
-		if(data.saleList.length > 0) {
+		if(data.rechargeList.length > 0) {
 			result = "<ul>";
 /*			result = 
 				//	"<table class=\"table-list\">"; //style=\"width: 100%;\"
