@@ -15,7 +15,7 @@
     
 	<select id="getRechargeList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Recharge">
         SELECT 
-			rechargeNo, userNo, rcPoint, totalPoint, rcDate, rcMethod
+			rechargeNo, userNo, rcPoint, totalPoint, rcDate, rcMethod, rcType
 		FROM 
 			Recharge <!-- Sale, Users 추가 -->
 		where
@@ -24,15 +24,21 @@
     
     <select id="checkPoint" parameterType="integer" resultType="integer">
         SELECT 
-			max(totalPoint)
+			totalPoint
 		FROM 
 			Recharge <!-- Sale, Users 추가 -->
 		where
 			userNo = #{userNo}
+			AND rechargeNo = (SELECT max(rechargeNo) FROM Recharge)
     </select>
     
     <insert id="rechargePoint" parameterType="com.inyoon.bookkureomi.domain.Recharge">
-    	Insert into Recharge (rechargeNo, userNo, rcPoint, totalPoint, rcMethod)
-    	Values (#{rechargeNo}, #{user.userNo}, #{rcPoint}, #{totalPoint}, #{rcMethod})
+    	Insert into Recharge (rechargeNo, userNo, rcPoint, totalPoint, rcMethod, rcType)
+    	Values (#{rechargeNo}, #{user.userNo}, #{rcPoint}, #{totalPoint}, #{rcMethod}, "충전")
+    </insert>
+    
+    <insert id="usePoint" parameterType="com.inyoon.bookkureomi.domain.Recharge">
+    	Insert into Recharge (rechargeNo, userNo, rcPoint, totalPoint, rcMethod, rcType)
+    	Values (#{rechargeNo}, #{user.userNo}, #{rcPoint}, #{totalPoint}, #{rcMethod}, "사용")
     </insert>
 </mapper>
