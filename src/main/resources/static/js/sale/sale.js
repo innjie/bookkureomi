@@ -361,6 +361,20 @@ function deleteSale() {
 
 //구매
 function createOrder() {
-	
+	var saleNo = $("#viewSaleNo").val() ;
+	window.open("/book/kakao/kakaoPay?saleNo=" + saleNo);
+/*	$.ajax({
+		url: "/book/kakao/kakaoPay", 
+		method: 'GET',
+		dataType: "json",
+		data: {
+			saleNo:saleNo
+		}
+	}).done(function( data ) {
+		alert(data);
+	})
+    .fail( function( textStatus ) {
+        alert( "Request failed: " + textStatus );
+    });*/
 }
 
