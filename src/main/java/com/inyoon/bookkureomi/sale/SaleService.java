@@ -32,6 +32,8 @@ public class SaleService {
 	
 	public void saleBook(Sale sale){
 		saleMapper.saleBook(sale);
+		//recharge에 내역 추가
+		//total구하는 로직 필요
 	}
 	public void updateSale(Sale sale){
 		saleMapper.updateSale(sale);

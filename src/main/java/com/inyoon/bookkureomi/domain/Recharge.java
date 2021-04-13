@@ -23,4 +23,6 @@ public class Recharge {
 	private Date rcDate;
 	@ApiModelProperty(value = "충전방법", dataType = "String")
 	private String rcMethod;
+	@ApiModelProperty(value = "타입(충전 / 사용)", dataType = "String")
+	private String rcType;
 }

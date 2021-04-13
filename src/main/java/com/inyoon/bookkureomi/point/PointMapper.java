@@ -12,5 +12,6 @@ public interface PointMapper {
 
 	public int checkPoint(int userNo);
 	public void rechargePoint(Recharge recharge);
+	public void usePoint(Recharge recharge);
 	public List<Recharge> getRechargeList(int userNo);
 }
