@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.inyoon.bookkureomi.domain.Recharge;
+import com.inyoon.bookkureomi.domain.User;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -66,6 +68,41 @@ public class PointController {
 		
         return map;
     }
+	
+	@ApiOperation(value="포인트 충전", notes="포인트를 충전한다.")
+	//@ResponseBody //@RestController 시 생략 가능
+	@GetMapping("/point/rechargePoint")
+	public ModelAndView rechargePoint(
+			@RequestParam("rcMethod") String rcMethod,
+			@RequestParam("rcPoint") String rcPoint,
+			@RequestParam(value="result", required=false) String result) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		ModelMap model = new ModelMap();
+
+		if(result.equals("success")) {
+			User user = new User();
+			user.setUserNo(1);
+			
+			Recharge recharge = new Recharge();
+			//recharge.setRechargeNo(pointService.getRechargeNo(userNo));
+			//recharge.setTotalPoint(pointService.checkPoint(userNo) + Integer.parseInt(rcPoint));
+			recharge.setRechargeNo(pointService.getRechargeNo(1));
+			recharge.setTotalPoint(pointService.checkPoint(1) + Integer.parseInt(rcPoint));
+			recharge.setRcType("충전");
+			recharge.setRcMethod(rcMethod);
+			recharge.setRcPoint(Integer.parseInt(rcPoint));
+			recharge.setUser(user);
+			
+			pointService.rechargePoint(recharge);
+		}
+		
+		map.put("result", result);
+		model.put("result", result);
+		
+        return new ModelAndView("point/point", model);
+	}
+	
 /*
 	//포인트 정보 보기
 	//get point detail

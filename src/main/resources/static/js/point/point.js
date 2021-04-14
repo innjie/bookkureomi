@@ -10,15 +10,14 @@ function listRecharge(){
 		method: 'GET',
 	    dataType: "json"
 	}).done(function( data ) {
+		$('#result')[0].innerHTML = '';
+		
 		var result;
-		var recharge;
 		
 		if(data.rechargeList.length > 0) {
-//			result = "<ul>";
 			result =  "<table class=\"table-list\">"
 					+ "<colgroup><col width=\"10%\" /><col width=\"15%\" /><col width=\"15%\" /><col width=\"15%\" /><col width=\"15%\" /><col width=\"15%\" /></colgroup>"
 					+ "<thead><tr><th class=\"table-header\">No.</th><th class=\"table-header\">충전/사용 날짜</th><th class=\"table-header\">충전 포인트</th><th class=\"table-header\">사용 포인트</th><th class=\"table-header\">충전 방법</th><th class=\"table-header\">총 포인트</th></tr></thead><tbody>";
-			
 			
 			for(var i=0; i<data.rechargeList.length; i++){
 				result += "<tr>"
@@ -35,24 +34,18 @@ function listRecharge(){
 				}
 
 				
-				result += "<td class=\"table-text\">" + data.rechargeList[i].rcMethod + "</td>"
-							+ "<td class=\"table-text\">" + data.rechargeList[i].totalPoint + "</td>";
+				if(data.rechargeList[i].rcMethod == 'kakao') {
+					result += "<td class=\"table-text\">카카오페이</td>";
+				} else if(data.rechargeList[i].rcMethod == null) {
+					result += "<td class=\"table-text\"></td>";
+				}
 				
-				
-	/*			recharge = "<li><h3>" + data.rechargeList[i].rechargeNo + "</h3></li>"
-					//	+"<li>" + data.rechargeList[i].user.name + "</li>"
-						+"<li>" + data.rechargeList[i].rcPoint + "</li>"
-						+"<li>" + data.rechargeList[i].rcDate + "</li>"
-						+"<li>" + data.rechargeList[i].rcMethod + "</li>"
-						+"<li>" + data.rechargeList[i].rcType + "</li>"
-						+"<li>" + data.rechargeList[i].totalPoint + "</li>";
-				result += recharge;*/
+					result += "<td class=\"table-text\">" + data.rechargeList[i].totalPoint + "</td>";
 				
 				result += "</tr>";
-			}
-			
-			//result += "</ul>";
+			}		
 			result += "</tbody></table>";
+			
 		} else {
 			result = "<p class=\"find-nothing\">검색결과가 없습니다.</p>";
 		}
@@ -90,14 +83,39 @@ function setDefault() {
 	$("#rechargePrice").val('1000');
 }
 
+
 //충전
 function createRechargeForm(){
 	setDefault();
 	$("#pop-recharge-create").css("display", "block");
 }
 function createRecharge(){
-	var rechargeType = $("#rechargeType").val();
-	var rechargePrice = $("#rechargePrice").val();
-	alert(rechargeType +" "+ rechargePrice);
+	var rcMethod = $("#rechargeMethod").val();
+	var rcPoint = $("#rechargePrice").val();
+	
+//	window.open("/book/kakao/kakaoPay?rcPoint=" + rcPoint);
+	if(rcMethod == 'kakao'){
+		$.ajax({
+			url: "/book/kakao/kakaoPay", 
+			method: 'GET',
+			dataType: "json",
+			data: {
+				rcPoint:rcPoint
+			}
+		}).done(function( data ) {
+			//alert(data.result);
+			window.open(data.result);
+			detailPoint();
+			listRecharge();
+		})
+	    .fail( function( textStatus ) {
+	        alert( "Request failed: " + textStatus );
+	    });
+	} else if(rcMethod == 'card') {
+		alert("신용카드 결제는 도입 예정입니다.");
+	} else if(rcMethod == 'deposit') {
+		alert("무통장 입금은 도입 예정입니다.");		
+	}
 	
 }
+

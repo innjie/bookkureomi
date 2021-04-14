@@ -16,6 +16,26 @@
 
 <body>
 	<section layout:fragment="content">
+		<div th:if="${result == 'success'}" >
+			<script th:inline="javascript">
+                 alert("충전에 성공하였습니다.");
+			</script>
+		</div>
+		<div th:if="${result == 'cancel'}" >
+			<script th:inline="javascript">
+                 /*<![CDATA[*/
+                 alert("충전을 취소하였습니다.");
+                 /*]]>*/
+			</script>
+		</div>
+		<div th:if="${result == 'fail'}" >
+			<script th:inline="javascript">
+                 /*<![CDATA[*/
+                 alert("충전에 실패하였습니다.");
+                 /*]]>*/
+			</script>
+		</div>
+		
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
     	<div class="container-section">
     		<div class="div-list-head">
@@ -33,7 +53,7 @@
 				<h2>중고 서적 판매하기</h2>
 				<ul class="pop-style1">
 					<li>충전방법&nbsp;&nbsp;
-						<select class="" id="rechargeType" name="rechargeType">
+						<select class="" id="rechargeMethod" name="rechargeMethod">
 	    					<option value="kakao">카카오페이</option>
 	    					<option value="card">신용카드</option>
 	    					<option value="deposit">무통장입금</option>
@@ -42,8 +62,10 @@
 					<li>충전금액&nbsp;&nbsp;
 						<select class="" id="rechargePrice" name="rechargePrice">
 	    					<option value="1000">1000</option>
+	    					<option value="3000">3000</option>
 	    					<option value="5000">5000</option>
 	    					<option value="10000">10000</option>
+	    					<option value="30000">30000</option>
 	    					<option value="50000">50000</option>
 	    					<option value="100000">100000</option>
 	    				</select>

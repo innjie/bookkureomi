@@ -13,46 +13,49 @@ function listSale(){
 	}).done(function( data ) {
 		$('#result')[0].innerHTML = '';
 		
-		var result = "<table class=\"table-list\">"
-					+ "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
-		var sale;
-		
-		for(var i=0; i<data.saleList.length; i++){
-			if(i%3 == 0){
-				result += "</tr><tr>";
-			} else if(i == 0){
-				result += "<tr>";
+		if(data.saleList.length > 0) {
+			var result = "<table class=\"table-list\">"
+				+ "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
+	
+			for(var i=0; i<data.saleList.length; i++){
+				if(i%3 == 0){
+					result += "</tr><tr>";
+				} else if(i == 0){
+					result += "<tr>";
+				}
+				
+				result += "<td><ul class=\"list-style\">";
+				
+				//image
+				result += "<li class=\"table-list-image\">"
+							+ "<img src=\"" + data.saleList[i].image + "\" class=\"img-fit\"/>"
+							+ "</li>";
+				
+				//info
+				result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
+							+ "<li class=\"table-list-content-list-style\"><strong>" + data.saleList[i].title + "</strong></li>"
+							+ "<li class=\"table-list-content-list-style\">" + data.saleList[i].author + " / " + data.saleList[i].publisher + "</li>"
+							+ "<li class=\"table-list-content-list-style\"> \\" + data.saleList[i].costPrice + " -> \\" + data.saleList[i].salePrice + "</li>"
+							+ "<li class=\"table-list-content-list-style\">" + data.saleList[i].state + "</li>"
+							+ "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale"+ data.saleList[i].saleNo +"\" class=\"view-btn\" onClick=\"detailSale("+ data.saleList[i].saleNo +")\">상세보기</button><li>"
+							+ "</ul></li>";
+				
+				result += "</ul></td>";
+				
+				if (i==0 && data.saleList.length==1){
+					result += "<td></td><td></td>";
+				} else if (i==1 && data.saleList.length==2) {
+					result += "<td></td>";
+				}
+				
+				if(i == data.saleList.length-1){
+					result += "</tr>";
+				}
 			}
-			
-			result += "<td><ul class=\"list-style\">";
-			
-			//image
-			result += "<li class=\"table-list-image\">"
-						+ "<img src=\"" + data.saleList[i].image + "\" class=\"img-fit\"/>"
-						+ "</li>";
-			
-			//info
-			result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
-						+ "<li class=\"table-list-content-list-style\"><strong>" + data.saleList[i].title + "</strong></li>"
-						+ "<li class=\"table-list-content-list-style\">" + data.saleList[i].author + " / " + data.saleList[i].publisher + "</li>"
-						+ "<li class=\"table-list-content-list-style\"> \\" + data.saleList[i].costPrice + " -> \\" + data.saleList[i].salePrice + "</li>"
-						+ "<li class=\"table-list-content-list-style\">" + data.saleList[i].state + "</li>"
-						+ "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale"+ data.saleList[i].saleNo +"\" class=\"view-btn\" onClick=\"detailSale("+ data.saleList[i].saleNo +")\">상세보기</button><li>"
-						+ "</ul></li>";
-			
-			result += "</ul></td>";
-			
-			if (i==0 && data.saleList.length==1){
-				result += "<td></td><td></td>";
-			} else if (i==1 && data.saleList.length==2) {
-				result += "<td></td>";
-			}
-			
-			if(i == data.saleList.length-1){
-				result += "</tr>";
-			}
+			result += "</tbody></table>";
+		} else {
+			result = "<p class=\"find-nothing\">결과가 없습니다.</p>";
 		}
-		result += "</tbody></table>";
 		
 		$('#result').append(result);
     })
@@ -355,20 +358,6 @@ function deleteSale() {
 
 //구매
 function createOrder() {
-	var saleNo = $("#viewSaleNo").val() ;
-	window.open("/book/kakao/kakaoPay?saleNo=" + saleNo);
-/*	$.ajax({
-		url: "/book/kakao/kakaoPay", 
-		method: 'GET',
-		dataType: "json",
-		data: {
-			saleNo:saleNo
-		}
-	}).done(function( data ) {
-		alert(data);
-	})
-    .fail( function( textStatus ) {
-        alert( "Request failed: " + textStatus );
-    });*/
+	
 }
 
