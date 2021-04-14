@@ -18,8 +18,8 @@
 	<section layout:fragment="content">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
     	<div class="container-section">
-    		<div class="div-list-head" style="width:1130px;height: 30px;">
-    			<ul class="find-style" style="float:left;padding-inline-start: 0px;list-style:none;height: 30px;display: flex;flex-direction: row;">
+    		<div class="div-list-head">
+    			<ul class="find-style">
 	    			<li>
 	    				<select class="find-select" id="findType" name="findType">
 	    					<option value="title">제목</option>
@@ -31,50 +31,14 @@
 	    				<button type="button" class="find-btn" onClick="findSale()">검색</button>
 	    			</li>
 	    		</ul>
-    			<div class="insert-style" style="float:right;height: 30px;">
+    			<div class="insert-style">
 	    			<button type="button" class="insert-btn" onClick="createSaleForm()">판매하기</button>
 	    		</div>
     		</div>
- <!--     		<div>
-    			<table class="table-list" style="width: 100%;">
-    				<colgroup>
-						<col width="33.333333%" />
-						<col width="33.333333%" />
-						<col width="33.333333%" />
-					</colgroup>
-					<tbody>
-						<tr>
-							<td>
-								<ul class="list-style" 
-style="
-background-color: #ffffe3;
-  	border-color: #ffffe3;
-	border-radius: 1rem; 
-	list-style:none; height: 250px;padding-inline-start: 0px; margin: 10px 10px 10px 10px;">
-				    				<li class="table-list-image">
-				    					<img src="/images/sale/1.jpg" class="img-fit"/>
-				    				</li>
-				    				<li class="table-list-content">
-				    					<ul class="table-list-content-style">
-				    						<li class="table-list-content-list-style">title</li>
-				    						<li class="table-list-content-list-style">author / publisher</li>
-				    						<li class="table-list-content-list-style">costPrice -> salePrice</li>
-				    						<li class="table-list-content-list-style">state</li>
-				    					</ul>
-				    				</li>
-				    			</ul>
-							</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr></tr>
-					</tbody>   			
-    			</table>
-    		</div>-->
     		
     		<div class ="div-list-result" id="result"></div>
     	
-    		<div id="pop-sale-create" class="pop" style="display:none;position:relative;width:700px;height: 700px;background:#fafbfc;margin:0px auto;padding:67px 70px 76.5px;">
+    		<div id="pop-sale-create" class="pop">
 				<h2>중고 서적 판매하기</h2>
 				<ul class="pop-style1">
 					<li>
@@ -117,7 +81,7 @@ background-color: #ffffe3;
 	    		</div>
 			</div>
 			
-			<div id="pop-sale-detail" class="pop" style="display:none;position:relative;width:700px;height: 700px;background:#fafbfc;margin:-500px auto;padding:67px 70px 76.5px;">
+			<div id="pop-sale-detail" class="pop">
 				<h2>중고 서적 뷰</h2>
 				<input type="hidden" id="viewSaleNo" />
 				<ul class="pop-style1">

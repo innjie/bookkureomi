@@ -220,6 +220,9 @@ section {
 .text-size-17 {
 	font-size:17px;
 }
+.text-highlight {
+	text-decoration: underline;
+}
 
 
 /* button */
@@ -312,7 +315,7 @@ section {
 
 
 
-<!-- list -->
+/* list */
 .list-style {
 	list-style:none;
 	padding-inline-start: 0px;
@@ -345,7 +348,7 @@ section {
 }
 
 
-<!-- table -->
+/* table */
 .table-list {
 	width: 100%;
 	margin-top: 20px;
@@ -366,7 +369,7 @@ section {
 
 
 
-<!-- div -->
+/* div */
 .div-list-head {
 	width:1130px;
 	height: 30px;
@@ -378,7 +381,7 @@ section {
 
 
 
-<!-- find -->
+/* find */
 .find-style {
 	float:left;
 	list-style:none;
@@ -416,7 +419,7 @@ section {
 }
 
 
-<!-- insert -->
+/* insert */
 .insert-style {
 	float:right;
 	height: 30px;
@@ -437,7 +440,7 @@ section {
 }
 
 
-<!-- view -->
+/* view */
 .view-btn {
 	width: 150px;
 	height: 30px;
@@ -451,7 +454,7 @@ section {
 }
 
 
-<!-- pop -->
+/* pop */
 .pop {
 	display:none;
 	position:relative; 
