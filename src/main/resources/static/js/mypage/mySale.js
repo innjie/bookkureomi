@@ -11,10 +11,8 @@ function listMySale(){
 	}).done(function( data ) {
 		$('#result')[0].innerHTML = '';
 		
-		var result = 
-		//	"<table class=\"table-list\">"; //style=\"width: 100%;\"
-			"<table class=\"table-list\" style=\"width: 100%;\">"
-			+ "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
+		var result = "<table class=\"table-list\">"
+					+ "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
 		var sale;
 		
 		for(var i=0; i<data.saleList.length; i++){
@@ -24,8 +22,7 @@ function listMySale(){
 				result += "<tr>";
 			}
 			
-			//result += "<td><ul class=\"list-style\">";
-			result += "<td><ul class=\"list-style\" style=\"background-color: #ffffe3;border-color: #ffffe3;border-radius: 1rem; list-style:none; height: 250px;padding-inline-start: 0px; margin: 10px 10px 10px 10px;\">";
+			result += "<td><ul class=\"list-style\">";
 			
 			//image
 			result += "<li class=\"table-list-image\">"

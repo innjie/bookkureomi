@@ -16,8 +16,7 @@ function listRecharge(){
 		if(data.rechargeList.length > 0) {
 			result = "<ul>";
 /*			result = 
-				//	"<table class=\"table-list\">"; //style=\"width: 100%;\"
-					"<table class=\"table-list\" style=\"width: 100%;\">"
+				//	"<table class=\"table-list\">";
 					+ "<colgroup><col width=\"10%\" /><col width=\"15%\" /><col width=\"15%\" /><col width=\"15%\" /><col width=\"15%\" /><col width=\"15%\" /></colgroup><tbody>"
 					+ "<thead><tr><th>No.</th><th>충전 포인트</th><th>사용 포인트</th><th>충전/사용 날짜</th><th>충전 방법</th><th>총 포인트</th></tr></thead>";
 */			
