@@ -88,6 +88,9 @@ function setDefault() {
 function createRechargeForm(){
 	setDefault();
 	$("#pop-recharge-create").css("display", "block");
+	
+    var offset = $("#pop-recharge-create").offset().top;
+	$("html").animate({scrollTop:offset},400);
 }
 function createRecharge(){
 	var rcMethod = $("#rechargeMethod").val();

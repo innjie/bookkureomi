@@ -152,6 +152,9 @@ function detailSale(saleNo) {
 		}
 	}).done(function( data ) {
 		$("#pop-sale-detail").css("display", "block");
+				
+	    var offset = $("#pop-sale-detail").offset().top;
+		$("html").animate({scrollTop:offset},400);
 		
 		$("#viewImage").attr("src", data.sale.image);
 		
@@ -203,6 +206,9 @@ function createSaleForm(){
 	setDefault();
 	closeDetailPopup();
 	$("#pop-sale-create").css("display", "block");
+	
+    var offset = $("#pop-sale-create").offset().top;
+	$("html").animate({scrollTop:offset},400);
 }
 function createSale() {	
 	var publisher = $("#insertPublisher").val();
