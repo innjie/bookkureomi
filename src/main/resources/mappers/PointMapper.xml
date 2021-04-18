@@ -20,7 +20,7 @@
 			Recharge <!-- Sale, Users 추가 -->
 		where
 			userNo = #{userNo}
-		ORDER BY rechargeNo
+		ORDER BY rechargeNo desc
     </select>
     
     <select id="checkPoint" parameterType="integer" resultType="integer">

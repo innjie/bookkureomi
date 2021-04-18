@@ -21,7 +21,7 @@ function listRecharge(){
 			
 			for(var i=0; i<data.rechargeList.length; i++){
 				result += "<tr>"
-							+ "<td class=\"table-text\">" + (i+1) + "</td>"
+							+ "<td class=\"table-text\">" + ((-1 * (i+1)) + data.rechargeList.length + 1)  + "</td>"
 							+ "<td class=\"table-text\">" + data.rechargeList[i].rcDate + "</td>";
 				
 				//충전/사용 구분
