@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +23,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.inyoon.bookkureomi.delivery.DeliveryService;
+import com.inyoon.bookkureomi.domain.Delivery;
 import com.inyoon.bookkureomi.domain.Genre;
+import com.inyoon.bookkureomi.domain.Order;
 import com.inyoon.bookkureomi.domain.Sale;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.genre.GenreService;
+import com.inyoon.bookkureomi.order.OrderService;
 import com.inyoon.bookkureomi.test.Test;
 
 import io.swagger.annotations.Api;
@@ -43,11 +48,16 @@ public class SaleController{
 	private SaleService saleService;
 	@Autowired
 	private GenreService genreService;
+	@Autowired
+	private DeliveryService deliveryService;
+	@Autowired
+	private OrderService orderService;
+	
 	
 	@ApiOperation(value="중고거래 화면 이동", notes="중고거래 목록화면으로 이동한다.")
 	@GetMapping("/sale/view")
-    public String viewSale() {	
-        return "sale/saleList";
+    public String viewSale() {		
+        return "sale/sale";
     }
 	
 	@ApiOperation(value="중고거래 목록", notes="중고거래 전체 목록을 보여준다.")
@@ -94,8 +104,17 @@ public class SaleController{
 		Sale sale = new Sale();
 		sale = saleService.getSale(saleNo);
 		
+		Delivery delivery = null;		
+		Order order = new Order();
+		order = orderService.getOrderBySale(saleNo);
+		
+		if(order != null) {
+			delivery = deliveryService.getDelivery(order.getOrderNo());
+		}
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sale", sale);
+		map.put("delivery", delivery);
 		
         return map;
 	}
@@ -181,7 +200,7 @@ public class SaleController{
 	@ApiOperation(value="나의 판매 화면 이동", notes="나의 판매 화면으로 이동한다.")
 	@GetMapping("/mypage/sale/view")
     public String viewMySale() {	
-        return "mypage/saleList";
+        return "mypage/mysale";
     }
 	
 	@ApiOperation(value="나의 판매 목록", notes="나의 판매 전체 목록을 보여준다.")

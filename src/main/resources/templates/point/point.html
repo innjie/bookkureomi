@@ -15,27 +15,7 @@
 </head>
 
 <body>
-	<section layout:fragment="content">
-		<div th:if="${result == 'success'}" >
-			<script th:inline="javascript">
-                 alert("충전에 성공하였습니다.");
-			</script>
-		</div>
-		<div th:if="${result == 'cancel'}" >
-			<script th:inline="javascript">
-                 /*<![CDATA[*/
-                 alert("충전을 취소하였습니다.");
-                 /*]]>*/
-			</script>
-		</div>
-		<div th:if="${result == 'fail'}" >
-			<script th:inline="javascript">
-                 /*<![CDATA[*/
-                 alert("충전에 실패하였습니다.");
-                 /*]]>*/
-			</script>
-		</div>
-		
+	<section layout:fragment="content">		
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
     	<div class="container-section">
     		<div class="div-list-head">

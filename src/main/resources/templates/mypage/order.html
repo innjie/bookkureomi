@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layouts/default}">
+	
+<head>
+	<!--    thymeleaf layout dialect가 contents페이지의 head태그를 layout의 head태그에 자동으로 추가해준다. -->
+	<!--    필요 css, script 추가영역 -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/dist/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/mypage/order.js}" src="../../static/js/mypage/order.js"></script>
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+    	<div class="container-section">
+    		<div class="div-list-head">
+    			<div class="insert-style">
+	    			<button type="button" class="insert-btn" onClick="listSaleOrder()">일반</button>
+	    			<button type="button" class="insert-btn" onClick="listAuctionOrder()">경매</button>
+	    		</div>
+    		</div>
+    		
+    		<div class ="div-list-result" id="result"></div>
+			
+			<div id="pop-order-detail" class="pop">
+				<h2>주문 뷰</h2>
+				<ul class="pop-style1">
+					<li class="pop-style1-list">
+						<ul class="pop-style2">
+							<li class="pop-style2-list">
+								<ul class="pop-style3">
+									<li>
+										주문번호 <input type="text" id="viewOrderNo" readonly />
+									</li>
+									<li>
+										주문일 <input type="text" id="viewOrderDate" readonly />
+									</li>
+									<li>
+										주문자 <input type="text" id="viewUserName" readonly />
+									</li>
+									<li>
+										주문자 주소 <input type="text" id="viewPAddress" readonly />
+									</li>
+									<li>
+										받는이 <input type="text" id="viewRName" readonly />
+									</li>
+									<li>
+										받는이 전화번호 <input type="text" id="viewRPhone" readonly />
+									</li>
+									<li>
+										배송지 주소 <input type="text" id="viewRAddress" readonly />
+									</li>
+								</ul>
+							</li>
+							<li class="pop-style2-list">
+								<ul class="pop-style3">
+									<li>
+										제목 <input type="text" id="viewTitle" readonly />
+									</li>
+									<li>
+										가격 <input type="number" id="viewPrice" readonly />
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li class="pop-style1-list">
+						<p class="text-size-17 text-highlight">배송 정보</p>
+						<ul class="pop-style3">
+							<li>
+								택배사 <input type="text" id="viewCompany" readonly />
+							</li>
+							<li>
+								송장번호 <input type="text" id="viewWaybill" readonly />
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<div class="pop-btn-style">
+	    			<button type="button" class="pop-btn" onClick="closeDetailPopup()">닫기</button>
+	    		</div>
+			</div>
+    	</div>
+  	</section>
+</body>
+</html>

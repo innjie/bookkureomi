@@ -41,12 +41,12 @@
     		<div id="pop-sale-create" class="pop">
 				<h2>중고 서적 판매하기</h2>
 				<ul class="pop-style1">
-					<li class="pop-style1-list">
+					<li>
 						<ul class="pop-style2">
-							<li class="pop-style2-list">
+							<li>
 								<input type="file"id="insertImage" />
 							</li>
-							<li class="pop-style2-list">
+							<li>
 								<ul class="pop-style3">
 									<li>
 										제목 <input type="text" id="insertTitle" />
@@ -70,7 +70,7 @@
 							</li>
 						</ul>
 					</li>
-					<li class="pop-style1-list">
+					<li>
 						정보<br>
 						<textarea id="insertInfo"></textarea>
 					</li>
@@ -127,53 +127,8 @@
 						정보<br>
 						<textarea id="viewInfo"></textarea>
 					</li>
-					<li class="pop-style1-list" id="deliveryInfo">
-					</li>
 				</ul>
 				<div class="pop-btn-style" id="buttonResult"></div>
-			</div>
-			
-			<div id="pop-order-create" class="pop">
-				<h2>중고 서적 판매하기</h2>
-				<ul class="pop-style1">
-					<li class="pop-style1-list">
-						<ul class="pop-style2">
-							<li class="pop-style2-list">
-								<input type="file"id="insertImage" />
-							</li>
-							<li class="pop-style2-list">
-								<ul class="pop-style3">
-									<li>
-										제목 <input type="text" id="insertTitle" />
-									</li>
-									<li>
-										출판사 <input type="text" id="insertPublisher" />
-									</li>
-									<li>
-										저자 <input type="text" id="insertAuthor" />
-									</li>
-									<li>
-										원가 <input type="number" id="insertCostPrice" />
-									</li>
-									<li>
-										판매가 <input type="number" id="insertSalePrice" />
-									</li>
-									<li>
-										장르 <input type="text" id="insertGenreType" />
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</li>
-					<li class="pop-style1-list">
-						정보<br>
-						<textarea id="insertInfo"></textarea>
-					</li>
-				</ul>
-				<div class="pop-btn-style">
-	    			<button type="button" class="pop-btn" onClick="createOrder()">구매하기</button>
-	    			<button type="button" class="pop-btn" onClick="closeOrderPopup()">닫기</button>
-	    		</div>
 			</div>
     	</div>
   	</section>
