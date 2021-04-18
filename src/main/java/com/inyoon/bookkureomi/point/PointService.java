@@ -24,7 +24,7 @@ public class PointService {
 	}
 	public void rechargePoint(Recharge recharge){
 		pointMapper.rechargePoint(recharge);
-		//total구하는 로직 필요
+		pointMapper.setPoint(recharge);
 	}
 	public void usePoint(Recharge recharge){
 		pointMapper.usePoint(recharge);
