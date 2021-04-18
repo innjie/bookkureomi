@@ -185,6 +185,8 @@ function detailSale(saleNo) {
 			infoDelivery = "<button type=\"button\" class=\"pop-btn\" onClick=\"deliveryInfo()\">배송입력</button>";
 		
 			$('#deliveryInfo').append(infoDelivery);
+		} else {
+			$('#deliveryInfo')[0].innerHTML = '';
 		}
 		
 		
