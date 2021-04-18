@@ -30,7 +30,16 @@
 			Recharge <!-- Sale, Users 추가 -->
 		where
 			userNo = #{userNo}
-			AND rechargeNo = (SELECT max(rechargeNo) FROM Recharge)
+			AND rechargeNo = (SELECT NVL(max(rechargeNo), 0) FROM Recharge)
+    </select>
+    
+    <select id="checkHasPoint" parameterType="integer" resultType="integer">
+    	SELECT 
+    		count(*) 
+    	FROM 
+    		Recharge 
+    	where 
+    		userno = #{userNo}
     </select>
     
     <insert id="rechargePoint" parameterType="com.inyoon.bookkureomi.domain.Recharge">
