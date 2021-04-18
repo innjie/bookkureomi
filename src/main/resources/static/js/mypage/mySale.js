@@ -112,13 +112,15 @@ function detailSale(saleNo) {
 		$('#buttonResult')[0].innerHTML = '';
 		var resultBtn = '';
 		
-		//if(data.sale.user.id != 'im'){
-		resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createOrderForm()\">구매하기</button>";
-		//} else {
-			resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"updateSale()\">수정하기</button>";			
-			resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"deleteSale()\">삭제하기</button>";
-		//}	
-			resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeDetailPopup()\">닫기</button>";
+		if(data.sale.state != 'close'){
+			//if(data.sale.user.id != 'im'){
+			resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createSaleOrderForm()\">구매하기</button>";
+			//} else {
+				resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"updateSale()\">수정하기</button>";			
+				resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"deleteSale()\">삭제하기</button>";
+			//}	
+		}
+		resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeDetailPopup()\">닫기</button>";
 		
 		$('#buttonResult').append(resultBtn);
     })
@@ -156,14 +158,17 @@ function deliveryInfoUpdate(company, waybill) {
 }
 
 
+//상세 팝업 닫기
 function closeDetailPopup() {
 	$("#pop-sale-detail").css("display", "none");
 }
 
+//추가 팝업 닫기
 function closeCreatePopup() {
 	$("#pop-sale-create").css("display", "none");
 }
 
+//추가 폼 세팅
 function setDefault() {
 	$("#insertTitle").val('');
 	$("#insertPublisher").val('');
@@ -261,7 +266,7 @@ function createSale() {
     });
 }
 
-//수정
+//판매 수정
 function updateSale() {	
 	var saleNo = $("#viewSaleNo").val();
 	var image = $("#viewImage").attr("src"); //폼처리?
@@ -305,7 +310,7 @@ function updateSale() {
     });
 }
 
-//삭제
+//판매 삭제
 function deleteSale() {
 	var saleNo = $("#viewSaleNo").val();
 	

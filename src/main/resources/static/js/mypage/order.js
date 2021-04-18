@@ -15,7 +15,7 @@ function listAuctionOrder(){
 }
 function listOrder(type) {
 	$.ajax({
-		url: "/book/mypage/order/list", 
+		url: "/book/order/list", 
 		method: 'GET',
 	    dataType: "json",
 		data: {
@@ -77,7 +77,7 @@ function auctionOrder(orderNo){
 }
 function detailOrder(orderNo, type) {	
 	$.ajax({
-		url: "/book/mypage/order/detail", 
+		url: "/book/order/detail", 
 		method: 'GET',
 	    dataType: "json",
 		data: {
@@ -131,97 +131,69 @@ function detailDelivery (orderNo){
     });
 }
 
+//주문 상세 팝업 닫기
 function closeDetailPopup() {
 	$("#pop-order-detail").css("display", "none");
 }
 
-/*
-function setDefault() {
-	$("#insertTitle").val('');
-	$("#insertPublisher").val('');
-	$("#insertAuthor").val('');
-	$("#insertCostPrice").val('');
-	$("#insertSalePrice").val('');
-	$("#insertRegiDate").val('');
-	$("#insertGenreType").val('');
-	$("#insertState").val('');
-	$("#insertInfo").val('');
+
+//sale.html
+//주문 팝업 닫기
+function closeOrderPopup() {
+	$("#pop-order-create").css("display", "none");
 }
 
+//주문 추가 폼 세팅
+function setDefaultOrder() {
+	$("#orderPAddress").val('');
+	$("#orderRName").val('');
+	$("#orderRPhone").val('');
+	$("#orderRAddress").val('');
+}
 
-function createSale() {	
-	var publisher = $("#insertPublisher").val();
-	var title = $("#insertTitle").val();
-	var costPrice = $("#insertCostPrice").val();
-	var userNo = 1;
-	var author = $("#insertAuthor").val();
-	var genreType = $("#insertGenreType").val();
-	var image = '/images/sale/0.png'; //폼처리?
-	var salePrice = $("#insertSalePrice").val();
-	var info = $("#insertInfo").val();	
-
+//구매(주문)
+function createSaleOrderForm(){
+	setDefaultOrder();
+	$("#pop-order-create").css("display", "block");
+	
+	$("#orderTitle").val($("#viewTitle").val());
+	$("#orderPrice").val($("#viewSalePrice").val());
+	
+	var offset = $("#pop-order-create").offset().top;
+	$("html").animate({scrollTop:offset},400);
+}
+function createSaleOrder() {
+	var saleNo = $("#viewSaleNo").val();
+	var pAddress = $("#orderPAddress").val();
+	var rName = $("#orderRName").val();
+	var rPhone = $("#orderRPhone").val();
+	var rAddress = $("#orderRAddress").val();
+	
 	var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-    
-    if(title == '' || title == undefined){
-    	alert("제목을 입력하세요.");
-    	return;
-    } else if(publisher == '' || publisher == undefined){
-    	alert("출판사를 입력하세요.");
-    	return;
-    } else if(author == '' || author == undefined){
-    	alert("저자를 입력하세요.");
-    	return;
-    } else if(costPrice == '' || costPrice == undefined){
-    	alert("원가를 입력하세요.");
-    	return;
-    } else if(!Number.isInteger(parseInt(costPrice))){
-    	alert("원가는 숫자로 입력하세요.");
-    	return;
-    } else if(salePrice == '' || salePrice == undefined){
-    	alert("판매가를 입력하세요.");
-    	return;
-    } else if(!Number.isInteger(parseInt(salePrice))){
-    	alert("판매가는 숫자로 입력하세요.");
-    	return;
-    } else if(genreType == '' || genreType == undefined){
-    	alert("장르를 입력하세요.");
-    	return;
-    } else if(info == '' || info == undefined){
-    	alert("정보를 입력하세요.");
-    	return;
-    }
-    
+
 	$.ajax({
-		url: "/book/sale/create", 
+		url: "/book/order/create", 
 		method: 'POST',
 	    dataType: "json",
 		data: {
-			title : title,
-			publisher : publisher,
-			salePrice : salePrice,
-			info : info, 
-			costPrice : costPrice,
-			image : image,
-			userNo : userNo,
-			author : author,
-			genreType : genreType
+			saleNo : saleNo,
+			pAddress : pAddress,
+			rName : rName,
+			rPhone : rPhone,
+			rAddress : rAddress
 		},
-		beforeSend : function(xhr){   
-            xhr.setRequestHeader(header, token);
-        }
+		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+          xhr.setRequestHeader(header, token);
+      }
 	}).done(function( data ) {
 		if(data.result == 'success'){
-			window.alert("중고 책을 등록하였습니다.");
+			window.alert("중고 책을 구입하였습니다.");
 	        
-			$("#pop-sale-insert").css("display", "none");
-			
-			listSale();
-			detailSale(data.saleNo);
+			window.location = "/book/order/view";
 		}
 	})
-    .fail( function( textStatus ) {
-        alert( "Request failed: " + textStatus );
-    });
+  .fail( function( textStatus ) {
+      alert( "Request failed: " + textStatus );
+  });
 }
-*/

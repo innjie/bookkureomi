@@ -28,6 +28,7 @@ public class PointService {
 	}
 	public void usePoint(Recharge recharge){
 		pointMapper.usePoint(recharge);
+		pointMapper.setPoint(recharge);
 	}
 	public List<Recharge> getRechargeList(int userNo){
 		return pointMapper.getRechargeList(userNo);

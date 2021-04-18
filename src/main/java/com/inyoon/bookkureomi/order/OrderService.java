@@ -18,6 +18,7 @@ public class OrderService {
 
 	public void orderSale(Order order){
 		orderMapper.orderSale(order);
+		orderMapper.updateSaleStateClose(order.getSale().getSaleNo());
 	}
 	public void orderAuction(Order order){
 		orderMapper.orderAuction(order);
