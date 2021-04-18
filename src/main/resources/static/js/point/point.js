@@ -74,10 +74,12 @@ function detailPoint() {
 }
 
 
+//추가 팝업 닫기
 function closeCreatePopup() {
 	$("#pop-recharge-create").css("display", "none");
 }
 
+//추가 폼 세팅
 function setDefault() {
 	$("#rechargeType").val('kakao');
 	$("#rechargePrice").val('1000');

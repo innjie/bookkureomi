@@ -99,8 +99,17 @@
     
     <insert id="orderSale" parameterType="com.inyoon.bookkureomi.domain.Order">
     	Insert into Orders (orderNo, saleNo, userNo, pAddress, rAddress, rName, rPhone)
-    	Values (#{orderNo}, #{sale.saleNo}, #{user.userNo}, #{pAddress}, #{rAddress}, #{rName}, #{rPhone})
+    	Values (#{orderNo}, #{sale.saleNo}, 1, #{pAddress}, #{rAddress}, #{rName}, #{rPhone})
     </insert>
+    
+        
+    <update id="updateSaleStateClose" parameterType="integer">
+        UPDATE Sale
+        SET
+            state = 'close'
+        WHERE 
+        	saleNo = #{saleNo}
+    </update>
     
     <insert id="orderAuction" parameterType="com.inyoon.bookkureomi.domain.Order">
     	Insert into Orders (orderNo, auctionNo, userNo, pAddress, rAddress, rName, rPhone)

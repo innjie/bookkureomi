@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.inyoon.bookkureomi.domain.Order;
+import com.inyoon.bookkureomi.domain.Recharge;
+import com.inyoon.bookkureomi.domain.Sale;
+import com.inyoon.bookkureomi.domain.User;
+import com.inyoon.bookkureomi.point.PointService;
+import com.inyoon.bookkureomi.sale.SaleService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,23 +30,51 @@ public class OrderController {
 	
 	@Autowired
 	private OrderService orderService;
-	
-	@ApiOperation(value="주문 화면 이동", notes="주문 화면으로 이동한다.")
-	@GetMapping("/order/view")
-    public String viewSale() {		
-        return "order/order";
-    }
-	
+	@Autowired
+	private SaleService saleService;
+	@Autowired
+	private PointService pointService;
 
+	//order에 추가, 포인트 세팅, 포인트 사용 내역 추가, state 변경
 	@ApiOperation(value="중고 책 구매 ", notes="중고거래 책을 구매한다.")
 	@ResponseBody //@RestController 시 생략 가능
 	@PostMapping("/order/create")
-	public Map<String, Object> listSale() {
+	public Map<String, Object> createOrder(
+			@RequestParam("saleNo") int saleNo,
+			@RequestParam("pAddress") String pAddress,
+			@RequestParam("rName") String rName,
+			@RequestParam("rPhone") String rPhone,
+			@RequestParam("rAddress") String rAddress) {
 
+		User user = new User();
+		//user.setUserNo(1);
+		
+		Sale sale = new Sale();
+		sale = saleService.getSale(saleNo);
+				
 		Order order = new Order();
 		order.setOrderNo(orderService.getOrderNo());
+		order.setSale(sale);
+		order.setPAddress(pAddress);
+		order.setRName(rName);
+		order.setRPhone(rPhone);
+		order.setRAddress(rAddress);
 		
+		//1 -> userNo
+		Recharge recharge = new Recharge();
+		recharge.setRechargeNo(pointService.getRechargeNo(1));
+		if(pointService.checkHasPoint(1) == 0) {
+			recharge.setTotalPoint(sale.getSalePrice());
+		} else {
+			recharge.setTotalPoint(pointService.checkPoint(1) - sale.getSalePrice());
+		}
+		recharge.setRcType("사용");
+		recharge.setRcPoint(-1 * sale.getSalePrice());
+		//recharge.setUser(user);
+		
+		//mapper.xml user 수정 필요 (point, order)
 		orderService.orderSale(order);
+		pointService.usePoint(recharge);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("result", "success");
@@ -51,15 +84,15 @@ public class OrderController {
     }
 	
 	@ApiOperation(value="나의 주문 화면 이동", notes="나의 주문 화면으로 이동한다.")
-	@GetMapping("/mypage/order/view")
-    public String viewMySale() {	
+	@GetMapping("/order/view")
+    public String viewOrder() {	
         return "mypage/order";
     }
 	
 	@ApiOperation(value="나의 주문 목록", notes="나의 주문 목록을 보여준다.")
 	@ResponseBody //@RestController 시 생략 가능
-	@GetMapping("/mypage/order/list")
-	public Map<String, Object> listMySale(
+	@GetMapping("/order/list")
+	public Map<String, Object> listOrder(
 			@RequestParam("type") String type) {
 
 		int userNo = 1;
@@ -80,8 +113,8 @@ public class OrderController {
 	
 	@ApiOperation(value="주문 상세 보기", notes="주문을 상세히 본다.")
 	@ResponseBody //@RestController 시 생략 가능
-	@GetMapping("/mypage/order/detail")
-	public Map<String, Object> detailSale(
+	@GetMapping("/order/detail")
+	public Map<String, Object> detailOrder(
 				@RequestParam("orderNo") int orderNo,
 				@RequestParam("type") String type) throws Exception {
 

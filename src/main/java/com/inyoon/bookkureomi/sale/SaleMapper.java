@@ -18,7 +18,6 @@ public interface SaleMapper {
 	public void saleBook(Sale sale);
 	public void updateSale(Sale sale);
 	public void deleteSale(int saleNo);
-	public void updateSaleStateClose(int saleNo);
 
 	public List<Sale> getMySaleList(int userNo);
 	public List<Sale> recommend(int genreNo);

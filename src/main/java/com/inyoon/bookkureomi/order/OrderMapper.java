@@ -10,6 +10,7 @@ import com.inyoon.bookkureomi.domain.Order;
 public interface OrderMapper {
 	public int getOrderNo();
 	public void orderSale(Order order);
+	public void updateSaleStateClose(int saleNo);
 	public void orderAuction(Order order);
 	public List<Order> getSaleOrderList(int userNo);
 	public List<Order> getAuctionOrderList(int userNo);

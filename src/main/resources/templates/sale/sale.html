@@ -10,6 +10,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/dist/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/sale/sale.js}" src="../../static/js/sale/sale.js"></script>
+	<script type="text/javascript" th:src="@{/js/mypage/order.js}" src="../../static/js/mypage/order.js"></script>
 	<meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
@@ -134,44 +135,41 @@
 			</div>
 			
 			<div id="pop-order-create" class="pop">
-				<h2>중고 서적 판매하기</h2>
+				<h2>중고 서적 구매하기</h2>
 				<ul class="pop-style1">
 					<li class="pop-style1-list">
 						<ul class="pop-style2">
 							<li class="pop-style2-list">
-								<input type="file"id="insertImage" />
+								<ul class="pop-style3">
+									<li>
+										주문자 주소 <input type="text" id="orderPAddress" />
+									</li>
+									<li>
+										받는이 <input type="text" id="orderRName" />
+									</li>
+									<li>
+										받는이 전화번호 <input type="text" id="orderRPhone" />
+									</li>
+									<li>
+										배송지 주소 <input type="text" id="orderRAddress" />
+									</li>
+								</ul>
 							</li>
 							<li class="pop-style2-list">
 								<ul class="pop-style3">
 									<li>
-										제목 <input type="text" id="insertTitle" />
+										제목 <input type="text" id="orderTitle" readonly />
 									</li>
 									<li>
-										출판사 <input type="text" id="insertPublisher" />
-									</li>
-									<li>
-										저자 <input type="text" id="insertAuthor" />
-									</li>
-									<li>
-										원가 <input type="number" id="insertCostPrice" />
-									</li>
-									<li>
-										판매가 <input type="number" id="insertSalePrice" />
-									</li>
-									<li>
-										장르 <input type="text" id="insertGenreType" />
+										가격 <input type="number" id="orderPrice" readonly />
 									</li>
 								</ul>
 							</li>
 						</ul>
 					</li>
-					<li class="pop-style1-list">
-						정보<br>
-						<textarea id="insertInfo"></textarea>
-					</li>
 				</ul>
 				<div class="pop-btn-style">
-	    			<button type="button" class="pop-btn" onClick="createOrder()">구매하기</button>
+	    			<button type="button" class="pop-btn" onClick="createSaleOrder()">구매하기</button>
 	    			<button type="button" class="pop-btn" onClick="closeOrderPopup()">닫기</button>
 	    		</div>
 			</div>

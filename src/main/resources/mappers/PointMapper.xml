@@ -47,16 +47,16 @@
     	Values (#{rechargeNo}, #{user.userNo}, #{rcPoint}, #{totalPoint}, #{rcMethod}, #{rcType})
     </insert>
     
-    <update id="updateSale"> <!--  parameterType="hashmap" -->
+    <update id="setPoint"> <!--  parameterType="hashmap" -->
         UPDATE Users
         SET
             point = #{totalPoint}
         WHERE 
-        	userNo = #{user.userNo}
+        	userNo = 1
     </update>
     
     <insert id="usePoint" parameterType="com.inyoon.bookkureomi.domain.Recharge">
-    	Insert into Recharge (rechargeNo, userNo, rcPoint, totalPoint, rcMethod, rcType)
-    	Values (#{rechargeNo}, #{user.userNo}, #{rcPoint}, #{totalPoint}, #{rcMethod}, #{rcType})
+    	Insert into Recharge (rechargeNo, userNo, rcPoint, totalPoint, rcType)
+    	Values (#{rechargeNo}, 1, #{rcPoint}, #{totalPoint}, #{rcType})
     </insert>
 </mapper>

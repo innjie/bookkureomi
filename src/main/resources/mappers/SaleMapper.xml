@@ -81,14 +81,6 @@
         	saleNo = #{saleNo}
     </delete>
     
-    <update id="updateSaleStateClose" parameterType="integer">
-        UPDATE Sale
-        SET
-            state = 'close'
-        WHERE 
-        	saleNo = #{saleNo}
-    </update>
-    
     <select id="getMySaleList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, author,
