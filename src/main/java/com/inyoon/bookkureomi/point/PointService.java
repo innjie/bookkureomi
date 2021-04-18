@@ -19,6 +19,9 @@ public class PointService {
 	public int checkPoint(int userNo){
 		return pointMapper.checkPoint(userNo);
 	}
+	public int checkHasPoint(int userNo){
+		return pointMapper.checkHasPoint(userNo);
+	}
 	public void rechargePoint(Recharge recharge){
 		pointMapper.rechargePoint(recharge);
 		//total구하는 로직 필요

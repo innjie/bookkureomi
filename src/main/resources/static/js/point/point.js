@@ -47,7 +47,7 @@ function listRecharge(){
 			result += "</tbody></table>";
 			
 		} else {
-			result = "<p class=\"find-nothing\">검색결과가 없습니다.</p>";
+			result = "<p class=\"find-nothing\">포인트 충전 내역이 없습니다.</p>";
 		}
 		
 		$('#result').append(result);
