@@ -174,11 +174,66 @@ function detailSale(saleNo) {
     	//$('#viewSalePrice').prop('readonly', true);
     	//$('#viewInfo').prop('readonly', true);
 
-
+		
+		//배송 세팅
+		if(data.delivery != null){
+			deliveryInfoUpdate(data.delivery.company, data.delivery.waybill);
+		} else if(data.sale.state == 'close'){ //판매자 추가
+			$('#deliveryInfo')[0].innerHTML = '';
+			var infoDelivery = '';
+			
+			infoDelivery = "<button type=\"button\" class=\"pop-btn\" onClick=\"deliveryInfo()\">배송입력</button>";
+		
+			$('#deliveryInfo').append(infoDelivery);
+		}
+		
+		
+		//버튼 세팅
+		$('#buttonResult')[0].innerHTML = '';
+		var resultBtn = '';
+		
+		//if(data.sale.user.id != 'im'){
+		resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createOrderForm()\">구매하기</button>";
+		//} else {
+			resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"updateSale()\">수정하기</button>";	
+			resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"deleteSale()\">삭제하기</button>";
+		//}	
+			resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeDetailPopup()\">닫기</button>";
+		
+		$('#buttonResult').append(resultBtn);
     })
     .fail( function( textStatus ) {
         alert( "Request failed: " + textStatus );
     });
+}
+
+//배송 세팅
+function deliveryInfo() {
+	$('#deliveryInfo')[0].innerHTML = '';
+	var infoDelivery = '';
+	infoDelivery += "<ul class=\"pop-style2\">"
+					+ "<li class=\"pop-style2-list\">"
+					+ "<p class=\"text-size-17 text-highlight\">배송 정보</p>"
+					+ "<ul class=\"pop-style3\">"
+					+ "<li>택배사 <input type=\"text\" id=\"viewCompany\" /></li>"
+					+ "<li>송장번호 <input type=\"text\" id=\"viewWaybill\" /></li></ul></li>"
+					+ "<li class=\"pop-style2-list\">"
+					+ "<button type=\"button\" class=\"pop-btn\" onClick=\"createDelivery()\">배송추가</button></li></ul>";	
+	$('#deliveryInfo').append(infoDelivery);
+}
+
+function deliveryInfoUpdate(company, waybill) {
+	$('#deliveryInfo')[0].innerHTML = '';
+	var infoDelivery = '';
+	infoDelivery += "<ul class=\"pop-style2\">"
+					+ "<li class=\"pop-style2-list\">"
+					+ "<p class=\"text-size-17 text-highlight\">배송 정보</p>"
+					+ "<ul class=\"pop-style3\">"
+					+ "<li>택배사 <input type=\"text\" id=\"viewCompany\" value=\"" + company + "\" /></li>"
+					+ "<li>송장번호 <input type=\"text\" id=\"viewWaybill\" value=\"" + waybill + "\" /></li></ul></li>"
+					+ "<li class=\"pop-style2-list\">"
+					+ "<button type=\"button\" class=\"pop-btn\" onClick=\"updateDelivery()\">배송수정</button></li></ul>";	
+	$('#deliveryInfo').append(infoDelivery);
 }
 
 function closeDetailPopup() {
@@ -187,6 +242,10 @@ function closeDetailPopup() {
 
 function closeCreatePopup() {
 	$("#pop-sale-create").css("display", "none");
+}
+
+function closeOrderPopup() {
+	$("#pop-order-create").css("display", "none");
 }
 
 function setDefault() {
@@ -201,10 +260,16 @@ function setDefault() {
 	$("#insertInfo").val('');
 }
 
+function setDefaultOrder() {
+	$("#insertTitle").val('');
+}
+
 //중고 서적 판매
 function createSaleForm(){
 	setDefault();
 	closeDetailPopup();
+	closeOrderPopup();
+	setDefaultOrder();
 	$("#pop-sale-create").css("display", "block");
 	
     var offset = $("#pop-sale-create").offset().top;
@@ -362,8 +427,134 @@ function deleteSale() {
     }
 }
 
-//구매
+
+//배송 추가
+function createDelivery(){
+	var saleNo = $("#viewSaleNo").val();
+	var company = $("#viewCompany").val();
+	var waybill = $("#viewWaybill").val();
+
+	var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    if(company == '' || company == undefined){
+    	alert("택배사 입력하세요.");
+    	return;
+    } else if(waybill == '' || waybill == undefined){
+    	alert("송장번호를 입력하세요.");
+    	return;
+    } 
+    
+    $.ajax({
+		url: "/book/delivery/create", 
+		method: 'POST',
+	    dataType: "json",
+		data: {
+			saleNo : saleNo,
+			company : company,
+			waybill : waybill
+		},
+		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+            xhr.setRequestHeader(header, token);
+        }
+	}).done(function( data ) {
+		if(data.result == 'success'){
+			window.alert("배송정보를 등록하였습니다.");
+			
+			$('#deliveryInfo')[0].innerHTML = '';
+			var infoDelivery = '';
+			infoDelivery += "<ul class=\"pop-style2\">"
+							+ "<li class=\"pop-style2-list\">"
+							+ "<p class=\"text-size-17 text-highlight\">배송 정보</p>"
+							+ "<ul class=\"pop-style3\">"
+							+ "<li>택배사 <input type=\"text\" id=\"viewCompany\" value=\"" + company + "\" /></li>"
+							+ "<li>송장번호 <input type=\"text\" id=\"viewWaybill\" value=\"" + waybill + "\" /></li></ul></li>"
+							+ "<li class=\"pop-style2-list\">"
+							+ "<button type=\"button\" class=\"pop-btn\" onClick=\"updateDelivery()\">배송수정</button></li></ul>";	
+			$('#deliveryInfo').append(infoDelivery);			
+		} else {
+			window.alert("배송정보 등록에 실패하였습니다.");
+		}
+	})
+    .fail( function( textStatus ) {
+        alert( "Request failed: " + textStatus );
+    });
+}
+
+
+//배송 수정
+function updateDelivery(){
+	var saleNo = $("#viewSaleNo").val();
+	var company = $("#viewCompany").val();
+	var waybill = $("#viewWaybill").val();
+
+	var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    if(company == '' || company == undefined){
+    	alert("택배사 입력하세요.");
+    	return;
+    } else if(waybill == '' || waybill == undefined){
+    	alert("송장번호를 입력하세요.");
+    	return;
+    } 
+    
+    $.ajax({
+		url: "/book/delivery/update", 
+		method: 'PUT',
+	    dataType: "json",
+		data: {
+			saleNo : saleNo,
+			company : company,
+			waybill : waybill
+		},
+		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+            xhr.setRequestHeader(header, token);
+        }
+	}).done(function( data ) {
+		if(data.result == 'success'){
+			window.alert("배송정보를 수정하였습니다.");
+			
+			deliveryInfoUpdate(company, waybill);			
+		} else {
+			window.alert("배송정보 수정에 실패하였습니다.");
+		}
+	})
+    .fail( function( textStatus ) {
+        alert( "Request failed: " + textStatus );
+    });
+}
+
+
+//구매(주문)
+function createOrderForm(){
+	setDefaultOrder();
+	$("#pop-order-create").css("display", "block");
+}
 function createOrder() {
-	
+	var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+	$.ajax({
+		url: "/book/sale/create", 
+		method: 'POST',
+	    dataType: "json",
+		data: {
+			saleNo : saleNo
+		},
+		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+          xhr.setRequestHeader(header, token);
+      }
+	}).done(function( data ) {
+		if(data.result == 'success'){
+			window.alert("중고 책 판매를 삭제하였습니다.");
+	        
+			closeDetailPopup();
+			listSale();
+		}
+	})
+  .fail( function( textStatus ) {
+      alert( "Request failed: " + textStatus );
+  });
 }
 

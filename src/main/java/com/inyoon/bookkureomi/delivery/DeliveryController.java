@@ -1,43 +1,105 @@
 package com.inyoon.bookkureomi.delivery;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.inyoon.bookkureomi.domain.Delivery;
+import com.inyoon.bookkureomi.domain.Order;
+import com.inyoon.bookkureomi.order.OrderService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Controller
+@RequestMapping("/book")
+@Api(value = "DeliveryController", description = "배송 API")
 public class DeliveryController {
-	/*
-	//DeliveryCommand
+	
+	@Autowired
+	private DeliveryService deliveryService;
+	@Autowired
+	private OrderService orderService;
+	
+	@ApiOperation(value="배송 상세 보기", notes="배송 정보를 본다.")
+	@ResponseBody //@RestController 시 생략 가능
+	@GetMapping("/delivery/detail")
+	public Map<String, Object> getDelivery(
+				@RequestParam("orderNo") int orderNo) throws Exception {
 
-	//배송 정보 등록 폼
-	//delivery info form
-	@RequestMapping(value="/delivery/addDelivery.do", method=RequestMethod.GET)
-	public String deliveryForm(
-			 @ModelAttribute("deliveryCommand") DeliveryCommand deliveryCommand,
-			 HttpServletRequest request) {				
-		//
+		Delivery delivery = new Delivery();
+		
+		delivery = deliveryService.getDelivery(orderNo);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("delivery", delivery);
+		
+        return map;
 	}
 	
-	//배송 정보 등록
-	//add delivery info
-	@RequestMapping(value="/delivery/addDelivery.do", method=RequestMethod.POST)
-	public String addDelivery(
-			@Valid @ModelAttribute("deliveryCommand") DeliveryCommand deliveryCommand, 
-			BindingResult result,
-			HttpServletRequest request) throws Exception {
-		//
-	}
+	@ApiOperation(value="배송 정보 추가", notes="배송 정보를 추가한다.")
+	@ResponseBody //@RestController 시 생략 가능
+	@PostMapping("/delivery/create")
+	public Map<String, Object> addDelivery(
+				@RequestParam("saleNo") int saleNo,
+				@RequestParam("company") String company,
+				@RequestParam("waybill") String waybill) throws Exception {
 
-	//배송 정보 보기
-	//get delivery info detail
-	@RequestMapping("/delivery/getDelivery.do")
-		public ModelAndView getDelivery(
-				@RequestParam("orderNo") int orderNo) throws Exception {
-			//
+		
+		
+		Order order = new Order();
+		order = orderService.getOrderBySale(saleNo);
+		
+		Delivery delivery = new Delivery();
+		
+		delivery.setOrder(order);
+		delivery.setCompany(company);
+		delivery.setWaybill(waybill);
+		
+		deliveryService.addDelivery(delivery);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", "success");
+		map.put("delivery", delivery);
+		
+        return map;
 	}
-*/
+	
+	@ApiOperation(value="배송 정보 수정", notes="배송 정보를 수정한다.")
+	@ResponseBody //@RestController 시 생략 가능
+	@PutMapping("/delivery/update")
+	public Map<String, Object> updateDelivery(
+				@RequestParam("saleNo") int saleNo,
+				@RequestParam("company") String company,
+				@RequestParam("waybill") String waybill) throws Exception {
+
+		
+		
+		Order order = new Order();
+		order = orderService.getOrderBySale(saleNo);
+		
+		Delivery delivery = new Delivery();
+		
+		delivery.setOrder(order);
+		delivery.setCompany(company);
+		delivery.setWaybill(waybill);
+		
+		deliveryService.updateDelivery(delivery);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", "success");
+		map.put("delivery", delivery);
+		
+        return map;
+	}
 }

@@ -8,15 +8,18 @@
         SELECT ORDERSEQ.nextval from dual
     </select>
     
-	<select id="getOrderList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
+	<select id="getSaleOrderList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
         SELECT 
-			orderNo, saleNo, auctionNo, userNo, pAddress, orderDate, rAddress, rName, rPhone
+			orderNo, orderDate,
+			Sale.saleNo AS "sale.saleNo", Sale.title AS "sale.title", Sale.salePrice AS "sale.salePrice" <!--  ,
+			Users.userNo AS "user.userNo", Users.name AS "user.name", Users.id AS "user.id"-->		
 		FROM 
-			Orders <!-- Sale, Auction, User 추가 -->
+			Orders, Sale <!-- Sale, Auction, Users 추가 -->
 		where
-			userNo = #{userNo}
+			Orders.userNo = #{userNo}
+			AND Orders.saleNo = Sale.saleNo
 		ORDER BY
-			orderNo
+			orderNo desc
 			
 		 <!--  paging
 		SELECT
@@ -40,19 +43,67 @@
 			F.ROW_NUM BETWEEN #{start} and #{end}
 		 --> 
     </select>
+    
+    <select id="getAuctionOrderList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
+        SELECT 
+			orderNo, orderDate,
+			Auction.auctionNo AS "auction.auctionNo", Auction.title AS "auction.title", Auction.bidPrice AS "auction.bidPrice" <!--  ,
+			Users.userNo AS "user.userNo", Users.name AS "user.name", Users.id AS "user.id"-->		
+		FROM 
+			Orders, Auction <!-- Sale, Auction, Users 추가 -->
+		where
+			Orders.userNo = #{userNo}
+			AND Orders.auctionNo = Auction.auctionNo
+		ORDER BY
+			orderNo desc
+    </select>
    
 		 
-    <select id="getOrder" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
+    <select id="getSaleOrder" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
         SELECT 
-			orderNo, saleNo, auctionNo, userNo, pAddress, orderDate, rAddress, rName, rPhone
+			orderNo, pAddress, orderDate, rAddress, rName, rPhone,
+			Sale.saleNo AS "sale.saleNo", Sale.title AS "sale.title", Sale.salePrice AS "sale.salePrice" <!--  ,
+			userNo -->
 		FROM 
-			Orders <!-- Sale, Auction, User 추가 -->
+			Orders, Sale <!-- Sale, Auction, User 추가 -->
 		where
 			orderNo = #{orderNo}
+			AND Orders.saleNo = Sale.saleNo
     </select>
     
-    <insert id="orderBook" parameterType="com.inyoon.bookkureomi.domain.Order">
-    	Insert into Orders (orderNo, saleNo, auctionNo, userNo, pAddress, rAddress, rName, rPhone)
-    	Values (#{orderNo}, #{sale.saleNo}, #{auction.auctionNo}, #{user.userNo}, #{pAddress}, #{rAddress}, #{rName}, #{rPhone})
+    <select id="getAuctionOrder" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
+        SELECT 
+			orderNo, pAddress, orderDate, rAddress, rName, rPhone,
+			Auction.auctionNo AS "auction.auctionNo", Auction.title AS "auction.title", Auction.bidPrice AS "auction.bidPrice" <!--  ,
+			userNo -->
+		FROM 
+			Orders, Auction <!-- Sale, Auction, User 추가 -->
+		where
+			orderNo = #{orderNo}
+			AND Orders.auctionNo = Auction.auctionNo
+    </select>
+    
+    
+    <select id="getOrderBySale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
+        SELECT 
+			orderNo, pAddress, orderDate, rAddress, rName, rPhone,
+			Sale.saleNo AS "sale.saleNo", Sale.title AS "sale.title", Sale.salePrice AS "sale.salePrice" <!--  ,
+			userNo -->
+		FROM 
+			Orders, Sale <!-- Sale, Auction, User 추가 -->
+		where
+			Orders.saleNo = #{saleNo}
+			AND Orders.saleNo = Sale.saleNo
+    </select>
+    
+    
+    <insert id="orderSale" parameterType="com.inyoon.bookkureomi.domain.Order">
+    	Insert into Orders (orderNo, saleNo, userNo, pAddress, rAddress, rName, rPhone)
+    	Values (#{orderNo}, #{sale.saleNo}, #{user.userNo}, #{pAddress}, #{rAddress}, #{rName}, #{rPhone})
+    </insert>
+    
+    <insert id="orderAuction" parameterType="com.inyoon.bookkureomi.domain.Order">
+    	Insert into Orders (orderNo, auctionNo, userNo, pAddress, rAddress, rName, rPhone)
+    	Values (#{orderNo}, #{auction.auctionNo}, #{user.userNo}, #{pAddress}, #{rAddress}, #{rName}, #{rPhone})
     </insert>
 </mapper>

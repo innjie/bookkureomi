@@ -13,6 +13,9 @@ public class DeliveryService {
 	public void addDelivery(Delivery delivery){
 		deliveryMapper.addDelivery(delivery);
 	}
+	public void updateDelivery(Delivery delivery){
+		deliveryMapper.updateDelivery(delivery);
+	}
 	public Delivery getDelivery(int orderNo){
 		return deliveryMapper.getDelivery(orderNo);
 	}

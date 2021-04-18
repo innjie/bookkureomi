@@ -470,7 +470,7 @@ section {
 	display:none;
 	position:relative; 
 	width:700px; 
-	height: 700px;
+	height: 800px;
 	background-color: #fafbfc;
 	margin-right: auto;
   	margin-left: auto;
@@ -478,7 +478,7 @@ section {
 }
 .pop-style1 {
 	list-style:none;
-	height: 400px;
+	height: 500px;
 	width:560px;
 	padding-inline-start: 0px;
 	display: flex;

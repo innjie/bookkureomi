@@ -16,14 +16,26 @@ public class OrderService {
 		return orderMapper.getOrderNo();
 	}
 
-	public void orderBook(Order order){
-		orderMapper.orderBook(order);
+	public void orderSale(Order order){
+		orderMapper.orderSale(order);
 	}
-	public List<Order> getOrderList(int userNo){
-		return orderMapper.getOrderList(userNo);
+	public void orderAuction(Order order){
+		orderMapper.orderAuction(order);
 	}
-	public Order getOrder(int orderNo){
-		return orderMapper.getOrder(orderNo);
+	public List<Order> getSaleOrderList(int userNo){
+		return orderMapper.getSaleOrderList(userNo);
+	}
+	public List<Order> getAuctionOrderList(int userNo){
+		return orderMapper.getAuctionOrderList(userNo);
+	}
+	public Order getSaleOrder(int orderNo){
+		return orderMapper.getSaleOrder(orderNo);
+	}
+	public Order getAuctionOrder(int orderNo){
+		return orderMapper.getAuctionOrder(orderNo);
+	}	
+	public Order getOrderBySale (int saleNo) {
+		return orderMapper.getOrderBySale(saleNo);
 	}
 
 }

@@ -17,4 +17,23 @@
     	Insert into Delivery (orderNo, company, waybill)
     	Values (#{order.orderNo}, #{company}, #{waybill})
     </insert>
+    
+    <update id="updateDelivery">
+    	UPDATE Delivery
+    	SET
+            company = #{company},
+            waybill = #{waybill}
+        WHERE 
+        	orderNo = #{order.orderNo}
+    </update>
+    
+    <update id="updateSale"> <!--  parameterType="hashmap" -->
+        UPDATE Sale
+        SET
+            salePrice = #{salePrice},
+            image = #{image},
+            info = #{info}
+        WHERE 
+        	saleNo = #{saleNo}
+    </update>
 </mapper>
