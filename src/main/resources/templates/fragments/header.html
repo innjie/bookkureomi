@@ -19,6 +19,7 @@
 					<ul class="header-logon-menu-list mr-auto">
 						<li class="header-logon-menu-item"><a class="js-scroll-trigger" href="/book/user/mypage" value="${greeting}"}> 님</a> </li>
 						<li class="header-logon-menu-item"><a class="js-scroll-trigger" href="/book/point/view">0포인트</a></li>
+						<li class="header-logon-menu-item"><a class="js-scroll-trigger" href="/book/cart/view">카트</a></li>
 						<li class="header-logon-menu-item-button"><a class="js-scroll-trigger" onclick="document.getElementById('logout').submit();" > 로그아웃</a></li>
 						<form id="logout" action="/book/user/logout" method = "POST"><input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/></form>
 					</ul>

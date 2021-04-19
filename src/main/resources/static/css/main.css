@@ -223,6 +223,10 @@ section {
 .text-highlight {
 	text-decoration: underline;
 }
+.text-close-item {
+	text-decoration: line-through;
+	color: #c0c0c0;
+}
 
 
 /* button */

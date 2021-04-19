@@ -6,11 +6,12 @@
 <mapper namespace="com.inyoon.bookkureomi.cart.CartMapper">
 	<select id="checkCart" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, genreNo
+			Cart.saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, genreNo, Cart.userNo
 		FROM 
-			Cart <!-- Sale, User 추가 -->
+			Cart, Sale <!-- Sale, User 추가 -->
 		where
-			userNo = #{userNo}
+			Cart.userNo = #{userNo}
+			AND Cart.saleNo = Sale.saleNo
     </select>
     
     <insert id="addCartItem" parameterType="com.inyoon.bookkureomi.domain.CartItem">
@@ -25,6 +26,16 @@
     
     <delete id="deleteAllCartItem" parameterType="integer">
         DELETE FROM Cart
-        WHERE userNo = #{userNo}}
+        WHERE userNo = #{userNo}
     </delete>
+    
+    <select id="checkCartItem" parameterType="com.inyoon.bookkureomi.domain.CartItem" resultType="integer">
+        SELECT 
+			count(*)
+		FROM 
+			Cart
+		where
+		  	userNo = #{user.userNo}
+			AND saleNo = #{sale.saleNo}
+    </select>
 </mapper>

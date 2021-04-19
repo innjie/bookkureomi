@@ -1,6 +1,8 @@
 $(document).ready(function(){
-	detailPoint();
-	listRecharge();
+	if(($(location).attr('href').split('/book')[1]).includes('/point/view')){
+		detailPoint();
+		listRecharge();
+	}
 });
 
 //충전/사용 내역 나열
@@ -75,7 +77,7 @@ function detailPoint() {
 
 
 //추가 팝업 닫기
-function closeCreatePopup() {
+function closeRechargeCreatePopup() {
 	$("#pop-recharge-create").css("display", "none");
 }
 

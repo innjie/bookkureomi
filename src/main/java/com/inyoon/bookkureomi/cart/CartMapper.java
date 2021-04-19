@@ -13,4 +13,5 @@ public interface CartMapper {
 	public void addCartItem(CartItem cartItem);
 	public void deleteCartItem(CartItem cartItem);
 	public void deleteAllCartItem(int userNo);
+	public int checkCartItem(CartItem cartItem);
 }
