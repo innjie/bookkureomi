@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.inyoon.bookkureomi.user.UserMapper">
     <select id = "getUserNo" resultType="integer">
-        SELECT USERSSEQ.nextval from dual
+        SELECT USERSEQ.nextval from dual
     </select>
     <select id = "getUser" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.User">
         SELECT
@@ -17,7 +17,7 @@
 
     <select id = "getUserById" parameterType="String" resultType="com.inyoon.bookkureomi.domain.User">
         SELECT
-            ID
+            ID as "id", password as "pw", name
         FROM
             Users
         WHERE

@@ -5,21 +5,26 @@
       layout:decorate="~{layouts/default}">
 
 <head>
+    <title>Login Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/dist/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/user/user.js}" src="../../../static/js/user/user.js"></script>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 
 <body>
-<div layout:fragment="content">
-    <!-- Services-->
+<section layout:fragment="content">
     <div>
-        <form action="/user/login" th:object="${login}" method="post">
-            <input type="text" name="username" placeholder="id"/> <br>
-            <input type="password" name="password" placeholder="pw"/> <br>
+<form action="/book/user/login" method="post">
+        id <input type="text" name="username" id="id"/> <br>
+        password <input type="password" name="password" id="pw"/> <br>
 
 
-            <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
-        </form>
-
+        <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+        <button type="button" onClick="login()" >login</button>
+</form>
     </div>
-</div>
+</section>
 </body>
 </html>

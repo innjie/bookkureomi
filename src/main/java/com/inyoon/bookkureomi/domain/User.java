@@ -1,8 +1,7 @@
 package com.inyoon.bookkureomi.domain;
 
+import com.sun.istack.Nullable;
 import lombok.Data;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +15,14 @@ public @Data class User implements UserDetails {
     private String pw;
     private String confirmPw;
     private String phone;
-//    private int firstGenre;
-//    private int secondGenre;
-//    private int thirdGenre;
-    private Set<String> genres;
+    private List<String> genreArray;
+    @Nullable
+    private int firstGenre;
+    @Nullable
+    private int secondGenre;
+    @Nullable
+    private int thirdGenre;
+    private int point;
     private String auth;
     private boolean enabled;
     private String userRole;
@@ -30,11 +33,12 @@ public @Data class User implements UserDetails {
         this.pw = password;
         this.auth =  auth;
     }
-    
+
     public User() {
-    	
+
     }
-    public User(int userNo, String id, String name, String pw, String confirmPw, String phone, Set<String> genres,
+
+    public User(int userNo, String id, String name, String pw, String confirmPw, String phone, List<String> genreArray,
 			String auth, boolean enabled, String userRole, Collection<? extends GrantedAuthority> authorities) {
 		super();
 		this.userNo = userNo;
@@ -43,19 +47,25 @@ public @Data class User implements UserDetails {
 		this.pw = pw;
 		this.confirmPw = confirmPw;
 		this.phone = phone;
-		this.genres = genres;
+		this.genreArray = genreArray;
 		this.auth = auth;
 		this.enabled = enabled;
 		this.userRole = userRole;
 		this.authorities = authorities;
 	}
 
+    public User(String id, String pw, String name, String phone, List<String> genreArray) {
+        this.id = id;
+        this.pw = pw;
+        this.name = name;
+        this.phone = phone;
+        this.genreArray = genreArray;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> roles = new HashSet<>();
-        for (String role : auth.split(",")) {
-            roles.add(new SimpleGrantedAuthority(role));
-        }
+        List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
+        roles.add(new SimpleGrantedAuthority("USER"));
         return roles;
     }
 
