@@ -1,5 +1,7 @@
 $(document).ready(function(){
-	listSaleOrder();
+	if(($(location).attr('href').split('/book')[1]).includes('/order/view')){
+		listSaleOrder();
+	}
 });
 
 //주문 나열
@@ -132,7 +134,7 @@ function detailDelivery (orderNo){
 }
 
 //주문 상세 팝업 닫기
-function closeDetailPopup() {
+function closeOrderDetailPopup() {
 	$("#pop-order-detail").css("display", "none");
 }
 

@@ -1,5 +1,7 @@
 $(document).ready(function(){
-	listSale();
+	if(($(location).attr('href').split('/book')[1]).includes('/sale/view')){
+		listSale();
+	}
 });
 
 //판매 중고 서적 나열
@@ -141,7 +143,7 @@ function findSale(){
 
 //판매 중고서적 상세보기
 function detailSale(saleNo) {	
-	closeCreatePopup();
+	closeSaleCreatePopup();
 
 	$.ajax({
 		url: "/book/sale/detail", 
@@ -197,12 +199,13 @@ function detailSale(saleNo) {
 		if(data.sale.state != 'close'){
 			//if(data.sale.user.id != 'im'){
 			resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createSaleOrderForm()\">구매하기</button>";
+			resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createCartItem("+ data.sale.saleNo +")\">카트담기</button>";
 			//} else {
 				resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"updateSale()\">수정하기</button>";			
 				resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"deleteSale()\">삭제하기</button>";
 			//}	
 		}
-		resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeDetailPopup()\">닫기</button>";
+		resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeSaleDetailPopup()\">닫기</button>";
 		
 		$('#buttonResult').append(resultBtn);
     })
@@ -242,12 +245,12 @@ function deliveryInfoUpdate(company, waybill) {
 }
 
 //상세 팝업 닫기
-function closeDetailPopup() {
+function closeSaleDetailPopup() {
 	$("#pop-sale-detail").css("display", "none");
 }
 
 //추가 팝업 닫기
-function closeCreatePopup() {
+function closeSaleCreatePopup() {
 	$("#pop-sale-create").css("display", "none");
 }
 
@@ -268,8 +271,8 @@ function setDefault() {
 //중고 서적 판매
 function createSaleForm(){
 	setDefault();
-	closeDetailPopup();
-	closeOrderPopup();
+	closeSaleDetailPopup();
+	closeSaleOrderPopup();
 	setDefaultOrder();
 	$("#pop-sale-create").css("display", "block");
 	
@@ -419,7 +422,7 @@ function deleteSale() {
     		if(data.result == 'success'){
     			window.alert("중고 책 판매를 삭제하였습니다.");
     	        
-    			closeDetailPopup();
+    			closeSaleDetailPopup();
     			listSale();
     		}
     	})
