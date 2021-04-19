@@ -4,23 +4,20 @@ import com.inyoon.bookkureomi.domain.Genre;
 import com.inyoon.bookkureomi.genre.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.inyoon.bookkureomi.domain.User;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/book")
 public class UserController {
 
     private static final String JOINFORM = "user/all/join";
+    private static final int GENRESIZE = 3;
     //insert userForm
 
     @Autowired
@@ -28,6 +25,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+    @GetMapping("/")
+    public String Main(@ModelAttribute("user") User user, HttpServletRequest request)
+    {
+        return "index";
+    }
     @ResponseBody
     @GetMapping("/genre/list")
     public Map<String, Object> genreList() {
@@ -48,21 +51,65 @@ public class UserController {
         return JOINFORM;
     }
 
-//    @PostMapping("/user/overlapId")
-//    @ResponseBody
-//    public String overlapId(@RequestParam String inputId) throws Exception {
-//        System.out.println("overlapId in");
-//        User user = userService.getUserById(inputId);
-//        String usable = user != null ? "" : "Y";
-//        return usable;
-//    }
+    @PostMapping("/user/overlapId")
+    @ResponseBody
+    public String overlapId(@RequestParam ("id") String inputId) throws Exception {
+        System.out.println("overlapId in");
+        User user = userService.getUserById(inputId);
+        String usable = "";
+        if(user == null) {
+            usable = "usable";
+        } else {
+        }
+        return usable;
+    }
 
     //insert user
     @PostMapping("/user/join")
     @ResponseBody
-    public String insert(@Validated @ModelAttribute("userCommand") User user, BindingResult result) throws Exception {
-        System.out.println("insert join");
-        return "good";
+    public Map<String, Object> insert(
+            @RequestParam("id") String id,
+            @RequestParam("pw") String pw,
+            @RequestParam("name") String name,
+            @RequestParam("phone") String phone,
+            @RequestParam("genreArray[]") List<String> genreArray
+                         ) throws Exception {
+        System.out.println(id);
+        User user = new User(id, pw, name, phone, genreArray);
+        user.setPoint(2000);
+
+        Iterator<String> it =  genreArray.iterator();
+
+        for(int i = 0; i < GENRESIZE; i++) {
+            Genre genre = new Genre();
+            if(it.hasNext()) {
+                switch (i) {
+                    case 0:
+                        genre = genreService.getGenreByName(it.next().toString());
+                        System.out.println(genre.getGenreNo());
+                        user.setFirstGenre(genre.getGenreNo());
+                        break;
+                    case 1:
+                        genre = genreService.getGenreByName(it.next().toString());
+                        System.out.println(genre.getGenreNo());
+                        user.setSecondGenre(genre.getGenreNo());
+                        break;
+                    case 2:
+                        genre = genreService.getGenreByName(it.next().toString());
+                        System.out.println(genre.getGenreNo());
+                        user.setThirdGenre(genre.getGenreNo());
+                        break;
+                }
+            }
+        }
+        user.setUserNo(userService.getUserNo());
+        userService.insertUser(user);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("result", "success");
+        map.put("userNo", user.getUserNo());
+
+        System.out.println(map);
+        return map;
     }
 
 //    //update user

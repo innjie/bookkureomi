@@ -14,10 +14,9 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
-<div layout:fragment="content">
+<section layout:fragment="content">
     <h2>Join us</h2>
     <div>
-        <form action="/book/user/join" method="post" id = "form">
             id <input type="text" name="id" id="id"/> <br>
 <!--            <span id="overlapError">This ID is already Using</span><br>-->
             <span id="checkIdNull">Please input ID</span><br>
@@ -29,20 +28,20 @@
             <span id = "notSameError">mismatch to password</span><br>
 
             name <input type="text" name="name" id="name"/> <br>
-            <span id = "checkNameNull">mismatch to password</span><br>
+            <span id = "checkNameNull">Please input your name</span><br>
 
             phone <input type="text" name="phone" id="phone"/> <br>
             <span id = "phoneFormatError">Use only number</span><br>
             <span id = "phoneLengthError">you input wrong number</span>
             <!-- Using checkbox tag -->
             <div id="result"></div>
-            <span id = "overChecked">You can choose up to 3</span><br>
+            <span id = "overChecked">You must choose 3 categories. </span><br>
 
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
             <button type="button" onClick="checkForm()" >sign up</button>
-        </form>
+
     </div>
-</div>
+</section>
 </body>
 </html>

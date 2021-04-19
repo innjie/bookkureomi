@@ -10,42 +10,47 @@ function checkForm() {
         genreArray.push(this.value);
     });
 
-    // id 중복확인하고싶은데 post ajax처리가안돼서 일단 보류
-    if(!checkId(id)) return false;
-    if(!checkName(name)) return false;
-    if(!checkPwLen(pw)) return false;
-    if(!checkConfirmPw(pw, confirmPw)) return false;
-    if(!checkPhoneNum(phone)) return false;
-    if(!checkPhoneLen(phone)) return false;
-    if(!checkGenre(genreArray)) return false;
-
-    var jsonData = {
-        "name" : name
-    }
     //csrf
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
 
+    // id 중복확인하고싶은데 post ajax처리가안돼서 일단 보류
+    if(!checkId(id)) return false;
+    // if(!overlapId(id, header, token)) return false;
+    if(!checkName(name)) return false;
+    if(!checkPwLen(pw)) return false;
+    if(!checkConfirmPw(pw, confirmPw)) return false;
+    if(!checkNameNull(name)) return false;
+    if(!checkPhoneNum(phone)) return false;
+    if(!checkPhoneLen(phone)) return false;
+    if(!checkGenre(genreArray)) return false;
+
+
+
     $.ajax({
+        url:"/book/user/join",
         type: 'POST',
-        contentType: "application/json",
-        url:'/book/user/join',
-        data: JSON.stringify(jsonData), // String -> json 형태로 변환
+        dataType: "json",
+        data: {
+            id:id,
+            pw:pw,
+            name:name,
+            phone:phone,
+            genreArray:genreArray
+        },
         beforeSend : function(xhr)
         {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
             xhr.setRequestHeader(header, token);
-        },
-        dataType: 'json', // success 시 받아올 데이터 형
-        async: true, //동기, 비동기 여부
-        cache :false, // 캐시 여부
-        success: function(data){
-            console.log(data.name);
-        },
-        error:function(xhr,status,error){
-            console.log('error:'+error);
         }
+    }).done(function(data) {
+        if(data.result == 'success') {
+            window.alert("회원가입 완료");
+
+        }
+    }).fail(function(textStatus) {
+        alert("페이지 오류: " + textStatus);
     });
-    $("#form").submit();
+
 }
 function checkId(id) {
     if(id.length == 0) {
@@ -56,6 +61,33 @@ function checkId(id) {
         return true;
     }
 }
+// function overlapId(id, header, token) {
+//     $.ajax({
+//         url:"/book/user/overlapId",
+//         type: 'POST',
+//         dataType: "json",
+//         data: {
+//             id:id,
+//         },
+//         beforeSend : function(xhr)
+//         {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+//             xhr.setRequestHeader(header, token);
+//         },
+//         success:function(data){
+//             alert(data);
+//             if(data){//사용 가능한 아이디 라면
+//                 $("#overlapErr").hide();
+//                 // 성공한 상태로 바꾸는 함수 호출
+//                 alert(data);
+//                 return true;
+//
+//             }else{//사용 가능한 아이디가 아니라면
+//                 $("#overlapErr").show();
+//                 return false;
+//             }
+//         }
+//     });
+// }
 function checkName(name) {
     if(name.length == 0) {
         $("#checkNameNull").show();
@@ -85,6 +117,15 @@ function checkConfirmPw(pw, confirmPw) {
         return false;
     }
 }
+function checkNameNull(name) {
+    if(name == "") {
+        $("#checkNameNull").show();
+        return false;
+    } else {
+        $("#checkNameNull").hide();
+        return true;
+    }
+}
 function checkPhoneNum(phone) {
     var reg = /^[0-9]*$/;
     if(reg.test(phone)) {
@@ -105,7 +146,7 @@ function checkPhoneLen(phone) {
     }
 }
 function checkGenre(genreArray) {
-    if(genreArray.length > 3) {
+    if(genreArray.length != 3) {
         $("#overChecked").show();
         return false;
     } else {

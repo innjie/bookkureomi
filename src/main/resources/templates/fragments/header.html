@@ -2,27 +2,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
   <!--	xmlns:sec="http://www.thymeleaf.org/extras/spring-security4">-->
-	
+
 	<header th:fragment="headerFragment" id="header">
     	<div class="container-header">
         	<a class="header-logo js-scroll-trigger" href="/#header">
 	        	<img src="/images/book_logo1.png" class="img-logo" />
 	        </a>
 	        <div class="header-menu">
-	        	<ul class="header-logon-menu-list mr-auto">
-	            	<li class="header-logon-menu-item-button"><a class="js-scroll-trigger" sec:authorize="isAnonymous()" href="/book/user/login">로그인</a></li>
-	                <li class="header-logon-menu-item-button"><a class="js-scroll-trigger" sec:authorize="isAnonymous()" href="/book/user/join">회원가입</a></li>
-	            </ul>
-	        	<ul class="header-logon-menu-list mr-auto">
-	            	<li class="header-logon-menu-item"><a class="js-scroll-trigger" href="">누구</a>님</li>
-	                <li class="header-logon-menu-item"><a class="js-scroll-trigger" href="/book/point/view">0포인트</a></li>
-	                <li class="header-logon-menu-item-button"><a class="js-scroll-trigger" href=""> 로그아웃</a></li>
-	            </ul>
+				<div th:unless="${#authorization.expr('isAuthenticated()')}">
+					<ul class="header-logon-menu-list mr-auto">
+						<li class="header-logon-menu-item-button"><a class="js-scroll-trigger" href="/book/user/login">로그인</a></li>
+						<li class="header-logon-menu-item-button"><a class="js-scroll-trigger" href="/book/user/join">회원가입</a></li>
+					</ul>
+				</div>
+				<div th:if="${#authorization.expr('isAuthenticated()')}">
+					<ul class="header-logon-menu-list mr-auto">
+						<li class="header-logon-menu-item"><a class="js-scroll-trigger" href="/book/user/mypage" value="${greeting}"}> 님</a> </li>
+						<li class="header-logon-menu-item"><a class="js-scroll-trigger" href="/book/point/view">0포인트</a></li>
+						<li class="header-logon-menu-item-button"><a class="js-scroll-trigger" onclick="document.getElementById('logout').submit();" > 로그아웃</a></li>
+						<form id="logout" action="/book/user/logout" method = "POST"><input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/></form>
+					</ul>
+				</div>
 	        </div>
 		</div>
- 
- 
-     <!--   
+
+
+     <!--
         <h1><a th:href="@{/}">북 꾸러미</a></h1>
 		<ul class="menu">
 			<li>
@@ -56,17 +61,17 @@
 		</ul>
 		<a href="#" class="mobileMenu">메뉴 열기</a>
 		-->
-		
-		 <!-- Topbar 
+
+		 <!-- Topbar
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                    <!-- Sidebar Toggle (Topbar) 
+                    <!-- Sidebar Toggle (Topbar)
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
 
                    <ul>
-                        <!-- Nav Item - User Information 
+                        <!-- Nav Item - User Information
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -74,8 +79,8 @@
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
-                            
-                            <!-- Dropdown - User Information 
+
+                            <!-- Dropdown - User Information
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">
@@ -103,5 +108,5 @@
                 </nav>
                  End of Topbar -->
 	</header>
-	
+
 </html>
