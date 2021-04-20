@@ -257,6 +257,19 @@ section {
   	font-family: bookkureomi_main_font;
   	text-decoration: underline;
 }
+.btn-cart {
+	height: 30px;
+	width: 100px;
+	flex: 1 1 auto;
+		
+	color: #495057;
+  	font-size:15px;
+  	background-color: #ffffff;
+  	border-color: #008080;
+	border-radius: 0.35rem;  	
+  	font-family: bookkureomi_main_font;
+}
+
 
 /* img */
 .img-git {
@@ -522,10 +535,10 @@ section {
 	width: 100px;
 	flex: 1 1 auto;
 		
-	color: #495057;
+	color: #ffffff;
   	font-size:15px;
-  	background-color: yellow;
-  	border-color: #fed136;
+  	background-color: #004e9b;
+  	border-color: #f8fdfe;
 	border-radius: 0.35rem;  	
   	font-family: bookkureomi_main_font;
 }

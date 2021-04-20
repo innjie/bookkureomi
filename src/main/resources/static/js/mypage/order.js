@@ -174,28 +174,30 @@ function createSaleOrder() {
 	var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
 
-	$.ajax({
-		url: "/book/order/create", 
-		method: 'POST',
-	    dataType: "json",
-		data: {
-			saleNo : saleNo,
-			pAddress : pAddress,
-			rName : rName,
-			rPhone : rPhone,
-			rAddress : rAddress
-		},
-		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-          xhr.setRequestHeader(header, token);
-      }
-	}).done(function( data ) {
-		if(data.result == 'success'){
-			window.alert("중고 책을 구입하였습니다.");
-	        
-			window.location = "/book/order/view";
-		}
-	})
-  .fail( function( textStatus ) {
-      alert( "Request failed: " + textStatus );
-  });
+    if(confirm("중고 책을 구입하시겠습니까?")) {
+    	$.ajax({
+    		url: "/book/order/create", 
+    		method: 'POST',
+    	    dataType: "json",
+    		data: {
+    			saleNo : saleNo,
+    			pAddress : pAddress,
+    			rName : rName,
+    			rPhone : rPhone,
+    			rAddress : rAddress
+    		},
+    		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+              xhr.setRequestHeader(header, token);
+          }
+    	}).done(function( data ) {
+    		if(data.result == 'success'){
+    			window.alert("중고 책을 구입하였습니다.");
+    	        
+    			window.location = "/book/order/view";
+    		}
+    	})
+      .fail( function( textStatus ) {
+          alert( "Request failed: " + textStatus );
+      });
+    }
 }

@@ -19,16 +19,43 @@
 <body>
 	<section layout:fragment="content">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-    	<div class="container-section">    		
-    		<div class ="div-list-result" id="result"></div>
+    	<div class="container-section">   
+    		<p class="find-nothing" id="table-result-nothing"></p>
+    	 		
+    		<div class ="div-list-result" id="result">
+    			<table class="table-list">
+    				<colgroup>
+    					<col width="10%" />
+    					<col width="10%" />
+    					<col width="35%" />
+    					<col width="20%" />
+    					<col width="12.5%" />
+    					<col width="12.5%" />
+    				</colgroup>
+    				<thead>
+    					<tr>
+    						<th class="table-header">
+    							<input type="checkbox" name="checkItem" id="allCheck"></input>
+    						</th>
+    						<th class="table-header">No.</th>
+    						<th class="table-header">책 제목</th>
+    						<th class="table-header">가격</th>
+    						<th class="table-header"></th>
+    						<th class="table-header"></th>
+    					</tr>
+    				</thead>
+    				<tbody id="table-result">
+    				</tbody>
+    			</table>
+    		</div>
 			
-			<div class="div-list-head">
+			<div class="div-list-head" id="btn-result">
     			<div class="insert-style">
-	    			<button type="button" class="insert-btn" onClick="orderCartItem()">구매하기</button>
-	    			<button type="button" class="insert-btn" onClick="deleteAllCartItem()">모두삭제</button>
+	    			<button type="button" class="insert-btn" onClick="orderSelectCartItem()">선택구매</button>
+	    			<button type="button" class="insert-btn" onClick="deleteSelectCartItem()">선택삭제</button>
 	    		</div>
     		</div>
-    		
+
 			<div id="pop-sale-detail" class="pop">
 				<h2>중고 서적 뷰</h2>
 				<input type="hidden" id="viewSaleNo" />

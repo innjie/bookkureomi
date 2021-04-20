@@ -214,35 +214,6 @@ function detailSale(saleNo) {
     });
 }
 
-//배송 세팅
-function deliveryInfo() {
-	$('#deliveryInfo')[0].innerHTML = '';
-	var infoDelivery = '';
-	infoDelivery += "<ul class=\"pop-style2\">"
-					+ "<li class=\"pop-style2-list\">"
-					+ "<p class=\"text-size-17 text-highlight\">배송 정보</p>"
-					+ "<ul class=\"pop-style3\">"
-					+ "<li>택배사 <input type=\"text\" id=\"viewCompany\" /></li>"
-					+ "<li>송장번호 <input type=\"text\" id=\"viewWaybill\" /></li></ul></li>"
-					+ "<li class=\"pop-style2-list\">"
-					+ "<button type=\"button\" class=\"pop-btn\" onClick=\"createDelivery()\">배송추가</button></li></ul>";	
-	$('#deliveryInfo').append(infoDelivery);
-}
-
-//배송 수정 세팅
-function deliveryInfoUpdate(company, waybill) {
-	$('#deliveryInfo')[0].innerHTML = '';
-	var infoDelivery = '';
-	infoDelivery += "<ul class=\"pop-style2\">"
-					+ "<li class=\"pop-style2-list\">"
-					+ "<p class=\"text-size-17 text-highlight\">배송 정보</p>"
-					+ "<ul class=\"pop-style3\">"
-					+ "<li>택배사 <input type=\"text\" id=\"viewCompany\" value=\"" + company + "\" /></li>"
-					+ "<li>송장번호 <input type=\"text\" id=\"viewWaybill\" value=\"" + waybill + "\" /></li></ul></li>"
-					+ "<li class=\"pop-style2-list\">"
-					+ "<button type=\"button\" class=\"pop-btn\" onClick=\"updateDelivery()\">배송수정</button></li></ul>";	
-	$('#deliveryInfo').append(infoDelivery);
-}
 
 //상세 팝업 닫기
 function closeSaleDetailPopup() {
@@ -255,7 +226,7 @@ function closeSaleCreatePopup() {
 }
 
 //추가 폼 세팅
-function setDefault() {
+function setSaleDefault() {
 	$("#insertTitle").val('');
 	$("#insertPublisher").val('');
 	$("#insertAuthor").val('');
@@ -270,7 +241,7 @@ function setDefault() {
 
 //중고 서적 판매
 function createSaleForm(){
-	setDefault();
+	setSaleDefault();
 	closeSaleDetailPopup();
 	closeSaleOrderPopup();
 	setDefaultOrder();
@@ -322,37 +293,39 @@ function createSale() {
     	return;
     }
     
-	$.ajax({
-		url: "/book/sale/create", 
-		method: 'POST',
-	    dataType: "json",
-		data: {
-			title : title,
-			publisher : publisher,
-			salePrice : salePrice,
-			info : info, 
-			costPrice : costPrice,
-			image : image,
-			userNo : userNo,
-			author : author,
-			genreType : genreType
-		},
-		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-            xhr.setRequestHeader(header, token);
-        }
-	}).done(function( data ) {
-		if(data.result == 'success'){
-			window.alert("중고 책을 등록하였습니다.");
-	        
-			$("#pop-sale-insert").css("display", "none");
-			
-			listSale();
-			detailSale(data.saleNo);
-		}
-	})
-    .fail( function( textStatus ) {
-        alert( "Request failed: " + textStatus );
-    });
+    if(confirm("판매 등록하시겠습니까?")) {
+    	$.ajax({
+    		url: "/book/sale/create", 
+    		method: 'POST',
+    	    dataType: "json",
+    		data: {
+    			title : title,
+    			publisher : publisher,
+    			salePrice : salePrice,
+    			info : info, 
+    			costPrice : costPrice,
+    			image : image,
+    			userNo : userNo,
+    			author : author,
+    			genreType : genreType
+    		},
+    		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            }
+    	}).done(function( data ) {
+    		if(data.result == 'success'){
+    			window.alert("중고 책을 등록하였습니다.");
+    	        
+    			$("#pop-sale-insert").css("display", "none");
+    			
+    			listSale();
+    			detailSale(data.saleNo);
+    		}
+    	})
+        .fail( function( textStatus ) {
+            alert( "Request failed: " + textStatus );
+        });
+    }
 }
 
 
@@ -377,27 +350,29 @@ function updateSale() {
     	return;
     }
     
-	$.ajax({
-		url: "/book/sale/update", 
-		method: 'PUT',
-	    dataType: "json",
-		data: {
-			saleNo : saleNo,
-			image : image,
-			salePrice : salePrice,
-			info : info
-		},
-		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-            xhr.setRequestHeader(header, token);
-        }
-	}).done(function( data ) {
-		if(data.result == 'success'){
-			window.alert("중고 책 판매를 수정하였습니다.");
-		}
-	})
-    .fail( function( textStatus ) {
-        alert( "Request failed: " + textStatus );
-    });
+    if(confirm("판매 정보를 수정하시겠습니까?")) {
+    	$.ajax({
+    		url: "/book/sale/update", 
+    		method: 'PUT',
+    	    dataType: "json",
+    		data: {
+    			saleNo : saleNo,
+    			image : image,
+    			salePrice : salePrice,
+    			info : info
+    		},
+    		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            }
+    	}).done(function( data ) {
+    		if(data.result == 'success'){
+    			window.alert("중고 책 판매를 수정하였습니다.");
+    		}
+    	})
+        .fail( function( textStatus ) {
+            alert( "Request failed: " + textStatus );
+        });
+    }
 }
 
 //판매 삭제
@@ -431,103 +406,3 @@ function deleteSale() {
         });
     }
 }
-
-
-//배송 추가
-function createDelivery(){
-	var saleNo = $("#viewSaleNo").val();
-	var company = $("#viewCompany").val();
-	var waybill = $("#viewWaybill").val();
-
-	var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-
-    if(company == '' || company == undefined){
-    	alert("택배사 입력하세요.");
-    	return;
-    } else if(waybill == '' || waybill == undefined){
-    	alert("송장번호를 입력하세요.");
-    	return;
-    } 
-    
-    $.ajax({
-		url: "/book/delivery/create", 
-		method: 'POST',
-	    dataType: "json",
-		data: {
-			saleNo : saleNo,
-			company : company,
-			waybill : waybill
-		},
-		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-            xhr.setRequestHeader(header, token);
-        }
-	}).done(function( data ) {
-		if(data.result == 'success'){
-			window.alert("배송정보를 등록하였습니다.");
-			
-			$('#deliveryInfo')[0].innerHTML = '';
-			var infoDelivery = '';
-			infoDelivery += "<ul class=\"pop-style2\">"
-							+ "<li class=\"pop-style2-list\">"
-							+ "<p class=\"text-size-17 text-highlight\">배송 정보</p>"
-							+ "<ul class=\"pop-style3\">"
-							+ "<li>택배사 <input type=\"text\" id=\"viewCompany\" value=\"" + company + "\" /></li>"
-							+ "<li>송장번호 <input type=\"text\" id=\"viewWaybill\" value=\"" + waybill + "\" /></li></ul></li>"
-							+ "<li class=\"pop-style2-list\">"
-							+ "<button type=\"button\" class=\"pop-btn\" onClick=\"updateDelivery()\">배송수정</button></li></ul>";	
-			$('#deliveryInfo').append(infoDelivery);			
-		} else {
-			window.alert("배송정보 등록에 실패하였습니다.");
-		}
-	})
-    .fail( function( textStatus ) {
-        alert( "Request failed: " + textStatus );
-    });
-}
-
-
-//배송 수정
-function updateDelivery(){
-	var saleNo = $("#viewSaleNo").val();
-	var company = $("#viewCompany").val();
-	var waybill = $("#viewWaybill").val();
-
-	var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-
-    if(company == '' || company == undefined){
-    	alert("택배사 입력하세요.");
-    	return;
-    } else if(waybill == '' || waybill == undefined){
-    	alert("송장번호를 입력하세요.");
-    	return;
-    } 
-    
-    $.ajax({
-		url: "/book/delivery/update", 
-		method: 'PUT',
-	    dataType: "json",
-		data: {
-			saleNo : saleNo,
-			company : company,
-			waybill : waybill
-		},
-		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-            xhr.setRequestHeader(header, token);
-        }
-	}).done(function( data ) {
-		if(data.result == 'success'){
-			window.alert("배송정보를 수정하였습니다.");
-			
-			deliveryInfoUpdate(company, waybill);			
-		} else {
-			window.alert("배송정보 수정에 실패하였습니다.");
-		}
-	})
-    .fail( function( textStatus ) {
-        alert( "Request failed: " + textStatus );
-    });
-}
-
-
