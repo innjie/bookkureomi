@@ -45,7 +45,7 @@ function checkForm() {
     }).done(function(data) {
         if(data.result == 'success') {
             window.alert("회원가입 완료");
-
+            window.location = "/book/user/login";
         }
     }).fail(function(textStatus) {
         alert("페이지 오류: " + textStatus);
