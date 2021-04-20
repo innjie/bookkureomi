@@ -12,6 +12,7 @@
 	<script type="text/javascript" th:src="@{/js/mypage/mySale.js}" src="../../static/js/mypage/mySale.js"></script>
 	<script type="text/javascript" th:src="@{/js/mypage/order.js}" src="../../static/js/mypage/order.js"></script>
 	<script type="text/javascript" th:src="@{/js/cart/cart.js}" src="../../static/js/cart/cart.js"></script>
+	<script type="text/javascript" th:src="@{/js/delivery/delivery.js}" src="../../static/js/delivery/delivery.js"></script>
 	<meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
@@ -22,7 +23,7 @@
     	<div class="container-section">
     		<div class="div-list-head">
     			<div class="insert-style">
-	    			<button type="button" class="insert-btn" onClick="createSaleForm()">판매하기</button>
+	    			<button type="button" class="insert-btn" onClick="createMySaleForm()">판매하기</button>
 	    		</div>
     		</div>
     		
@@ -66,7 +67,7 @@
 					</li>
 				</ul>
 				<div class="pop-btn-style">
-	    			<button type="button" class="pop-btn" onClick="createSale()">판매하기</button>
+	    			<button type="button" class="pop-btn" onClick="createMySale()">판매하기</button>
 	    			<button type="button" class="pop-btn" onClick="closeMySaleCreatePopup()">닫기</button>
 	    		</div>
 			</div>

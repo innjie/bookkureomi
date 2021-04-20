@@ -82,7 +82,7 @@ function closeRechargeCreatePopup() {
 }
 
 //추가 폼 세팅
-function setDefault() {
+function setRechargeDefault() {
 	$("#rechargeType").val('kakao');
 	$("#rechargePrice").val('1000');
 }
@@ -90,7 +90,7 @@ function setDefault() {
 
 //충전
 function createRechargeForm(){
-	setDefault();
+	setRechargeDefault();
 	$("#pop-recharge-create").css("display", "block");
 	
     var offset = $("#pop-recharge-create").offset().top;
