@@ -13,10 +13,10 @@ import lombok.Setter;
 public class Order {
 	@ApiModelProperty(value = "주문번호", dataType = "int")
 	private int orderNo;
-	@ApiModelProperty(value = "판매정보", dataType = "Sale")
-	private Sale sale;
-	@ApiModelProperty(value = "경매정보", dataType = "Auction")
-	private Auction auction;
+	@ApiModelProperty(value = "총금액", dataType = "int")
+	private int total;
+	@ApiModelProperty(value = "설명", dataType = "String")
+	private String info;
 	@ApiModelProperty(value = "주문자정보", dataType = "User")
 	private User user;
 	@ApiModelProperty(value = "주문자 주소", dataType = "String")

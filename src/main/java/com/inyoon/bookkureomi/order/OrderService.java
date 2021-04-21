@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.inyoon.bookkureomi.domain.Order;
+import com.inyoon.bookkureomi.domain.OrderDetail;
 
 @Service
 public class OrderService {
@@ -15,27 +16,43 @@ public class OrderService {
 	public int getOrderNo() {
 		return orderMapper.getOrderNo();
 	}
+	public int getODNo() {
+		return orderMapper.getODNo();
+	}
 
 	public void orderSale(Order order){
 		orderMapper.orderSale(order);
-		orderMapper.updateSaleStateClose(order.getSale().getSaleNo());
 	}
+	public void orderDetailSale(OrderDetail orderDetail){
+		orderMapper.orderDetailSale(orderDetail);
+		orderMapper.updateSaleStateClose(orderDetail.getSale().getSaleNo());
+	}
+	
+	
+	
 	public void orderAuction(Order order){
 		orderMapper.orderAuction(order);
 	}
+	public void orderDetailAuction(OrderDetail orderDetail){
+		orderMapper.orderDetailAuction(orderDetail);
+	}
+	
+	
 	public List<Order> getSaleOrderList(int userNo){
 		return orderMapper.getSaleOrderList(userNo);
 	}
 	public List<Order> getAuctionOrderList(int userNo){
 		return orderMapper.getAuctionOrderList(userNo);
 	}
-	public Order getSaleOrder(int orderNo){
+	
+	
+	public List<OrderDetail> getSaleOrder(int orderNo){
 		return orderMapper.getSaleOrder(orderNo);
 	}
-	public Order getAuctionOrder(int orderNo){
+	public List<OrderDetail> getAuctionOrder(int orderNo){
 		return orderMapper.getAuctionOrder(orderNo);
 	}	
-	public Order getOrderBySale (int saleNo) {
+	public OrderDetail getOrderBySale (int saleNo) {
 		return orderMapper.getOrderBySale(saleNo);
 	}
 

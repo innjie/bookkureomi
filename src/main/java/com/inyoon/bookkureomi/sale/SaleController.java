@@ -26,7 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.inyoon.bookkureomi.delivery.DeliveryService;
 import com.inyoon.bookkureomi.domain.Delivery;
 import com.inyoon.bookkureomi.domain.Genre;
-import com.inyoon.bookkureomi.domain.Order;
+import com.inyoon.bookkureomi.domain.OrderDetail;
 import com.inyoon.bookkureomi.domain.Sale;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.genre.GenreService;
@@ -105,11 +105,11 @@ public class SaleController{
 		sale = saleService.getSale(saleNo);
 		
 		Delivery delivery = null;		
-		Order order = new Order();
-		order = orderService.getOrderBySale(saleNo);
+		OrderDetail orderDetail = new OrderDetail();
+		orderDetail = orderService.getOrderBySale(saleNo);
 		
-		if(order != null) {
-			delivery = deliveryService.getDelivery(order.getOrderNo());
+		if(orderDetail != null) {
+			delivery = deliveryService.getDelivery(orderDetail.getOrder().getOrderNo());
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();

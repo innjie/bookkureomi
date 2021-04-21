@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.inyoon.bookkureomi.domain.Order;
+import com.inyoon.bookkureomi.domain.OrderDetail;
 import com.inyoon.bookkureomi.domain.Recharge;
 import com.inyoon.bookkureomi.domain.Sale;
 import com.inyoon.bookkureomi.domain.User;
@@ -46,6 +47,10 @@ public class OrderController {
 			@RequestParam("rPhone") String rPhone,
 			@RequestParam("rAddress") String rAddress) {
 
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		int total = saleService.checkSalePrice(saleNo);
+		
 		User user = new User();
 		//user.setUserNo(1);
 		
@@ -54,31 +59,41 @@ public class OrderController {
 				
 		Order order = new Order();
 		order.setOrderNo(orderService.getOrderNo());
-		order.setSale(sale);
 		order.setPAddress(pAddress);
 		order.setRName(rName);
 		order.setRPhone(rPhone);
 		order.setRAddress(rAddress);
+		order.setTotal(total);
+		order.setInfo(sale.getTitle());
+		
+		OrderDetail orderDetail = new OrderDetail();
+		orderDetail.setOdNo(orderService.getODNo());
+		orderDetail.setOrder(order);
+		orderDetail.setSale(sale);
 		
 		//1 -> userNo
 		Recharge recharge = new Recharge();
 		recharge.setRechargeNo(pointService.getRechargeNo(1));
-		if(pointService.checkHasPoint(1) == 0) {
+		if(pointService.checkPoint(1) < total) { //point와 금액 비교
 			recharge.setTotalPoint(sale.getSalePrice());
+			
+			map.put("result", "fail");
+			map.put("reason", "※주문실패※\n주문 금액보다 충전된 포인트가 적습니다.");
 		} else {
 			recharge.setTotalPoint(pointService.checkPoint(1) - sale.getSalePrice());
+		
+			recharge.setRcType("사용");
+			recharge.setRcPoint(-1 * sale.getSalePrice());
+			//recharge.setUser(user);
+			
+			//mapper.xml user 수정 필요 (point, order)
+			orderService.orderSale(order);
+			orderService.orderDetailSale(orderDetail);
+			pointService.usePoint(recharge);
+			
+			map.put("result", "success");
+			map.put("order", order);
 		}
-		recharge.setRcType("사용");
-		recharge.setRcPoint(-1 * sale.getSalePrice());
-		//recharge.setUser(user);
-		
-		//mapper.xml user 수정 필요 (point, order)
-		orderService.orderSale(order);
-		pointService.usePoint(recharge);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", "success");
-		map.put("order", order);
 		
         return map;
     }
@@ -118,16 +133,16 @@ public class OrderController {
 				@RequestParam("orderNo") int orderNo,
 				@RequestParam("type") String type) throws Exception {
 
-		Order order = new Order();
+		List<OrderDetail> orderDetailList = new ArrayList<OrderDetail>();
 		
 		if(type.equals("sale")) {
-			order = orderService.getSaleOrder(orderNo);
+			orderDetailList = orderService.getSaleOrder(orderNo);
 		} else if(type.equals("auction")){
-			order = orderService.getAuctionOrder(orderNo);
+			orderDetailList = orderService.getAuctionOrder(orderNo);
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("order", order);
+		map.put("orderDetailList", orderDetailList);
 		
         return map;
 	}
