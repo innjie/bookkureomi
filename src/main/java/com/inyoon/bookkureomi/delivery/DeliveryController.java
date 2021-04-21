@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.inyoon.bookkureomi.domain.Delivery;
-import com.inyoon.bookkureomi.domain.Order;
+import com.inyoon.bookkureomi.domain.OrderDetail;
 import com.inyoon.bookkureomi.order.OrderService;
 
 import io.swagger.annotations.Api;
@@ -57,12 +57,12 @@ public class DeliveryController {
 
 		
 		
-		Order order = new Order();
-		order = orderService.getOrderBySale(saleNo);
+		OrderDetail orderDetail = new OrderDetail();
+		orderDetail = orderService.getOrderBySale(saleNo);
 		
 		Delivery delivery = new Delivery();
 		
-		delivery.setOrder(order);
+		delivery.setOrder(orderDetail.getOrder());
 		delivery.setCompany(company);
 		delivery.setWaybill(waybill);
 		
@@ -85,12 +85,12 @@ public class DeliveryController {
 
 		
 		
-		Order order = new Order();
-		order = orderService.getOrderBySale(saleNo);
+		OrderDetail orderDetail = new OrderDetail();
+		orderDetail = orderService.getOrderBySale(saleNo);
 		
 		Delivery delivery = new Delivery();
 		
-		delivery.setOrder(order);
+		delivery.setOrder(orderDetail.getOrder());
 		delivery.setCompany(company);
 		delivery.setWaybill(waybill);
 		

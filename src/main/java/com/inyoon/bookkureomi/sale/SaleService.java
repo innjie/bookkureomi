@@ -47,4 +47,7 @@ public class SaleService {
 		return saleMapper.recommend(genreNo);
 	}
 
+	public int checkSalePrice(int saleNo){
+		return saleMapper.checkSalePrice(saleNo);
+	}
 }

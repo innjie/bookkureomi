@@ -28,25 +28,16 @@ function listOrder(type) {
 		
 		if(data.orderList.length > 0) {
 			result =  "<table class=\"table-list\">"
-					+ "<colgroup><col width=\"10%\" /><col width=\"30%\" /><col width=\"20%\" /><col width=\"20%\" /><col width=\"20%\" /></colgroup>"
-					+ "<thead><tr><th class=\"table-header\">No.</th><th class=\"table-header\">주문 번호</th><th class=\"table-header\">책 제목</th><th class=\"table-header\">가격</th><th class=\"table-header\">주문 일자</th></tr></thead><tbody>";
+					+ "<colgroup><col width=\"10%\" /><col width=\"20%\" /><col width=\"30%\" /><col width=\"20%\" /><col width=\"20%\" /></colgroup>"
+					+ "<thead><tr><th class=\"table-header\">No.</th><th class=\"table-header\">주문 번호</th><th class=\"table-header\">주문정보</th><th class=\"table-header\">가격</th><th class=\"table-header\">주문 일자</th></tr></thead><tbody>";
 			
 			for(var i=0; i<data.orderList.length; i++){
 				result += "<tr>"
 							+ "<td class=\"table-text\">" + ((-1 * (i+1)) + data.orderList.length + 1)  + "</td>";
 
-				
-				
-				//충전/사용 구분
-				if(data.orderList[i].auction == null){
-					result += "<td class=\"table-text\"><a onclick=\"saleOrder("+data.orderList[i].orderNo+");\">" + data.orderList[i].orderNo  + "</a></td>";
-							+ "<td class=\"table-text\">" + data.orderList[i].sale.title + "</td>"
-							+ "<td class=\"table-text\">" + data.orderList[i].sale.salePrice + "</td>";
-				} else if(data.orderList[i].sale == null) {
-					result += "<td class=\"table-text\"><a onclick=\"auctionOrder("+data.orderList[i].orderNo+");\">" + data.orderList[i].orderNo  + "</a></td>";
-							+ "<td class=\"table-text\">" + data.orderList[i].auction.title + "</td>"
-							+ "<td class=\"table-text\">" + data.orderList[i].auction.bidPrice + "</td>";
-				}
+				result += "<td class=\"table-text\"><a onclick=\"saleOrder("+data.orderList[i].orderNo+");\">" + data.orderList[i].orderNo  + "</a></td>"
+						+ "<td class=\"table-text\">" + data.orderList[i].info + "</td>"
+						+ "<td class=\"table-text\">" + data.orderList[i].total + "</td>";
 
 				result += "<td class=\"table-text\">" + data.orderList[i].orderDate + "</td></tr>";
 			}		
@@ -69,13 +60,13 @@ function saleOrder(orderNo){
 	var type = 'sale';
 		
 	detailOrder(orderNo, type);
-	detailDelivery(orderNo);
+	//detailDelivery(orderNo);
 }
 function auctionOrder(orderNo){
 	var type = 'auction';
 		
 	detailOrder(orderNo, type);
-	detailDelivery(orderNo);
+	//detailDelivery(orderNo);
 }
 function detailOrder(orderNo, type) {	
 	$.ajax({
@@ -87,27 +78,54 @@ function detailOrder(orderNo, type) {
 			type: type
 		}
 	}).done(function( data ) {
+		$('#resultDetail')[0].innerHTML = '';
+		var result = '';
+		
+		if(data.orderDetailList[0].auction == null){
+			for(var i=0; i<data.orderDetailList.length; i++){
+				result += "<ul class=\"pop-style2\">"
+						+ "<li class=\"pop-style2-list\">"
+						+ "<ul class=\"pop-style3\">"
+						+ "<li>제목<input type=\"text\" id=\"viewTitle"+ data.orderDetailList[i].sale.saleNo +"\" value=\""+ data.orderDetailList[i].sale.title +"\" readonly /></li>"
+						+ "<li>가격<input type=\"number\" id=\"viewPrice"+ data.orderDetailList[i].sale.saleNo +"\" value=\""+ data.orderDetailList[i].sale.salePrice +"\" readonly /></li>"
+						+ "</ul></li>"
+						+ "<li class=\"pop-style2-list\">"
+						+ "<ul class=\"pop-style3\">"
+						+ "<li>택배사<input type=\"text\" id=\"viewCompany"+ data.orderDetailList[i].sale.saleNo +"\" readonly /></li>"
+						+ "<li>송장번호<input type=\"text\" id=\"viewWaybill"+ data.orderDetailList[i].sale.saleNo +"\" readonly /></li>"
+						+ "</ul></li></ul><br/>";
+			}	
+		} else if(data.orderDetailList[0].auction == null){
+			result += "<ul class=\"pop-style2\">"
+					+ "<li class=\"pop-style2-list\">"
+					+ "<ul class=\"pop-style3\">"
+					+ "<li>제목<input type=\"text\" id=\"viewTitle"+ data.orderDetailList[i].auction.auctionNo +"\" value=\""+ data.orderDetailList[i].auction.title +"\" readonly /></li>"
+					+ "<li>가격<input type=\"number\" id=\"viewPrice"+ data.orderDetailList[i].auction.auctionNo +"\" value=\""+ data.orderDetailList[i].auction.bidPrice +"\" readonly /></li>"
+					+ "</ul></li>"
+					+ "<li class=\"pop-style2-list\">"
+					+ "<ul class=\"pop-style3\">"
+					+ "<li>택배사<input type=\"text\" id=\"viewCompany"+ data.orderDetailList[i].auction.auctionNo +"\" readonly /></li>"
+					+ "<li>송장번호<input type=\"text\" id=\"viewWaybill"+ data.orderDetailList[i].auction.auctionNo +"\" readonly /></li>"
+					+ "</ul></li></ul>";
+		}
+		
+		$('#resultDetail').append(result);
+				
 		$("#pop-order-detail").css("display", "block");
 				
 	    var offset = $("#pop-order-detail").offset().top;
 		$("html").animate({scrollTop:offset},400);
 
-		$("#viewOrderNo").val(data.order.orderNo);
-		//$("#viewUserName").val(data.order.user.name);
+		$("#viewOrderNo").val(data.orderDetailList[0].order.orderNo);
+		//$("#viewUserName").val(data.orderDetailList[0].order.user.name);
 		$("#viewUserName").val('im');
-		$("#viewOrderDate").val(data.order.orderDate);
-		$("#viewPAddress").val(data.order.paddress);
-		$("#viewRName").val(data.order.rname);
-		$("#viewRPhone").val(data.order.rphone);
-		$("#viewRAddress").val(data.order.raddress);
-		
-		if(data.order.auction == null){
-			$("#viewTitle").val(data.order.sale.title);
-			$("#viewPrice").val(data.order.sale.salePrice);
-		} else if(data.order.sale == null) {
-			$("#viewTitle").val(data.order.auction.title);
-			$("#viewPrice").val(data.order.auction.bidPrice);
-		}
+		$("#viewOrderInfo").val(data.orderDetailList[0].order.info);
+		$("#viewOrderTotal").val(data.orderDetailList[0].order.total);
+		$("#viewOrderDate").val(data.orderDetailList[0].order.orderDate);
+		$("#viewPAddress").val(data.orderDetailList[0].order.paddress);
+		$("#viewRName").val(data.orderDetailList[0].order.rname);
+		$("#viewRPhone").val(data.orderDetailList[0].order.rphone);
+		$("#viewRAddress").val(data.orderDetailList[0].order.raddress);
     })
     .fail( function( textStatus ) {
         alert( "Request failed: " + textStatus );
@@ -191,9 +209,11 @@ function createSaleOrder() {
           }
     	}).done(function( data ) {
     		if(data.result == 'success'){
-    			window.alert("중고 책을 구입하였습니다.");
+    			window.alert("※주문성공※\n중고 책을 구입하였습니다.");
     	        
     			window.location = "/book/order/view";
+    		} else if(data.result == 'fail'){
+    			window.alert(data.reason);
     		}
     	})
       .fail( function( textStatus ) {

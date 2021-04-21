@@ -95,6 +95,15 @@
 		ORDER BY saleNo desc
     </select>
     
+    <select id="checkSalePrice" parameterType="integer" resultType="integer">
+        SELECT 
+			salePrice
+		FROM
+			Sale
+		WHERE
+			saleNo = #{saleNo}
+    </select>
+    
     <select id="recommend" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, author, genreNo
