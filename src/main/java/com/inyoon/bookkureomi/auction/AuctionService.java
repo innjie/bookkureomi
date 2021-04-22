@@ -12,6 +12,7 @@ public class AuctionService {
     @Autowired
     private AuctionMapper auctionMapper;
 
+    public int getAuctionNo() {return auctionMapper.getAuctionNo();}
     public List<Auction> getAllAuctionList() {
         return auctionMapper.getAllAuctionList();
     }

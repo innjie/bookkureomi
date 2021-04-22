@@ -1,20 +1,86 @@
 package com.inyoon.bookkureomi.auction;
 
+import com.inyoon.bookkureomi.domain.Auction;
+import com.inyoon.bookkureomi.domain.Genre;
+import com.inyoon.bookkureomi.domain.User;
+import com.inyoon.bookkureomi.genre.GenreService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+@Controller
+@RequestMapping("/book")
 public class AuctionController {
-//    //view auctionList
-//    @RequestMapping("/auction/view.do")
-//    public String auctionList(ModelMap model) throws Exception {
-//
-//    }
-//
+    @Autowired
+    private AuctionService auctionService;
+    @Autowired
+    private GenreService genreService;
+
+    //    //view auctionList
+    @GetMapping("/auction/page")
+    public String auctionPage()  {
+        System.out.println("page Controller in"); return "auction/page";
+    }
+    //
 //    //view auctionList by page
-//    @RequestMapping("/auction/viewAuctionListPage.do")
-//    public String auctionListPage(@RequestParam("page") String page,
-//                                  @ModelAttribute("auctionList") PagedListHolder<Auction> auctionList,
-//                                  BindingResult result) throws Exception {
-//
-//    }
-//
+    @GetMapping("/auction/list")
+    @ResponseBody
+    public Map<String, Object> listAuction() {
+        System.out.println("list Controller in");
+        List<Auction> auctionList = new ArrayList<>();
+        auctionList = auctionService.getAllAuctionList();
+
+        System.out.println(auctionList.size());
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("auctionList", auctionList);
+        return map;
+    }
+    //register auction ... insert auction
+    @PostMapping("/auction/insert")
+    public Map<String, Object> insertAuction(
+            @RequestParam("title") String title,
+            @RequestParam("publisher") String publisher,
+            @RequestParam("endDate") String endDate,
+            @RequestParam("bidPrice") int bidPrice,
+            @RequestParam("immediPrice") int immediPrice,
+            @RequestParam("info") String info,
+            @RequestParam("image") String image,
+            @RequestParam("genreType") String genreType,
+            @RequestParam("userNo") int userNo
+    ) throws Exception {
+        Auction auction = new Auction();
+        User user = new User();
+        user.setUserNo(userNo);
+        Genre genre = genreService.getGenreByName(genreType);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        Date endDateFormat = dateFormat.parse(endDate);
+        java.sql.Date d = new java.sql.Date(endDateFormat.getTime());
+
+        auction.setAuctionNo(auctionService.getAuctionNo());
+        auction.setImage(image);
+        auction.setTitle(title);
+        auction.setPublisher(publisher);
+        auction.setBidPrice(bidPrice);
+        auction.setImmediPrice(immediPrice);
+        auction.setInfo(info);
+        auction.setUser(user);
+        auction.setGenre(genre.getGenreNo());
+        auction.setEndDate(d);
+
+        auctionService.insertAuction(auction);
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("result", "success");
+        map.put("auctionNo", auction.getAuctionNo());
+
+        return map;
+    }
 //    //view  myAuctionList
 //    @RequestMapping("/auction/myList.do")
 //    public String myAuctionList(ModelMap model, HttpServletRequest request) throws Exception {
@@ -48,19 +114,7 @@ public class AuctionController {
 //                              HttpServletRequest request) throws Exception {
 //    }
 //
-//    //register auction ... auction form
-//    @RequestMapping(value = "/auction/insert.do", method = RequestMethod.GET)
-//    public String insertAuctionForm(@ModelAttribute("auctionCommand") AuctionCommand
-//                                            auctionCommand) throws Exception {
-//
-//    }
-//
-//    //register auction ... insert auction
-//    @RequestMapping(value = "/auction/insert.do", method = RequestMethod.POST)
-//    public String insertAuction(@Valid @ModelAttribute("auctionCommand") AuctionCommand
-//                                        auctionCommand,BindingResult bindingResult,HttpServletRequest request)
-//            throws Exception {
-//    }
+
 //
 //    //update auction ... form
 //    @RequestMapping(value="/auction/update.do", method=RequestMethod.GET)
