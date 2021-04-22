@@ -243,7 +243,7 @@ function setSaleDefault() {
 function createSaleForm(){
 	setSaleDefault();
 	closeSaleDetailPopup();
-	closeSaleOrderPopup();
+	closeOrderPopup();
 	setDefaultOrder();
 	$("#pop-sale-create").css("display", "block");
 	
