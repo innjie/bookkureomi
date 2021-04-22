@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface AuctionMapper {
+    public int getAuctionNo();
     public List<Auction> getAllAuctionList();
     public List<Auction> getAuctionListByUserNo(int userNo);
     public Auction getAuction(int auctionNo);
