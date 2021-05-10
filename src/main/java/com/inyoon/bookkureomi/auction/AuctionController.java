@@ -5,7 +5,6 @@ import com.inyoon.bookkureomi.domain.Genre;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.genre.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +41,7 @@ public class AuctionController {
     }
     //register auction ... insert auction
     @PostMapping("/auction/insert")
+    @ResponseBody
     public Map<String, Object> insertAuction(
             @RequestParam("title") String title,
             @RequestParam("publisher") String publisher,
@@ -53,14 +53,23 @@ public class AuctionController {
             @RequestParam("genreType") String genreType,
             @RequestParam("userNo") int userNo
     ) throws Exception {
+        System.out.println("insert controller in");
         Auction auction = new Auction();
         User user = new User();
         user.setUserNo(userNo);
         Genre genre = genreService.getGenreByName(genreType);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date endDateFormat = dateFormat.parse(endDate);
         java.sql.Date d = new java.sql.Date(endDateFormat.getTime());
+
+        Date today = new Date();
+        String todayString = dateFormat.format(today);
+        System.out.println("today : " + today);
+        System.out.println(todayString);
+        java.sql.Date regidate = java.sql.Date.valueOf(todayString);
+        System.out.println(regidate);
+
 
         auction.setAuctionNo(auctionService.getAuctionNo());
         auction.setImage(image);
@@ -68,9 +77,11 @@ public class AuctionController {
         auction.setPublisher(publisher);
         auction.setBidPrice(bidPrice);
         auction.setImmediPrice(immediPrice);
+        auction.setState("open");
+        auction.setRegiDate(regidate);
         auction.setInfo(info);
         auction.setUser(user);
-        auction.setGenre(genre.getGenreNo());
+        auction.setGenreNo(genre.getGenreNo());
         auction.setEndDate(d);
 
         auctionService.insertAuction(auction);

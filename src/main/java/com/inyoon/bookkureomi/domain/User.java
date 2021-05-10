@@ -1,7 +1,8 @@
 package com.inyoon.bookkureomi.domain;
 
-import com.sun.istack.Nullable;
+
 import lombok.Data;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
