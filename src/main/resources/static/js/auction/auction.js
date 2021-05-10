@@ -32,11 +32,16 @@ function listAuction() {
                     + "</li>";
 
                 //info
+                var endDate = data.auctionList[i].endDate.split("T");
+
+
+
                 result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
                     + "<li class=\"table-list-content-list-style\"><strong>" + data.auctionList[i].title + "</strong></li>"
-                    + "<li class=\"table-list-content-list-style\">" + data.auctionList[i].endDate + " / " + data.auctionList[i].publisher + "</li>"
-                    + "<li class=\"table-list-content-list-style\"> \\" + data.auctionList[i].bidPrice + " -> \\" + data.auctionList[i].immediPrice + "</li>"
-                    + "<li class=\"table-list-content-list-style\">" + data.auctionList[i].state + "</li>"
+                    + "<li class=\"table-list-content-list-style\">" + endDate[0] + " / " + data.auctionList[i].publisher + "</li>"
+                    + "<li class=\"table-list-content-list-style\"> 입찰가 : \\" +  data.auctionList[i].bidPrice + "</li>"
+                    + "<li class=\"table-list-content-list-style\"> 즉시구매가 : \\" + data.auctionList[i].immediPrice + "</li>"
+                    + "<li class=\"table-list-content-list-style\">  상태 :"+ data.auctionList[i].state + "</li>"
                     + "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale" + data.auctionList[i].auctionNo + "\" class=\"view-btn\" onClick=\"detailSale(" + data.auctionList[i].auctionNo + ")\">상세보기</button><li>"
                     + "</ul></li>";
 
@@ -104,18 +109,18 @@ function createAuction() {
     var header = $("meta[name='_csrf_header']").attr("content");
 
 
-    checkTitle(title);
-    checkPublisher(publisher);
-    checkBidPrice(bidPrice);
-    checkImmediPrice(immediPrice);
-    checkPrices(bidPrice, immediPrice);
-    checkGenre(genre);
-    checkInfo(info);
-    checkEndDate(endDate);
+    if(checkTitle(title)) return;
+    if(checkPublisher(publisher)) return;
+    if(checkBidPrice(bidPrice)) return;
+    if(checkImmediPrice(immediPrice)) return;
+    if(checkPrices(bidPrice, immediPrice)) return;
+    if(checkGenre(genreType)) return;
+    if(checkInfo(info)) return;
+    if(!checkEndDate(endDate)) return;
 
     if (confirm("경매를 등록하시겠습니까?")) {
         $.ajax({
-            url: "/book/auction/create",
+            url: "/book/auction/insert",
             method: 'POST',
             dataType: "json",
             data: {
@@ -139,7 +144,6 @@ function createAuction() {
                 $("#pop-sale-insert").css("display", "none");
 
                 listAuction();
-                // detailAuction(data.saleNo);
             }
         })
             .fail(function (textStatus) {
