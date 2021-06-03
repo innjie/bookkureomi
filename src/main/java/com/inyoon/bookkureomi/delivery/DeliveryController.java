@@ -35,11 +35,11 @@ public class DeliveryController {
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/delivery/detail")
 	public Map<String, Object> getDelivery(
-				@RequestParam("orderNo") int orderNo) throws Exception {
+				@RequestParam("odNo") int odNo) throws Exception {
 
 		Delivery delivery = new Delivery();
 		
-		delivery = deliveryService.getDelivery(orderNo);
+		delivery = deliveryService.getDelivery(odNo);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("delivery", delivery);
@@ -55,14 +55,12 @@ public class DeliveryController {
 				@RequestParam("company") String company,
 				@RequestParam("waybill") String waybill) throws Exception {
 
-		
-		
 		OrderDetail orderDetail = new OrderDetail();
 		orderDetail = orderService.getOrderBySale(saleNo);
 		
 		Delivery delivery = new Delivery();
 		
-		delivery.setOrder(orderDetail.getOrder());
+		delivery.setOrderDetail(orderDetail);
 		delivery.setCompany(company);
 		delivery.setWaybill(waybill);
 		
@@ -90,7 +88,7 @@ public class DeliveryController {
 		
 		Delivery delivery = new Delivery();
 		
-		delivery.setOrder(orderDetail.getOrder());
+		delivery.setOrderDetail(orderDetail);
 		delivery.setCompany(company);
 		delivery.setWaybill(waybill);
 		

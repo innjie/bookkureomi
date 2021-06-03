@@ -63,6 +63,7 @@
 		 
     <select id="getSaleOrder" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.OrderDetail">
         SELECT 
+			OrderDetail.odNo,
 			Orders.orderNo AS "order.orderNo", Orders.pAddress AS "order.pAddress", 
 			Orders.orderDate AS "order.orderDate", Orders.rPhone AS "order.rPhone",
 			Orders.rAddress AS "order.rAddress", Orders.rName AS "order.rName", 
@@ -81,6 +82,7 @@
     
     <select id="getAuctionOrder" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.OrderDetail">
         SELECT 
+			OrderDetail.odNo,
 			Orders.orderNo AS "order.orderNo", Orders.pAddress AS "order.pAddress", 
 			Orders.orderDate AS "order.orderDate", Orders.rPhone AS "order.rPhone",
 			Orders.rAddress AS "order.rAddress", Orders.rName AS "order.rName", 
@@ -100,6 +102,7 @@
     
     <select id="getOrderBySale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.OrderDetail">
         SELECT 
+			OrderDetail.odNo,
 			Orders.orderNo AS "order.orderNo", Orders.pAddress AS "order.pAddress", 
 			Orders.orderDate AS "order.orderDate", Orders.rPhone AS "order.rPhone",
 			Orders.rAddress AS "order.rAddress", Orders.rName AS "order.rName", 

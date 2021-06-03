@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.inyoon.bookkureomi.delivery.DeliveryService;
+import com.inyoon.bookkureomi.domain.Delivery;
 import com.inyoon.bookkureomi.domain.Order;
 import com.inyoon.bookkureomi.domain.OrderDetail;
 import com.inyoon.bookkureomi.domain.Recharge;
@@ -35,7 +37,9 @@ public class OrderController {
 	private SaleService saleService;
 	@Autowired
 	private PointService pointService;
-
+	@Autowired
+	private DeliveryService deliveryService;
+	
 	//order에 추가, 포인트 세팅, 포인트 사용 내역 추가, state 변경
 	@ApiOperation(value="중고 책 구매 ", notes="중고거래 책을 구매한다.")
 	@ResponseBody //@RestController 시 생략 가능
@@ -50,6 +54,8 @@ public class OrderController {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		int total = saleService.checkSalePrice(saleNo);
+		int nowPoint = pointService.checkPoint(1);
+		int nowPoint2 = pointService.checkPoint(2);
 		
 		User user = new User();
 		//user.setUserNo(1);
@@ -74,15 +80,15 @@ public class OrderController {
 		//1 -> userNo
 		Recharge recharge = new Recharge();
 		recharge.setRechargeNo(pointService.getRechargeNo(1));
-		if(pointService.checkPoint(1) < total) { //point와 금액 비교
+		if(nowPoint < total) { //point와 금액 비교
 			recharge.setTotalPoint(sale.getSalePrice());
 			
 			map.put("result", "fail");
 			map.put("reason", "※주문실패※\n주문 금액보다 충전된 포인트가 적습니다.");
 		} else {
-			recharge.setTotalPoint(pointService.checkPoint(1) - sale.getSalePrice());
+			recharge.setTotalPoint(nowPoint - sale.getSalePrice());
 		
-			recharge.setRcType("사용");
+			recharge.setRcType("using");
 			recharge.setRcPoint(-1 * sale.getSalePrice());
 			//recharge.setUser(user);
 			
@@ -90,6 +96,15 @@ public class OrderController {
 			orderService.orderSale(order);
 			orderService.orderDetailSale(orderDetail);
 			pointService.usePoint(recharge);
+
+			Recharge recharge2 = new Recharge();
+			recharge2.setTotalPoint(nowPoint2 + sale.getSalePrice());
+			
+			recharge2.setRechargeNo(pointService.getRechargeNo(1));
+			recharge2.setRcType("recharging");
+			recharge2.setRcMethod("selling");
+			recharge2.setRcPoint(1 * sale.getSalePrice());
+			pointService.rechargePoint(recharge2);
 			
 			map.put("result", "success");
 			map.put("order", order);
@@ -141,9 +156,16 @@ public class OrderController {
 			orderDetailList = orderService.getAuctionOrder(orderNo);
 		}
 		
+		List<Delivery> deliveryList = new ArrayList<Delivery>();
+		
+		for(int i = 0; i < orderDetailList.size(); i++) {
+			deliveryList.add(deliveryService.getDelivery(orderDetailList.get(i).getOdNo()));
+		}
+				
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("orderDetailList", orderDetailList);
-		
+		map.put("deliveryList", deliveryList);
+
         return map;
 	}
 }

@@ -6,16 +6,16 @@
 <mapper namespace="com.inyoon.bookkureomi.delivery.DeliveryMapper">
 	<select id="getDelivery" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Delivery">
         SELECT 
-			orderNo, company, waybill
+			odNo, company, waybill
 		FROM 
 			Delivery <!-- Orders 추가 -->
 		where
-			orderNo = #{orderNo}
+			odNo = #{odNo}
     </select>
     
     <insert id="addDelivery" parameterType="com.inyoon.bookkureomi.domain.Delivery">
-    	Insert into Delivery (orderNo, company, waybill)
-    	Values (#{order.orderNo}, #{company}, #{waybill})
+    	Insert into Delivery (odNo, company, waybill)
+    	Values (#{orderDetail.odNo}, #{company}, #{waybill})
     </insert>
     
     <update id="updateDelivery">
@@ -24,7 +24,7 @@
             company = #{company},
             waybill = #{waybill}
         WHERE 
-        	orderNo = #{order.orderNo}
+        	odNo = #{orderDetail.odNo}
     </update>
     
     <update id="updateSale"> <!--  parameterType="hashmap" -->

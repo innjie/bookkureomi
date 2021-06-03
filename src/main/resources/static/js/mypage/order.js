@@ -90,10 +90,18 @@ function detailOrder(orderNo, type) {
 						+ "<li>가격<input type=\"number\" id=\"viewPrice"+ data.orderDetailList[i].sale.saleNo +"\" value=\""+ data.orderDetailList[i].sale.salePrice +"\" readonly /></li>"
 						+ "</ul></li>"
 						+ "<li class=\"pop-style2-list\">"
-						+ "<ul class=\"pop-style3\">"
-						+ "<li>택배사<input type=\"text\" id=\"viewCompany"+ data.orderDetailList[i].sale.saleNo +"\" readonly /></li>"
-						+ "<li>송장번호<input type=\"text\" id=\"viewWaybill"+ data.orderDetailList[i].sale.saleNo +"\" readonly /></li>"
-						+ "</ul></li></ul><br/>";
+						+ "<ul class=\"pop-style3\">";
+				
+				if(data.deliveryList[i] != null){
+					result += "<li>택배사<input type=\"text\" id=\"viewCompany"+ data.orderDetailList[i].sale.saleNo +"\" value=\""+ data.deliveryList[i].company +"\" readonly /></li>"
+							+ "<li>송장번호<input type=\"number\" id=\"viewWaybill"+ data.orderDetailList[i].sale.saleNo +"\" value=\""+ data.deliveryList[i].waybill +"\" readonly /></li>"
+							+ "</ul></li></ul><br/>";
+				} else {
+					result += "<li>택배사<input type=\"text\" id=\"viewCompany"+ data.orderDetailList[i].sale.saleNo +"\" readonly /></li>"
+							+ "<li>송장번호<input type=\"number\" id=\"viewWaybill"+ data.orderDetailList[i].sale.saleNo +"\" readonly /></li>"
+							+ "</ul></li></ul><br/>";
+				}
+
 			}	
 		} else if(data.orderDetailList[0].auction == null){
 			result += "<ul class=\"pop-style2\">"
@@ -134,13 +142,13 @@ function detailOrder(orderNo, type) {
 
 
 //배송 정보
-function detailDelivery (orderNo){
+/*function detailDelivery (odNo){
 	$.ajax({
 		url: "/book/delivery/detail", 
 		method: 'GET',
 	    dataType: "json",
 		data: {
-			orderNo : orderNo
+			odNo : odNo
 		}
 	}).done(function( data ) {
 		$("#viewCompany").val(data.delivery.company);
@@ -149,7 +157,7 @@ function detailDelivery (orderNo){
     .fail( function( textStatus ) {
         alert( "Request failed: " + textStatus );
     });
-}
+}*/
 
 //주문 상세 팝업 닫기
 function closeOrderDetailPopup() {
@@ -183,6 +191,83 @@ function createSaleOrderForm(){
 	$("html").animate({scrollTop:offset},400);
 }
 function createSaleOrder() {
+	var saleNo = $("#viewSaleNo").val();
+	var pAddress = $("#orderPAddress").val();
+	var rName = $("#orderRName").val();
+	var rPhone = $("#orderRPhone").val();
+	var rAddress = $("#orderRAddress").val();
+	
+	var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    if(confirm("중고 책을 구입하시겠습니까?")) {
+    	$.ajax({
+    		url: "/book/order/create", 
+    		method: 'POST',
+    	    dataType: "json",
+    		data: {
+    			saleNo : saleNo,
+    			pAddress : pAddress,
+    			rName : rName,
+    			rPhone : rPhone,
+    			rAddress : rAddress
+    		},
+    		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+              xhr.setRequestHeader(header, token);
+          }
+    	}).done(function( data ) {
+    		if(data.result == 'success'){
+    			window.alert("※주문성공※\n중고 책을 구입하였습니다.");
+    	        
+    			window.location = "/book/order/view";
+    		} else if(data.result == 'fail'){
+    			window.alert(data.reason);
+    		}
+    	})
+      .fail( function( textStatus ) {
+          alert( "Request failed: " + textStatus );
+      });
+    }
+}
+
+//구매(주문) - 카트
+function createCartItemOrder() {
+	var checkBoxCheckedCount = $("#table-result input:checked").length;
+    var cnt = 0;
+
+	if(confirm("선택한 책을 구입하시겠습니까?")) {
+		$('#table-result input:checked').each(function(idx, obj) {
+			var saleNo = $(this).prop("id");
+			cnt++;
+					
+			$.ajax({
+	    		url: "/book/cart/delete", 
+	    		method: 'DELETE',
+	    	    dataType: "json",
+	    	    async: false,
+	    		data: {
+	    			saleNo : saleNo
+	    		},
+	    		beforeSend : function(xhr){   
+	                xhr.setRequestHeader(header, token);
+	            }
+	    	}).done(function( data ) {
+	    		if(data.result == 'success'){
+	    			if(checkBoxCheckedCount == cnt){
+	    				alert("선택하신 "+ cnt +"개의 책을 카트에서 삭제하였습니다.");
+	    				
+	    				listCartItem();
+	    			}
+	    		}
+	    	})
+	        .fail( function( textStatus ) {
+	            alert( "Request failed: " + textStatus );
+	        });
+	    });
+	}
+	
+	
+	
 	var saleNo = $("#viewSaleNo").val();
 	var pAddress = $("#orderPAddress").val();
 	var rName = $("#orderRName").val();

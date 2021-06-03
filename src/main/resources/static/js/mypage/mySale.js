@@ -97,6 +97,35 @@ function detailMySale(saleNo) {
     	//$('#viewInfo').prop('readonly', true);
 
 		
+		//주문 세팅
+		if(data.orderDetail != null){ //판매자 추가
+			$('#orderInfo')[0].innerHTML = '';
+			var infoOrder = '';
+			
+			infoOrder += "<ul class=\"pop-style2\">"
+							+ "<li class=\"pop-style2-list\">"
+							+ "<p class=\"text-size-17 text-highlight\">주문 정보</p>"
+							+ "<ul class=\"pop-style3\">"
+							+ "<li>주문번호 <input type=\"text\" id=\"viewOrderNo\" value=\"" + data.orderDetail.order.orderNo + "\" /></li>"
+						//	+ "<li>주문정보 <input type=\"text\" id=\"viewOrderInfo\" value=\"" + data.orderDetail.order.info + "\" /></li></li>"
+							+ "<li>총액 <input type=\"text\" id=\"viewOrderTotal\" value=\"" + data.orderDetail.order.total + "\" /></li>"
+							+ "<li>주문일 <input type=\"text\" id=\"viewOrderDate\" value=\"" + data.orderDetail.order.orderDate + "\" /></li>"
+						//	+ "<li>주문자 <input type=\"text\" id=\"viewUserName\" value=\"" + data.orderDetail.order.user.name + "\" /></li>"
+							+ "<li>주문자 주소 <input type=\"text\" id=\"viewPAddress\" value=\"" + data.orderDetail.order.paddress + "\" /></li>"
+							+ "<li>받는이 <input type=\"text\" id=\"viewRName\" value=\"" + data.orderDetail.order.rname + "\" /></li>"
+							+ "<li>받는이 전화번호 <input type=\"text\" id=\"viewRPhone\" value=\"" + data.orderDetail.order.rphone + "\" /></li>"
+							+ "<li>배송지 주소 <input type=\"text\" id=\"viewRAddress\" value=\"" + data.orderDetail.order.raddress + "\" /></li>"
+							+ "</ul>";
+			
+			$('#orderInfo').append(infoOrder);
+			
+			$("#pop-sale-detail").css("height","1000px");
+			$("#detailUL").css("height","800px");
+		} else {
+			$('#orderInfo')[0].innerHTML = '';
+		}
+		
+		
 		//배송 세팅
 		if(data.delivery != null){
 			deliveryInfoUpdate(data.delivery.company, data.delivery.waybill);
@@ -138,6 +167,8 @@ function detailMySale(saleNo) {
 //상세 팝업 닫기
 function closeMySaleDetailPopup() {
 	$("#pop-sale-detail").css("display", "none");
+	$("#pop-sale-detail").css("height","800px");
+	$("#detailUL").css("height","500px");
 }
 
 //추가 팝업 닫기
