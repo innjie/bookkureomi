@@ -4,6 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.inyoon.bookkureomi.delivery.DeliveryMapper">
+	<!-- 해당 주문의 배송 정보 확인  -->
 	<select id="getDelivery" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Delivery">
         SELECT 
 			odNo, company, waybill
@@ -13,11 +14,13 @@
 			odNo = #{odNo}
     </select>
     
+ 	<!-- 배송 정보 추가  -->   
     <insert id="addDelivery" parameterType="com.inyoon.bookkureomi.domain.Delivery">
     	Insert into Delivery (odNo, company, waybill)
     	Values (#{orderDetail.odNo}, #{company}, #{waybill})
     </insert>
     
+	<!-- 배송 정보 수정  -->
     <update id="updateDelivery">
     	UPDATE Delivery
     	SET
@@ -26,14 +29,5 @@
         WHERE 
         	odNo = #{orderDetail.odNo}
     </update>
-    
-    <update id="updateSale"> <!--  parameterType="hashmap" -->
-        UPDATE Sale
-        SET
-            salePrice = #{salePrice},
-            image = #{image},
-            info = #{info}
-        WHERE 
-        	saleNo = #{saleNo}
-    </update>
+
 </mapper>

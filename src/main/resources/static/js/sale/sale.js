@@ -161,7 +161,7 @@ function detailSale(saleNo) {
 		$("#viewImage").attr("src", data.sale.image);
 		
 		$("#viewSaleNo").val(data.sale.saleNo);
-		//$("#viewUser").val(data.sale.user.id);
+		$("#viewUser").val(data.sale.user.id);
 		$("#viewTitle").val(data.sale.title);
 		$("#viewPublisher").val(data.sale.publisher);
 		$("#viewAuthor").val(data.sale.author);
@@ -254,7 +254,6 @@ function createSale() {
 	var publisher = $("#insertPublisher").val();
 	var title = $("#insertTitle").val();
 	var costPrice = $("#insertCostPrice").val();
-	var userNo = 1;
 	var author = $("#insertAuthor").val();
 	var genreType = $("#insertGenreType").val();
 	var image = '/images/sale/0.png'; //폼처리?
@@ -305,7 +304,6 @@ function createSale() {
     			info : info, 
     			costPrice : costPrice,
     			image : image,
-    			userNo : userNo,
     			author : author,
     			genreType : genreType
     		},

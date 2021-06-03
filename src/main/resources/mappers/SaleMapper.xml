@@ -4,67 +4,72 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.inyoon.bookkureomi.sale.SaleMapper">
+	<!-- 새로운 판매번호 가져오기 -->
 	<select id="getSaleNo" resultType="integer">
         SELECT SALESEQ.nextval from dual
     </select>
 
+	<!-- 전체 판매 목록 확인  -->
 	<select id="getSaleList" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, author,
-			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"<!--  , 
-			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"-->
+			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"  , 
+			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"
 		FROM 
-			Sale, Genre, Users <!-- Users 추가 -->
+			Sale, Genre, Users 
 		where
 			Sale.userNo = Users.userNo
 			AND Sale.genreNo = Genre.genreNo
 		ORDER BY saleNo desc
     </select>
     
+ 	<!-- 해당 판매 정보 확인  -->
     <select id="getSale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, author, regiDate, state,
-			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"<!--, 
-			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"-->
+			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType", 
+			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"
 		FROM 
-			Sale, Genre<!--  , Users-->
+			Sale, Genre, Users
 		where
-			<!--  Sale.userNo = Users.userNo
-			AND -->Sale.genreNo = Genre.genreNo 
+			Sale.userNo = Users.userNo
+			AND Sale.genreNo = Genre.genreNo 
 			AND saleNo = #{saleNo}
     </select>
     
+ 	<!-- 제목으로 판매 검색  -->
     <select id="findSaleByTitle" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, author,
-			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"<!--  , 
-			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"-->
+			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"
 		FROM 
-			Sale, Genre, Users <!-- Users, genre 추가 -->
+			Sale, Genre
 		where
-			Sale.userNo = Users.userNo
-			AND Sale.genreNo = Genre.genreNo		
+			Sale.genreNo = Genre.genreNo		
 			AND title like  '%'|| #{title} ||'%' 
 		ORDER BY saleNo desc
     </select>
     
+	<!-- 장르로 판매 검색  -->
     <select id="findSaleByGenre" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, author, 
 			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"
 		FROM 
-			Sale, Genre <!-- Users, genre 추가 -->
+			Sale, Genre 
 		where
 			Sale.genreNo = Genre.genreNo 
 			AND genreType like  '%'|| #{genreType} ||'%'
 		ORDER BY saleNo desc
     </select>    
     
+ 	<!-- 판매 책 등록  -->
     <insert id="saleBook" parameterType="com.inyoon.bookkureomi.domain.Sale">
     	Insert into Sale (saleNo, publisher, title, costPrice, salePrice, image, info, userNo, author, genreNo)
-    	Values (#{saleNo}, #{publisher}, #{title}, #{costPrice}, #{salePrice}, #{image}, #{info}, 1<!--  #{user.userNo}-->, #{author}, #{genre.genreNo})
+    	Values (#{saleNo}, #{publisher}, #{title}, #{costPrice}, #{salePrice}, #{image}, #{info}, #{user.userNo}, #{author}, #{genre.genreNo})
     </insert>
     
+ 	<!-- 판매 책 수정 -->
     <update id="updateSale"> <!--  parameterType="hashmap" -->
         UPDATE Sale
         SET
@@ -75,19 +80,21 @@
         	saleNo = #{saleNo}
     </update>
     
-     <delete id="deleteSale" parameterType="integer">
+ 	<!-- 판매 책 삭제  -->
+    <delete id="deleteSale" parameterType="integer">
         DELETE FROM Sale
         WHERE 
         	saleNo = #{saleNo}
     </delete>
     
+ 	<!-- 나의 판매 내역 확인  -->
     <select id="getMySaleList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, author,
-			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"<!--  , 
-			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"-->
+			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType", 
+			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"
 		FROM 
-			Sale, Genre, Users <!-- Users 추가 -->
+			Sale, Genre, Users 
 		where
 			Sale.userNo = Users.userNo
 			AND Sale.genreNo = Genre.genreNo
@@ -95,14 +102,8 @@
 		ORDER BY saleNo desc
     </select>
     
-    <select id="checkSalePrice" parameterType="integer" resultType="integer">
-        SELECT 
-			salePrice
-		FROM
-			Sale
-		WHERE
-			saleNo = #{saleNo}
-    </select>
+    
+    
     
     <select id="recommend" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 

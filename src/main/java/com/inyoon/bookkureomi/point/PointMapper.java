@@ -11,7 +11,7 @@ public interface PointMapper {
 	public int getRechargeNo(int userNo);
 
 	public int checkPoint(int userNo);
-	public int checkHasPoint(int userNo);
+//	public int checkHasPoint(int userNo);
 	public void rechargePoint(Recharge recharge);
 	public void setPoint(Recharge recharge);
 	public void usePoint(Recharge recharge);

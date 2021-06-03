@@ -125,8 +125,7 @@ function detailOrder(orderNo, type) {
 		$("html").animate({scrollTop:offset},400);
 
 		$("#viewOrderNo").val(data.orderDetailList[0].order.orderNo);
-		//$("#viewUserName").val(data.orderDetailList[0].order.user.name);
-		$("#viewUserName").val('im');
+		$("#viewUserName").val(data.orderDetailList[0].order.user.name);
 		$("#viewOrderInfo").val(data.orderDetailList[0].order.info);
 		$("#viewOrderTotal").val(data.orderDetailList[0].order.total);
 		$("#viewOrderDate").val(data.orderDetailList[0].order.orderDate);

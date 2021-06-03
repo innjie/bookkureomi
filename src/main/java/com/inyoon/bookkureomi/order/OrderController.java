@@ -40,7 +40,16 @@ public class OrderController {
 	@Autowired
 	private DeliveryService deliveryService;
 	
-	//order에 추가, 포인트 세팅, 포인트 사용 내역 추가, state 변경
+	
+	int userNo = 1;	//session
+
+	@ApiOperation(value="나의 주문 화면 이동", notes="나의 주문 화면으로 이동한다.")
+	@GetMapping("/order/view")
+    public String viewOrder() {	
+        return "mypage/order";
+    }
+	
+	//order에 추가, orderDetail에 추가, 포인트 판매 세팅, 포인트 사용 내역 추가, state 변경
 	@ApiOperation(value="중고 책 구매 ", notes="중고거래 책을 구매한다.")
 	@ResponseBody //@RestController 시 생략 가능
 	@PostMapping("/order/create")
@@ -52,60 +61,63 @@ public class OrderController {
 			@RequestParam("rAddress") String rAddress) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
-
-		int total = saleService.checkSalePrice(saleNo);
-		int nowPoint = pointService.checkPoint(1);
-		int nowPoint2 = pointService.checkPoint(2);
+		
+		int orderNo = orderService.getOrderNo();
+		int odNo = orderService.getODNo();
 		
 		User user = new User();
-		//user.setUserNo(1);
+		user.setUserNo(userNo);
+	
+		int nowPoint = pointService.checkPoint(user.getUserNo());	//현재 포인트 확인
 		
 		Sale sale = new Sale();
 		sale = saleService.getSale(saleNo);
-				
-		Order order = new Order();
-		order.setOrderNo(orderService.getOrderNo());
-		order.setPAddress(pAddress);
-		order.setRName(rName);
-		order.setRPhone(rPhone);
-		order.setRAddress(rAddress);
-		order.setTotal(total);
-		order.setInfo(sale.getTitle());
+		int salePrice = sale.getSalePrice();
 		
-		OrderDetail orderDetail = new OrderDetail();
-		orderDetail.setOdNo(orderService.getODNo());
-		orderDetail.setOrder(order);
-		orderDetail.setSale(sale);
-		
-		//1 -> userNo
-		Recharge recharge = new Recharge();
-		recharge.setRechargeNo(pointService.getRechargeNo(1));
-		if(nowPoint < total) { //point와 금액 비교
-			recharge.setTotalPoint(sale.getSalePrice());
-			
+		if(nowPoint < salePrice) { //point와 금액 비교			
 			map.put("result", "fail");
 			map.put("reason", "※주문실패※\n주문 금액보다 충전된 포인트가 적습니다.");
-		} else {
-			recharge.setTotalPoint(nowPoint - sale.getSalePrice());
+		} else {		
+			//주문
+			Order order = new Order();
+			order.setOrderNo(orderNo);
+			order.setPAddress(pAddress);
+			order.setRName(rName);
+			order.setRPhone(rPhone);
+			order.setRAddress(rAddress);
+			order.setTotal(salePrice);
+			order.setInfo(sale.getTitle());
+			order.setUser(user);
+			
+			//주문 상세
+			OrderDetail orderDetail = new OrderDetail();
+			orderDetail.setOdNo(odNo);
+			orderDetail.setOrder(order);
+			orderDetail.setSale(sale);
+			
+			//충전 - 이용
+			Recharge rechargeUsing = new Recharge();
+			rechargeUsing.setRechargeNo(pointService.getRechargeNo(userNo));
+			rechargeUsing.setTotalPoint(nowPoint - sale.getSalePrice());	
+			rechargeUsing.setRcType("using");
+			rechargeUsing.setRcPoint(-1 * sale.getSalePrice());
+			rechargeUsing.setUser(user);
+			
+			//충전 - 판매
+			int sellerNo = sale.getUser().getUserNo();
+			int saleUserPoint = pointService.checkPoint(sellerNo);
+			User seller = new User();
+			seller.setUserNo(sellerNo);
+			Recharge rechargeSelling = new Recharge();
+			rechargeSelling.setTotalPoint(saleUserPoint + sale.getSalePrice());			
+			rechargeSelling.setRechargeNo(pointService.getRechargeNo(sellerNo));
+			rechargeSelling.setRcType("recharging");
+			rechargeSelling.setRcMethod("selling");
+			rechargeSelling.setRcPoint((int)(0.9 * sale.getSalePrice()));
+			rechargeSelling.setUser(seller);
 		
-			recharge.setRcType("using");
-			recharge.setRcPoint(-1 * sale.getSalePrice());
-			//recharge.setUser(user);
-			
-			//mapper.xml user 수정 필요 (point, order)
-			orderService.orderSale(order);
-			orderService.orderDetailSale(orderDetail);
-			pointService.usePoint(recharge);
+			orderService.orderSale(orderDetail, rechargeUsing, rechargeSelling);	//order 추가
 
-			Recharge recharge2 = new Recharge();
-			recharge2.setTotalPoint(nowPoint2 + sale.getSalePrice());
-			
-			recharge2.setRechargeNo(pointService.getRechargeNo(1));
-			recharge2.setRcType("recharging");
-			recharge2.setRcMethod("selling");
-			recharge2.setRcPoint(1 * sale.getSalePrice());
-			pointService.rechargePoint(recharge2);
-			
 			map.put("result", "success");
 			map.put("order", order);
 		}
@@ -113,19 +125,11 @@ public class OrderController {
         return map;
     }
 	
-	@ApiOperation(value="나의 주문 화면 이동", notes="나의 주문 화면으로 이동한다.")
-	@GetMapping("/order/view")
-    public String viewOrder() {	
-        return "mypage/order";
-    }
-	
 	@ApiOperation(value="나의 주문 목록", notes="나의 주문 목록을 보여준다.")
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/order/list")
 	public Map<String, Object> listOrder(
 			@RequestParam("type") String type) {
-
-		int userNo = 1;
 		
 		List<Order> orderList = new ArrayList<>();	
 		
