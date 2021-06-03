@@ -4,6 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.inyoon.bookkureomi.cart.CartMapper">
+	<!-- 카트 아이템 목록 확인  -->
 	<select id="checkCart" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
         SELECT 
 			Cart.saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, genreNo, Cart.userNo
@@ -14,21 +15,25 @@
 			AND Cart.saleNo = Sale.saleNo
     </select>
     
+    <!-- 해당 카트아이템 추가  -->
     <insert id="addCartItem" parameterType="com.inyoon.bookkureomi.domain.CartItem">
     	Insert into Cart (saleNo, userNo)
     	Values (#{sale.saleNo}, #{user.userNo})
     </insert>
     
+    <!-- 해당 아이템을 카트에서 삭제  -->
     <delete id="deleteCartItem" parameterType="com.inyoon.bookkureomi.domain.CartItem">
         DELETE FROM Cart
         WHERE userNo = #{user.userNo} and saleNo = #{sale.saleNo}
     </delete>
     
+    <!-- 해당 사용자의 카트 아이템 목록 삭제  -->
     <delete id="deleteAllCartItem" parameterType="integer">
         DELETE FROM Cart
         WHERE userNo = #{userNo}
     </delete>
     
+    <!-- 해당 아이템이 카트에 있는지 확인  -->
     <select id="checkCartItem" parameterType="com.inyoon.bookkureomi.domain.CartItem" resultType="integer">
         SELECT 
 			count(*)

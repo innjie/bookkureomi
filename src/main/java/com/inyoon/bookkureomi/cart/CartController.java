@@ -29,6 +29,8 @@ public class CartController {
 	@Autowired
 	private CartService cartService;
 	
+	int userNo = 1; //session
+
 	
 	@ApiOperation(value="카트 화면 이동", notes="카트 화면으로 이동한다.")
 	@GetMapping("/cart/view")
@@ -39,10 +41,8 @@ public class CartController {
 	@ApiOperation(value="카트 내용물 목록", notes="카트 내용물 전체 목록을 보여준다.")
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/cart/list")
-	public Map<String, Object> listCartItem() {
-
-		int userNo = 1;
-		
+	public Map<String, Object> listCartItem() {		
+	
 		List<Sale> itemList = new ArrayList<>();	
 		itemList = cartService.checkCart(userNo);
 	
@@ -57,8 +57,6 @@ public class CartController {
 	@PostMapping("/cart/create")
 	public Map<String, Object> createCartItem(
 			@RequestParam("saleNo") int saleNo) {
-
-		int userNo = 1;
 		
 		Sale sale = new Sale();
 		sale.setSaleNo(saleNo);
@@ -72,7 +70,7 @@ public class CartController {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		if(cartService.checkCartItem(cartItem) == 0) { //userNo 수정 필요 .. mapper.xml
+		if(cartService.checkCartItem(cartItem) == 0) {
 			cartService.addCartItem(cartItem);
 			map.put("result", "success");
 		} else {
@@ -87,8 +85,6 @@ public class CartController {
 	@DeleteMapping("/cart/delete")
 	public Map<String, Object> deleteCartItem(
 			@RequestParam(value="saleNo", defaultValue = "-1", required = false) int saleNo) {
-
-		int userNo = 1;
 		
 		if(saleNo != -1) {
 			Sale sale = new Sale();

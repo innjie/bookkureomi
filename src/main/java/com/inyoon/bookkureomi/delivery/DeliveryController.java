@@ -37,8 +37,7 @@ public class DeliveryController {
 	public Map<String, Object> getDelivery(
 				@RequestParam("odNo") int odNo) throws Exception {
 
-		Delivery delivery = new Delivery();
-		
+		Delivery delivery = new Delivery();	
 		delivery = deliveryService.getDelivery(odNo);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -58,8 +57,7 @@ public class DeliveryController {
 		OrderDetail orderDetail = new OrderDetail();
 		orderDetail = orderService.getOrderBySale(saleNo);
 		
-		Delivery delivery = new Delivery();
-		
+		Delivery delivery = new Delivery();		
 		delivery.setOrderDetail(orderDetail);
 		delivery.setCompany(company);
 		delivery.setWaybill(waybill);
@@ -81,13 +79,10 @@ public class DeliveryController {
 				@RequestParam("company") String company,
 				@RequestParam("waybill") String waybill) throws Exception {
 
-		
-		
 		OrderDetail orderDetail = new OrderDetail();
 		orderDetail = orderService.getOrderBySale(saleNo);
 		
-		Delivery delivery = new Delivery();
-		
+		Delivery delivery = new Delivery();		
 		delivery.setOrderDetail(orderDetail);
 		delivery.setCompany(company);
 		delivery.setWaybill(waybill);

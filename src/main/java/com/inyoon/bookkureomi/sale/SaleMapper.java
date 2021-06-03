@@ -21,6 +21,4 @@ public interface SaleMapper {
 
 	public List<Sale> getMySaleList(int userNo);
 	public List<Sale> recommend(int genreNo);
-
-	public int checkSalePrice(int saleNo);
 }

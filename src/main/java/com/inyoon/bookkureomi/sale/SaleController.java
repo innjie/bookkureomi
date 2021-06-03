@@ -55,6 +55,8 @@ public class SaleController{
 	private OrderService orderService;
 	
 	
+	int userNo = 1; //session
+	
 	@ApiOperation(value="중고거래 화면 이동", notes="중고거래 목록화면으로 이동한다.")
 	@GetMapping("/sale/view")
     public String viewSale() {		
@@ -107,10 +109,10 @@ public class SaleController{
 		
 		Delivery delivery = null;		
 		OrderDetail orderDetail = new OrderDetail();
-		orderDetail = orderService.getOrderBySale(saleNo);
+		orderDetail = orderService.getOrderBySale(saleNo);	//주문 정보 확인
 				
 		if(orderDetail != null) {
-			delivery = deliveryService.getDelivery(orderDetail.getOdNo());
+			delivery = deliveryService.getDelivery(orderDetail.getOdNo());	//배송 정보 확인
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -132,7 +134,6 @@ public class SaleController{
 			@RequestParam("info") String info,
 			@RequestParam("costPrice") int costPrice,
 			@RequestParam("image") String image,
-			@RequestParam("userNo") int userNo,
 			@RequestParam("author") String author,
 			@RequestParam("genreType") String genreType) throws Exception {
 		
@@ -209,8 +210,6 @@ public class SaleController{
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/mypage/sale/list")
 	public Map<String, Object> listMySale() {
-
-		int userNo = 1;
 		
 		List<Sale> saleList = new ArrayList<>();	
 		saleList = saleService.getMySaleList(userNo);

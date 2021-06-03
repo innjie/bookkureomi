@@ -81,7 +81,7 @@ function detailMySale(saleNo) {
 		$("#viewImage").attr("src", data.sale.image);
 		
 		$("#viewSaleNo").val(data.sale.saleNo);
-		//$("#viewUser").val(data.sale.user.id);
+		$("#viewUser").val(data.sale.user.id);
 		$("#viewTitle").val(data.sale.title);
 		$("#viewPublisher").val(data.sale.publisher);
 		$("#viewAuthor").val(data.sale.author);
@@ -110,7 +110,7 @@ function detailMySale(saleNo) {
 						//	+ "<li>주문정보 <input type=\"text\" id=\"viewOrderInfo\" value=\"" + data.orderDetail.order.info + "\" /></li></li>"
 							+ "<li>총액 <input type=\"text\" id=\"viewOrderTotal\" value=\"" + data.orderDetail.order.total + "\" /></li>"
 							+ "<li>주문일 <input type=\"text\" id=\"viewOrderDate\" value=\"" + data.orderDetail.order.orderDate + "\" /></li>"
-						//	+ "<li>주문자 <input type=\"text\" id=\"viewUserName\" value=\"" + data.orderDetail.order.user.name + "\" /></li>"
+							+ "<li>주문자 <input type=\"text\" id=\"viewUserName\" value=\"" + data.orderDetail.order.user.name + "\" /></li>"
 							+ "<li>주문자 주소 <input type=\"text\" id=\"viewPAddress\" value=\"" + data.orderDetail.order.paddress + "\" /></li>"
 							+ "<li>받는이 <input type=\"text\" id=\"viewRName\" value=\"" + data.orderDetail.order.rname + "\" /></li>"
 							+ "<li>받는이 전화번호 <input type=\"text\" id=\"viewRPhone\" value=\"" + data.orderDetail.order.rphone + "\" /></li>"
@@ -202,7 +202,6 @@ function createMySale() {
 	var publisher = $("#insertPublisher").val();
 	var title = $("#insertTitle").val();
 	var costPrice = $("#insertCostPrice").val();
-	var userNo = 1;
 	var author = $("#insertAuthor").val();
 	var genreType = $("#insertGenreType").val();
 	var image = '/images/sale/0.png'; //폼처리?
@@ -253,7 +252,6 @@ function createMySale() {
     			info : info, 
     			costPrice : costPrice,
     			image : image,
-    			userNo : userNo,
     			author : author,
     			genreType : genreType
     		},

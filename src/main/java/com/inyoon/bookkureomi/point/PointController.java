@@ -36,25 +36,25 @@ public class PointController {
 	@Autowired
     private KakaoPayService kakaoPayService;
 	
+	int userNo = 1; //session
+	
 	@ApiOperation(value="포인트 확인 화면 이동", notes="포인트 확인 화면으로 이동한다.")
 	@GetMapping("/point/view")
     public String viewPoint() {	
         return "point/point";
     }
 	
-	
 	@ApiOperation(value="포인트 확인", notes="포인트를 확인한다.")
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/point/detail")
 	public Map<String, Object> detailPoint() throws Exception {
 
-		//int point = pointService.checkPoint(userNo1);
-		int point = 0;
+		int point = pointService.checkPoint(userNo);
 		
-		if(pointService.checkHasPoint(1) != 0) {
-			point = pointService.checkPoint(1);
+/*		if(pointService.checkHasPoint(userNo) != 0) { // 가입 시 기본으로 포인트 0/1000 추가시키기. -> 조건문 통으로 삭제
+			point = pointService.checkPoint(userNo);
 		}
-		
+*/		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("point", point);
 		
@@ -67,8 +67,7 @@ public class PointController {
 	public Map<String, Object> listPoint() {
 
 		List<Recharge> rechargeList = new ArrayList<Recharge>();
-		//rechargeList = pointService.getRechargeList(userNo);
-		rechargeList = pointService.getRechargeList(1);
+		rechargeList = pointService.getRechargeList(userNo);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rechargeList", rechargeList);
@@ -85,21 +84,21 @@ public class PointController {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		User user = new User();
-		user.setUserNo(1);
+		user.setUserNo(userNo);
 		
 		Recharge recharge = new Recharge();
-		//recharge.setRechargeNo(pointService.getRechargeNo(userNo));
-		//recharge.setTotalPoint(pointService.checkPoint(userNo) + Integer.parseInt(rcPoint));
-		recharge.setRechargeNo(pointService.getRechargeNo(1));
-		if(pointService.checkHasPoint(1) != 0) {
-			recharge.setTotalPoint(Integer.parseInt(rcPoint));
-		} else {
-			recharge.setTotalPoint(pointService.checkPoint(1) + Integer.parseInt(rcPoint));
-		}
 		recharge.setRcType("recharging");
 		recharge.setRcMethod("kakao");
 		recharge.setRcPoint(Integer.parseInt(rcPoint));
 		recharge.setUser(user);
+		recharge.setRechargeNo(pointService.getRechargeNo(userNo));
+		recharge.setTotalPoint(pointService.checkPoint(userNo) + Integer.parseInt(rcPoint));
+
+		/*		if(pointService.checkHasPoint(userNo) != 0) {	//기본으로 가입 시 포인트 추가 -> 조건문 필요없음
+			recharge.setTotalPoint(Integer.parseInt(rcPoint));
+		} else {
+			recharge.setTotalPoint(pointService.checkPoint(userNo) + Integer.parseInt(rcPoint));
+		}*/
 		
 		pointService.rechargePoint(recharge);
 				

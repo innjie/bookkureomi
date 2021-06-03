@@ -4,19 +4,22 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.inyoon.bookkureomi.order.OrderMapper">
+	<!-- 새로운 주문번호 가져오기 -->
 	<select id="getOrderNo" resultType="integer">
         SELECT ORDERSEQ.nextval from dual
     </select>
     
+	<!-- 새로운 주문상세번호 가져오기 -->
     <select id="getODNo" resultType="integer">
         SELECT ORDERDETAILSEQ.nextval from dual
     </select>
     
+	<!-- 해당 유저번호의 일반 거래 주문 목록 확인 -->
 	<select id="getSaleOrderList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
         SELECT distinct
 			Orders.orderNo, orderDate, info, total	
 		FROM 
-			Orders, OrderDetail <!-- Sale, Auction, Users 추가 -->
+			Orders, OrderDetail 
 		where
 			userNo = #{userNo}
 			AND Orders.orderNo = OrderDetail.orderNo
@@ -47,11 +50,12 @@
 		 --> 
     </select>
     
+ 	<!-- 해당 유저번호의 경매 주문 목록 확인 -->
     <select id="getAuctionOrderList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
         SELECT distinct
 			orderNo, orderDate, info, total	
 		FROM 
-			Orders, OrderDetail <!-- Sale, Auction, Users 추가 -->
+			Orders, OrderDetail 
 		where
 			userNo = #{userNo}
 			AND Orders.orderNo = OrderDetail.orderNo
@@ -61,6 +65,7 @@
 	</select>
    
 		 
+	<!-- 해당 일반 거래 주문번호의 상세 주문 정보 확인 (주문자 입장에서 주문 확인)-->
     <select id="getSaleOrder" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.OrderDetail">
         SELECT 
 			OrderDetail.odNo,
@@ -68,18 +73,20 @@
 			Orders.orderDate AS "order.orderDate", Orders.rPhone AS "order.rPhone",
 			Orders.rAddress AS "order.rAddress", Orders.rName AS "order.rName", 
 			Orders.info AS "order.info", Orders.total AS "order.total",
-			Sale.saleNo AS "sale.saleNo", Sale.title AS "sale.title", Sale.salePrice AS "sale.salePrice" <!--  ,
-			userNo -->
+			Sale.saleNo AS "sale.saleNo", Sale.title AS "sale.title", Sale.salePrice AS "sale.salePrice", 
+			Sale.userNo AS "order.user.userNo", name AS "order.user.name", id AS "order.user.id"
 		FROM 
-			OrderDetail, Orders, Sale <!-- Sale, Auction, User 추가 -->
+			OrderDetail, Orders, Sale, Users
 		where
-			OrderDetail.orderNo = #{orderNo}
+			Orders.userNo = Users.userNo
+			AND OrderDetail.orderNo = #{orderNo}
 			AND OrderDetail.saleNo = Sale.saleNo
 			AND OrderDetail.orderNo = Orders.orderNo
 		ORDER BY
 			Sale.saleNo
     </select>
     
+ 	<!-- 해당 경매 주문번호의 상세 주문 정보 확인 (주문자 입장에서 주문 확인) -->
     <select id="getAuctionOrder" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.OrderDetail">
         SELECT 
 			OrderDetail.odNo,
@@ -87,19 +94,20 @@
 			Orders.orderDate AS "order.orderDate", Orders.rPhone AS "order.rPhone",
 			Orders.rAddress AS "order.rAddress", Orders.rName AS "order.rName", 
 			Orders.info AS "order.info", Orders.total AS "order.total",
-			Auction.auctionNo AS "auction.auctionNo", Auction.title AS "auction.title", Auction.bidPrice AS "auction.bidPrice" <!--  ,
-			userNo -->
+			Auction.auctionNo AS "auction.auctionNo", Auction.title AS "auction.title", Auction.bidPrice AS "auction.bidPrice", 
+			Auction.userNo AS "order.user.userNo", name AS "order.user.name", id AS "order.user.id"
 		FROM 
-			OrderDetail, Orders, Auction <!-- Sale, Auction, User 추가 -->
+			OrderDetail, Orders, Auction, Users
 		where
-			OrderDetail.orderNo = #{orderNo}
+			Orders.userNo = Users.userNo
+			AND OrderDetail.orderNo = #{orderNo}
 			AND OrderDetail.auctionNo = Auction.auctionNo
 			AND OrderDetail.orderNo = Orders.orderNo
 		ORDER BY
 			Auction.auctionNo
     </select>
     
-    
+  	<!-- 해당 판매번호로 상세 주문 정보 확인 (판매자 입장에서 주문 확인) -->
     <select id="getOrderBySale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.OrderDetail">
         SELECT 
 			OrderDetail.odNo,
@@ -107,29 +115,30 @@
 			Orders.orderDate AS "order.orderDate", Orders.rPhone AS "order.rPhone",
 			Orders.rAddress AS "order.rAddress", Orders.rName AS "order.rName", 
 			Orders.info AS "order.info", Orders.total AS "order.total",
-			Sale.saleNo AS "sale.saleNo", Sale.title AS "sale.title", Sale.salePrice AS "sale.salePrice" <!--  ,
-			userNo -->
+			Sale.saleNo AS "sale.saleNo", Sale.title AS "sale.title", Sale.salePrice AS "sale.salePrice", 
+			Sale.userNo AS "order.user.userNo", name AS "order.user.name", id AS "order.user.id"
 		FROM 
-			OrderDetail, Orders, Sale <!-- Sale, Auction, User 추가 -->
+			OrderDetail, Orders, Sale, Users
 		where
-			OrderDetail.saleNo = #{saleNo}
+			Orders.userNo = Users.userNo
+			AND OrderDetail.saleNo = #{saleNo}
 			AND OrderDetail.saleNo = Sale.saleNo
 			AND OrderDetail.orderNo = Orders.orderNo
     </select>
     
-    
-    
+  	<!-- order 추가 -->
     <insert id="orderSale" parameterType="com.inyoon.bookkureomi.domain.Order">
     	Insert into Orders (orderNo, userNo, pAddress, rAddress, rName, rPhone, total, info)
     	Values (#{orderNo}, 1, #{pAddress}, #{rAddress}, #{rName}, #{rPhone}, #{total}, #{info})
     </insert>
     
+  	<!-- orderDetail 추가 -->
     <insert id="orderDetailSale" parameterType="com.inyoon.bookkureomi.domain.OrderDetail">
     	Insert into OrderDetail (odNo, orderNo, saleNo)
     	Values (#{odNo}, #{order.orderNo}, #{sale.saleNo})
     </insert>
     
-        
+  	<!-- 해당 판매의 판매 상태 close로 변경 -->
     <update id="updateSaleStateClose" parameterType="integer">
         UPDATE Sale
         SET
@@ -137,6 +146,10 @@
         WHERE 
         	saleNo = #{saleNo}
     </update>
+    
+    
+    
+    
     
     <insert id="orderAuction" parameterType="com.inyoon.bookkureomi.domain.Order">
     	Insert into Orders (orderNo, userNo, pAddress, rAddress, rName, rPhone, total, info)
