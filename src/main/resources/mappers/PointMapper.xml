@@ -30,7 +30,7 @@
 			Recharge <!-- Sale, Users 추가 -->
 		where
 			userNo = #{userNo}
-			AND rechargeNo = (SELECT NVL(max(rechargeNo), 0) FROM Recharge)
+			AND rechargeNo = (SELECT NVL(max(rechargeNo), 0) FROM Recharge where userNo = #{userNo})
     </select>
     
     <select id="checkHasPoint" parameterType="integer" resultType="integer">
@@ -44,7 +44,7 @@
     
     <insert id="rechargePoint" parameterType="com.inyoon.bookkureomi.domain.Recharge">
     	Insert into Recharge (rechargeNo, userNo, rcPoint, totalPoint, rcMethod, rcType)
-    	Values (#{rechargeNo}, #{user.userNo}, #{rcPoint}, #{totalPoint}, #{rcMethod}, #{rcType})
+    	Values (#{rechargeNo}, 2, #{rcPoint}, #{totalPoint}, #{rcMethod}, #{rcType})
     </insert>
     
     <update id="setPoint"> <!--  parameterType="hashmap" -->

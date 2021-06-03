@@ -96,7 +96,7 @@ public class PointController {
 		} else {
 			recharge.setTotalPoint(pointService.checkPoint(1) + Integer.parseInt(rcPoint));
 		}
-		recharge.setRcType("충전");
+		recharge.setRcType("recharging");
 		recharge.setRcMethod("kakao");
 		recharge.setRcPoint(Integer.parseInt(rcPoint));
 		recharge.setUser(user);

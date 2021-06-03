@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.inyoon.bookkureomi.delivery.DeliveryService;
 import com.inyoon.bookkureomi.domain.Delivery;
 import com.inyoon.bookkureomi.domain.Genre;
+import com.inyoon.bookkureomi.domain.Order;
 import com.inyoon.bookkureomi.domain.OrderDetail;
 import com.inyoon.bookkureomi.domain.Sale;
 import com.inyoon.bookkureomi.domain.User;
@@ -107,14 +108,15 @@ public class SaleController{
 		Delivery delivery = null;		
 		OrderDetail orderDetail = new OrderDetail();
 		orderDetail = orderService.getOrderBySale(saleNo);
-		
+				
 		if(orderDetail != null) {
-			delivery = deliveryService.getDelivery(orderDetail.getOrder().getOrderNo());
+			delivery = deliveryService.getDelivery(orderDetail.getOdNo());
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sale", sale);
 		map.put("delivery", delivery);
+		map.put("orderDetail", orderDetail);
 		
         return map;
 	}
