@@ -44,9 +44,9 @@
         DELETE FROM Auction
         WHERE auctionNo = #{auctionNo}
     </delete>
-    <select id="findAuction" parameterType="integer">
+    <select id="findAuction" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Auction">
         SELECT
-            auctionNo, userNo, title, publisher, image, info, regiDate, endDate, state, bidprice, price, genreNo
+            auctionNo, userNo, title, publisher, image, info, regiDate, endDate, state, bidprice, price AS immediPrice, genreNo
         FROM Auction
         WHERE
             title LIKE '%' || #{title} || '%'

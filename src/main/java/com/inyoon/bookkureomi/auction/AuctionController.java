@@ -29,11 +29,8 @@ public class AuctionController {
     @GetMapping("/auction/list")
     @ResponseBody
     public Map<String, Object> listAuction() {
-        System.out.println("list Controller in");
         List<Auction> auctionList = new ArrayList<>();
         auctionList = auctionService.getAllAuctionList();
-
-        System.out.println(auctionList.size());
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("auctionList", auctionList);
@@ -90,6 +87,17 @@ public class AuctionController {
         map.put("result", "success");
         map.put("auctionNo", auction.getAuctionNo());
 
+        return map;
+    }
+
+    @ResponseBody
+    @GetMapping("/auction/find")
+    public Map<String, Object> findAuction(@RequestParam("title") String title) {
+        List<Auction> auctionList = new ArrayList<>();
+        auctionList = auctionService.findAuction(title);
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("auctionList", auctionList);
         return map;
     }
 //    //view  myAuctionList
