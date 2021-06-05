@@ -25,6 +25,7 @@ public class UserConfig extends WebSecurityConfigurerAdapter {
                 ).permitAll()
                 .antMatchers("/user/mypage/**").hasRole("USER")
 
+                //security_login
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/book/user/login")
@@ -35,6 +36,7 @@ public class UserConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(new LoginSuccessHandler())
                 .permitAll()
 
+                //security_logout
                 .and()
                 .logout()
                 .logoutUrl("/book/user/logout")

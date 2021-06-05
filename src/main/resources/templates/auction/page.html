@@ -84,6 +84,49 @@
             </div>
         </div>
 
+        <div id="pop-sale-detail" class="pop">
+            <h2>중고 서적 뷰</h2>
+            <input type="hidden" id="viewAuctionNo" />
+            <ul class="pop-style1">
+                <li class="pop-style1-list">
+                    <ul class="pop-style2">
+                        <li class="pop-style2-list">
+                            <img src="" id="viewImage" class="pop-img"/>
+                        </li>
+                        <li class="pop-style2-list">
+                            <ul class="pop-style3">
+                                <li>
+                                    제목 <input type="text" id="viewTitle" />
+                                </li>
+                                <li>
+                                    출판사 <input type="text" id="viewPublisher" />
+                                </li>
+                                <li>
+                                    마감기한 <input type="text" id="viewEndDate"/>
+                                </li>
+                                <li>
+                                    입찰가 <input type="number" id="viewBidPrice" />
+                                </li>
+                                <li>
+                                    즉시구매가 <input type="number" id="viewImmediPrice" />
+                                </li>
+                                <li>
+                                    장르 <input type="text" id="viewGenreType" />
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="pop-style1-list">
+                    정보<br>
+                    <textarea id="viewInfo"></textarea>
+                </li>
+                <li class="pop-style1-list" id="deliveryInfo">
+                </li>
+            </ul>
+            <div class="pop-btn-style" id="buttonResult"></div>
+        </div>
+
     </div>
 </section>
 </body>
