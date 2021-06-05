@@ -31,8 +31,6 @@ public class AuctionService {
     public void deleteAuction(int auctionNo) {
         auctionMapper.deleteAuction(auctionNo);
     }
-    public void findAuction(String title) {
-        auctionMapper.findAuction(title);
-    }
+    public List<Auction> findAuction(String title) { return auctionMapper.findAuction(title); }
 
 }
