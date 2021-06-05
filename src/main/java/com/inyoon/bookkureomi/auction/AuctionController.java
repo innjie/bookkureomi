@@ -119,12 +119,23 @@ public class AuctionController {
 //                                          @ModelAttribute("auctionList") PagedListHolder<Auction> auctionList, BindingResult result) throws Exception {
 //    }
 //
-//    //view auction
-//    @RequestMapping("/auction/view.do")
-//    public String viewAuction(@RequestParam("aNo") int aNo, ModelMap model,
-//                              HttpServletRequest request) throws Exception {
-//    }
-//
+    //view auction
+    @GetMapping("/auction/detail")
+    @ResponseBody
+    public Map<String, Object> viewAuction(@RequestParam("auctionNo") int auctionNo) throws Exception {
+        Auction auction = new Auction();
+        System.out.println("auction detail controller in");
+        auction = auctionService.getAuction(auctionNo);
+        auction.setGenreType(genreService.getGenre(auction.getGenreNo()).getGenreType());
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        Date endDateFormat = dateFormat.parse(auction.getEndDate().toString());
+//        auction.setEndDate(endDateFormat);
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("auction", auction);
+        return map;
+    }
+
 
 //
 //    //update auction ... form

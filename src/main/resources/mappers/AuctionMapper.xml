@@ -22,7 +22,7 @@
 
     <select id="getAuction" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Auction">
         SELECT
-            auctionNo, userNo, title, publisher, image, info, regiDate, endDate, state, bidPrice, price, genreNo
+            auctionNo, userNo, title, publisher, image, info, regiDate, endDate, state, bidPrice, price as immediPrice, genreNo
         FROM Auction
         WHERE
             auctionNo = #{auctionNo}

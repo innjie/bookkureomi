@@ -17,4 +17,5 @@ public @Data class Auction {
     private int bidPrice;
     private int immediPrice;
     private int genreNo;
+    private String genreType;
 }
