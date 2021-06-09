@@ -103,6 +103,7 @@ public class UserController {
             }
         }
         user.setUserNo(userService.getUserNo());
+        user.setPoint(1000);
         userService.insertUser(user);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("result", "success");
