@@ -54,13 +54,15 @@ public class OrderController {
 	@ResponseBody //@RestController 시 생략 가능
 	@PostMapping("/order/create")
 	public Map<String, Object> createOrder(
-			@RequestParam("saleNo") int saleNo,
+			@RequestParam("saleNoList[]") ArrayList<Integer> saleNoList,
 			@RequestParam("pAddress") String pAddress,
 			@RequestParam("rName") String rName,
 			@RequestParam("rPhone") String rPhone,
 			@RequestParam("rAddress") String rAddress) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
+		
+		boolean isCart;
 		
 		int orderNo = orderService.getOrderNo();
 		int odNo = orderService.getODNo();
@@ -69,12 +71,33 @@ public class OrderController {
 		user.setUserNo(userNo);
 	
 		int nowPoint = pointService.checkPoint(user.getUserNo());	//현재 포인트 확인
+		int salePrice = 0;
+
+		List<Sale> saleList = new ArrayList<>();
+		if(saleNoList.size() == 1) {	//일반 주문
+			isCart = false;
+			
+			Sale sale = new Sale();
+			sale = saleService.getSale(saleNoList.get(0));
+			
+			saleList.add(sale);
+			
+			salePrice = sale.getSalePrice();
+		} else{		//카트 주문
+			isCart = true;
+			
+			for(int i = 0; i < saleNoList.size(); i++) {
+				Sale sale = new Sale();
+				sale = saleService.getSale(saleNoList.get(i));
+				
+				saleList.add(sale);
+				
+				salePrice += sale.getSalePrice();
+			}
+		}
 		
-		Sale sale = new Sale();
-		sale = saleService.getSale(saleNo);
-		int salePrice = sale.getSalePrice();
-		
-		if(nowPoint < salePrice) { //point와 금액 비교			
+		//point와 금액 비교 후 주문	
+		if(nowPoint < salePrice) {		
 			map.put("result", "fail");
 			map.put("reason", "※주문실패※\n주문 금액보다 충전된 포인트가 적습니다.");
 		} else {		
@@ -86,37 +109,99 @@ public class OrderController {
 			order.setRPhone(rPhone);
 			order.setRAddress(rAddress);
 			order.setTotal(salePrice);
-			order.setInfo(sale.getTitle());
 			order.setUser(user);
+			//order info
+			if(saleList.size() == 1) {
+				order.setInfo(saleList.get(0).getTitle());
+			}else {
+				order.setInfo(saleList.get(0).getTitle() + " 외 " + String.valueOf(saleList.size()-1) + "권");
+			}
+			
 			
 			//주문 상세
-			OrderDetail orderDetail = new OrderDetail();
-			orderDetail.setOdNo(odNo);
-			orderDetail.setOrder(order);
-			orderDetail.setSale(sale);
+			List<OrderDetail> orderDetailList = new ArrayList<>();
+			if(saleList.size() == 1) {
+				OrderDetail orderDetail = new OrderDetail();
+				orderDetail.setOdNo(odNo);
+				orderDetail.setOrder(order);
+				orderDetail.setSale(saleList.get(0));
+				
+				orderDetailList.add(orderDetail);
+			}else {
+				for(int i = 0; i < saleList.size(); i++) {
+					OrderDetail orderDetail = new OrderDetail();
+					orderDetail.setOdNo(odNo+i);
+					orderDetail.setOrder(order);
+					orderDetail.setSale(saleList.get(i));
+					
+					orderDetailList.add(orderDetail);
+				}
+			}
+
 			
 			//충전 - 이용
 			Recharge rechargeUsing = new Recharge();
 			rechargeUsing.setRechargeNo(pointService.getRechargeNo(userNo));
-			rechargeUsing.setTotalPoint(nowPoint - sale.getSalePrice());	
+			rechargeUsing.setTotalPoint(nowPoint - salePrice);	
 			rechargeUsing.setRcType("using");
-			rechargeUsing.setRcPoint(-1 * sale.getSalePrice());
+			rechargeUsing.setRcPoint(-1 * salePrice);
 			rechargeUsing.setUser(user);
 			
+			
 			//충전 - 판매
-			int sellerNo = sale.getUser().getUserNo();
-			int saleUserPoint = pointService.checkPoint(sellerNo);
-			User seller = new User();
-			seller.setUserNo(sellerNo);
-			Recharge rechargeSelling = new Recharge();
-			rechargeSelling.setTotalPoint(saleUserPoint + sale.getSalePrice());			
-			rechargeSelling.setRechargeNo(pointService.getRechargeNo(sellerNo));
-			rechargeSelling.setRcType("recharging");
-			rechargeSelling.setRcMethod("selling");
-			rechargeSelling.setRcPoint((int)(0.9 * sale.getSalePrice()));
-			rechargeSelling.setUser(seller);
-		
-			orderService.orderSale(orderDetail, rechargeUsing, rechargeSelling);	//order 추가
+			List<Recharge> rechargeSellingList = new ArrayList<>();
+			if(saleList.size() == 1) {	//일반 주문
+				int sellerNo = saleList.get(0).getUser().getUserNo();
+				int saleUserPoint = pointService.checkPoint(sellerNo);
+				User seller = new User();
+				seller.setUserNo(sellerNo);
+				Recharge rechargeSelling = new Recharge();
+				rechargeSelling.setTotalPoint(saleUserPoint + (int)(0.9 * salePrice));			
+				rechargeSelling.setRechargeNo(pointService.getRechargeNo(sellerNo));
+				rechargeSelling.setRcType("recharging");
+				rechargeSelling.setRcMethod("selling");
+				rechargeSelling.setRcPoint((int)(0.9 * salePrice));
+				rechargeSelling.setUser(seller);
+				
+				rechargeSellingList.add(rechargeSelling);
+			} else{		//카트 주문
+				Map<Integer, Integer> rechargeMap = new HashMap<>();
+				Map<Integer, Integer> pointMap = new HashMap<>();
+				
+				for(int i = 0; i < saleList.size(); i++) {
+					int sellerNo = saleList.get(i).getUser().getUserNo();
+					int saleUserPoint = pointService.checkPoint(sellerNo);
+					
+					//RechargeNo
+					if(rechargeMap.containsKey(sellerNo)) {
+						rechargeMap.replace(sellerNo, pointService.getRechargeNo(sellerNo)+1);
+					} else {
+						rechargeMap.put(sellerNo, pointService.getRechargeNo(sellerNo));
+					}
+					
+					//totalPoint
+					if(pointMap.containsKey(sellerNo)) {
+						pointMap.replace(sellerNo, pointMap.get(sellerNo) + (int)(0.9 * saleList.get(i).getSalePrice()));
+					} else {
+						pointMap.put(sellerNo, pointService.checkPoint(sellerNo) + (int)(0.9 * saleList.get(i).getSalePrice()));
+					}
+					
+					User seller = new User();
+					seller.setUserNo(sellerNo);
+					Recharge rechargeSelling = new Recharge();
+					rechargeSelling.setRcType("recharging");
+					rechargeSelling.setRcMethod("selling");
+					rechargeSelling.setRcPoint((int)(0.9 * saleList.get(i).getSalePrice()));
+					rechargeSelling.setUser(seller);
+					rechargeSelling.setRechargeNo(rechargeMap.get(sellerNo));
+					//rechargeSelling.setTotalPoint(saleUserPoint + (int)(0.9 * saleList.get(i).getSalePrice()));
+					rechargeSelling.setTotalPoint(pointMap.get(sellerNo));
+					
+					rechargeSellingList.add(rechargeSelling);
+				}
+			}
+			
+			orderService.orderSale(orderDetailList, rechargeUsing, rechargeSellingList, isCart);	//order 추가
 
 			map.put("result", "success");
 			map.put("order", order);

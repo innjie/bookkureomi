@@ -27,17 +27,21 @@ function listRecharge(){
 							+ "<td class=\"table-text\">" + data.rechargeList[i].rcDate + "</td>";
 				
 				//충전/사용 구분
-				if(data.rechargeList[i].rcType == "충전"){
+				if(data.rechargeList[i].rcType == "recharging"){
 					result += "<td class=\"table-text\">" + data.rechargeList[i].rcPoint + "</td>"
 							+ "<td class=\"table-text\"></td>";
-				} else if(data.rechargeList[i].rcType == "사용") {
+				} else if(data.rechargeList[i].rcType == "using") {
 					result += "<td class=\"table-text\"></td>"
-							+ "<td class=\"table-text\">" + data.rechargeList[i].rcPoint + "</td>";
+							+ "<td class=\"table-text\">" + (-1 * data.rechargeList[i].rcPoint) + "</td>";
 				}
 
 				
 				if(data.rechargeList[i].rcMethod == 'kakao') {
-					result += "<td class=\"table-text\">카카오페이</td>";
+					result += "<td class=\"table-text\">카카오페이충전</td>";
+				} else if(data.rechargeList[i].rcMethod == 'join') {
+					result += "<td class=\"table-text\">가입이벤트</td>";
+				} else if(data.rechargeList[i].rcMethod == 'selling') {
+					result += "<td class=\"table-text\">판매</td>";
 				} else if(data.rechargeList[i].rcMethod == null) {
 					result += "<td class=\"table-text\"></td>";
 				}
