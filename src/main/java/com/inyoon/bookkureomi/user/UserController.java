@@ -16,7 +16,7 @@ import java.util.*;
 @RequestMapping("/book")
 public class UserController {
 
-    private static final String JOINFORM = "user/all/join";
+    private static final String JOINFORM = "user/join";
     private static final int GENRESIZE = 3;
     //insert userForm
 

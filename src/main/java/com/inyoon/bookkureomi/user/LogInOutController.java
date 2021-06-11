@@ -23,7 +23,7 @@ public class LogInOutController {
     @GetMapping("/user/login")
     public String loginForm(@ModelAttribute("login") Login login, HttpServletRequest request) {
         System.out.println("loginForm Controller");
-        return "user/all/login";
+        return "user/login";
     }
 
     //login
