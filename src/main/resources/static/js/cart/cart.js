@@ -1,16 +1,84 @@
 $(document).ready(function(){
+	totalTitle = '';
+	totalPrice = 0;
+	totalSaleNoList = [];
+	totalSaleList = new Map();
+	
 	if(($(location).attr('href').split('/book')[1]).includes('/cart/view')){
 		listCartItem();
 	}
 	
 	$('#allCheck').change(function(){
-		var isChecked = $(this).prop("checked");
+		var isAllChecked = $(this).prop("checked");
 		
-		if(isChecked) {
+		if(isAllChecked) {            
+            $('#table-result input[name=checkItem]').each(function(idx, obj) {
+            	var isChecked = $(this).prop("checked");
+            	
+            	if(!isChecked){
+            		var title = $(this).val().split("-")[0];
+            		var price = $(this).val().split("-")[1];
+            		
+            		if(totalTitle == ''){
+                		totalTitle = title;
+                	}
+                	totalPrice += Number.parseInt(price);
+                	totalSaleNoList.push($(this).prop("id"));
+                	totalSaleList.set($(this).prop("id"), title);
+            	}
+    	    });
+            
             $("#result input[type=checkbox]").prop("checked", true);
         } else {
             $("#result input[type=checkbox]").prop("checked", false);
+            
+            totalTitle = '';
+            totalPrice = 0;
+            totalSaleNoList = [];
+            totalSaleList.clear();
         }
+		
+		if(totalSaleNoList.length == 1 || totalSaleNoList.length == 0){
+			$('#cart-info').text(totalTitle);
+		} else{
+			$('#cart-info').text(totalTitle + ' 외 ' + (totalSaleNoList.length-1) + '권');
+		}
+		$('#cart-price').text(totalPrice.toLocaleString());
+	});
+	
+	$(document).on('change', '#table-result input[name=checkItem]', function(){
+		var isChecked = $(this).prop("checked");	
+		var title = $(this).val().split("-")[0];
+		var price = $(this).val().split("-")[1];
+		
+		if(isChecked) {
+			if(totalTitle == ''){
+        		totalTitle = title;
+        	}
+        	totalPrice += Number.parseInt(price);
+        	totalSaleNoList.push($(this).prop("id"));
+        	totalSaleList.set($(this).prop("id"), title);
+		} else {
+        	if($(this).prop("id") == totalSaleNoList[0]){
+        		totalTitle = '';
+        		
+        		if(totalSaleNoList.length != 1){
+        			totalTitle = totalSaleList.get(totalSaleNoList[1]);
+        		}
+        	}
+        	totalPrice -= Number.parseInt(price);
+        	
+        	var idx = totalSaleNoList.indexOf($(this).prop("id"));
+        	totalSaleNoList.splice(idx, 1);
+        	totalSaleList.delete($(this).prop("id"));
+        }
+		
+		if(totalSaleNoList.length == 1 || totalSaleNoList.length == 0){
+			$('#cart-info').text(totalTitle);
+		} else{
+			$('#cart-info').text(totalTitle + ' 외 ' + (totalSaleNoList.length-1) + '권');
+		}
+		$('#cart-price').text(totalPrice.toLocaleString());
 	});
 });
 
@@ -31,7 +99,7 @@ function listCartItem() {
 		if(data.itemList.length > 0) {
 			for(var i=0; i<data.itemList.length; i++){
 				if(data.itemList[i].state == 'open'){
-					result += "<tr><td class=\"table-text\"><input type=\"checkbox\" name=\"checkItem\" id=\""+ data.itemList[i].saleNo +"\"></input></td>";
+					result += "<tr><td class=\"table-text\"><input type=\"checkbox\" name=\"checkItem\" value=\""+ data.itemList[i].title +"-"+ data.itemList[i].salePrice +"\" id=\""+ data.itemList[i].saleNo +"\"></input></td>";
 				} else if(data.itemList[i].state == 'close'){
 					result += "<tr class=\"text-close-item\"><td></td>";
 				}
@@ -89,10 +157,10 @@ function createCartItem(saleNo){
                 xhr.setRequestHeader(header, token);
             }
     	}).done(function( data ) {
-    		if(data.result == 'success'){
-    			window.alert("카트에 책을 추가하였습니다.");
-    			
-    			window.location = "/book/cart/view";
+    		if(data.result == 'success'){    			
+    			if(confirm('카트에 책을 추가하였습니다.\n카트로 이동하시겠습니까?')){
+        			window.location = "/book/cart/view";
+    			}
     		} else if(data.result == 'fail') {
     			alert("중복된 아이템이 이미 카트에 있습니다.");
     		}

@@ -191,6 +191,9 @@ function createSaleOrderForm(){
 }
 function createSaleOrder() {
 	var saleNo = $("#viewSaleNo").val();
+	var saleNoList = [];
+	saleNoList.push(saleNo);
+	
 	var pAddress = $("#orderPAddress").val();
 	var rName = $("#orderRName").val();
 	var rPhone = $("#orderRPhone").val();
@@ -205,7 +208,7 @@ function createSaleOrder() {
     		method: 'POST',
     	    dataType: "json",
     		data: {
-    			saleNo : saleNo,
+    			saleNoList : saleNoList,
     			pAddress : pAddress,
     			rName : rName,
     			rPhone : rPhone,
@@ -222,52 +225,30 @@ function createSaleOrder() {
     		} else if(data.result == 'fail'){
     			window.alert(data.reason);
     		}
-    	})
-      .fail( function( textStatus ) {
+    	}).fail( function( textStatus ) {
           alert( "Request failed: " + textStatus );
       });
     }
 }
 
 //구매(주문) - 카트
-function createCartItemOrder() {
-	var checkBoxCheckedCount = $("#table-result input:checked").length;
-    var cnt = 0;
-
-	if(confirm("선택한 책을 구입하시겠습니까?")) {
-		$('#table-result input:checked').each(function(idx, obj) {
-			var saleNo = $(this).prop("id");
-			cnt++;
-					
-			$.ajax({
-	    		url: "/book/cart/delete", 
-	    		method: 'DELETE',
-	    	    dataType: "json",
-	    	    async: false,
-	    		data: {
-	    			saleNo : saleNo
-	    		},
-	    		beforeSend : function(xhr){   
-	                xhr.setRequestHeader(header, token);
-	            }
-	    	}).done(function( data ) {
-	    		if(data.result == 'success'){
-	    			if(checkBoxCheckedCount == cnt){
-	    				alert("선택하신 "+ cnt +"개의 책을 카트에서 삭제하였습니다.");
-	    				
-	    				listCartItem();
-	    			}
-	    		}
-	    	})
-	        .fail( function( textStatus ) {
-	            alert( "Request failed: " + textStatus );
-	        });
-	    });
+function createCartItemOrderForm(){
+	if($("#table-result input:checked").length == 0) {
+		alert("선택한 책이 없습니다.");
+	} else{
+		setDefaultOrder();
+		$("#pop-order-create").css("display", "block");
+		
+		$("#orderTitle").val($("#cart-info").text());
+		$("#orderPrice").val(totalPrice);
+		
+		var offset = $("#pop-order-create").offset().top;
+		$("html").animate({scrollTop:offset},400);
 	}
+}
+function createCartItemOrder() {
+	var saleNoList = totalSaleNoList;
 	
-	
-	
-	var saleNo = $("#viewSaleNo").val();
 	var pAddress = $("#orderPAddress").val();
 	var rName = $("#orderRName").val();
 	var rPhone = $("#orderRPhone").val();
@@ -276,13 +257,13 @@ function createCartItemOrder() {
 	var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
 
-    if(confirm("중고 책을 구입하시겠습니까?")) {
+    if(confirm("선택한 책을 구입하시겠습니까?")) {
     	$.ajax({
     		url: "/book/order/create", 
     		method: 'POST',
     	    dataType: "json",
     		data: {
-    			saleNo : saleNo,
+    			saleNoList : saleNoList,
     			pAddress : pAddress,
     			rName : rName,
     			rPhone : rPhone,
@@ -299,9 +280,8 @@ function createCartItemOrder() {
     		} else if(data.result == 'fail'){
     			window.alert(data.reason);
     		}
-    	})
-      .fail( function( textStatus ) {
+    	}).fail( function( textStatus ) {
           alert( "Request failed: " + textStatus );
-      });
+    	});
     }
 }

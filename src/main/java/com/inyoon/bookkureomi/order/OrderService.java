@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inyoon.bookkureomi.cart.CartMapper;
+import com.inyoon.bookkureomi.domain.CartItem;
 import com.inyoon.bookkureomi.domain.Order;
 import com.inyoon.bookkureomi.domain.OrderDetail;
 import com.inyoon.bookkureomi.domain.Recharge;
+import com.inyoon.bookkureomi.domain.Sale;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.point.PointMapper;
 
@@ -18,6 +21,8 @@ public class OrderService {
 	private OrderMapper orderMapper;
 	@Autowired
 	private PointMapper pointMapper;
+	@Autowired
+	private CartMapper cartMapper;
 	
 
 	//새로운 주문번호 가져오기
@@ -57,17 +62,31 @@ public class OrderService {
 	
 	//주문(구입)
 	@Transactional
-	public void orderSale(OrderDetail orderDetail, Recharge rechargeUsing, Recharge rechargeSelling){
-		orderMapper.orderSale(orderDetail.getOrder());	//order에 추가	
-		orderMapper.orderDetailSale(orderDetail);		//orderDetail에 추가
+	public void orderSale(List<OrderDetail> orderDetailList, Recharge rechargeUsing, List<Recharge> rechargeSellingList, boolean isCart){
+		orderMapper.orderSale(orderDetailList.get(0).getOrder());	//order에 추가	
+		for(int i = 0; i < orderDetailList.size(); i++) {
+			orderMapper.orderDetailSale(orderDetailList.get(i));	//orderDetail에 추가
+			orderMapper.updateSaleStateClose(orderDetailList.get(i).getSale().getSaleNo());	//state 변경
+			
+			pointMapper.rechargePoint(rechargeSellingList.get(i));		//포인트 충전 내역 추가
+			pointMapper.setPoint(rechargeSellingList.get(i));			//포인트 판매 세팅
 		
-		orderMapper.updateSaleStateClose(orderDetail.getSale().getSaleNo());	//state 변경
+			if(isCart) {
+				Sale sale = new Sale();
+				sale.setSaleNo(orderDetailList.get(i).getSale().getSaleNo());		
+				User user = new User();
+				user.setUserNo(rechargeUsing.getUser().getUserNo());
+				
+				CartItem cartItem = new CartItem();
+				cartItem.setSale(sale);
+				cartItem.setUser(user); 
+				
+				cartMapper.deleteCartItem(cartItem);
+			}
+		}		
 		
 		pointMapper.usePoint(rechargeUsing);			//포인트 사용 내역 추가
 		pointMapper.setPoint(rechargeUsing);			//포인트 판매 세팅
-
-		pointMapper.rechargePoint(rechargeSelling);		//포인트 사용 내역 추가
-		pointMapper.setPoint(rechargeSelling);			//포인트 판매 세팅
 	}
 	
 	

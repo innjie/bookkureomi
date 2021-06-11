@@ -406,6 +406,32 @@ section {
 }
 
 
+/* cart */
+.div-cart {
+	width:1130px;
+	display: flex;
+	margin: 20px 0 20px 0;
+	flex-direction: column;
+}
+.cart-info {
+	text-align:left;
+	height: 56px;
+	margin-left: 20px;
+	font-family: bookkureomi_main_font;
+	color: #06afe8;
+}
+.cart-price{
+	text-align: right;
+	margin-right: 20px;
+	font-family: bookkureomi_main_font;
+	color: #06afe8;
+}
+.cart-price span{
+	font-weight: bold;
+    font-size: xx-large;
+    display:inline-block;
+    width: 150px;
+}
 
 /* find */
 .find-style {
