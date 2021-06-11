@@ -11,7 +11,7 @@
     
 	<!-- 새로운 주문상세번호 가져오기 -->
     <select id="getODNo" resultType="integer">
-        SELECT ORDERDETAILSEQ.nextval from dual
+        SELECT MAX(odNo)+1 from OrderDetail
     </select>
     
 	<!-- 해당 유저번호의 일반 거래 주문 목록 확인 -->
