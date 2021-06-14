@@ -17,21 +17,22 @@
 
     <select id = "getUserById" parameterType="String" resultType="com.inyoon.bookkureomi.domain.User">
         SELECT
-            ID as "id", password as "pw", name
+            userNo, ID, password, point, firstGenre, secondGenre, thirdGenre, name, userRole
         FROM
             Users
         WHERE
             ID = #{id}
     </select>
+    
     <insert id = "insertUser" parameterType = "com.inyoon.bookkureomi.domain.User">
         INSERT INTO Users (userNo, ID, password, phone, point, firstGenre, secondGenre, thirdGenre, name)
-        VALUES (#{userNo}, #{id}, #{pw}, #{phone}, #{point}, #{firstGenre}, #{secondGenre}, #{thirdGenre}, #{name})
+        VALUES (#{userNo}, #{id}, #{password}, #{phone}, #{point}, #{firstGenre}, #{secondGenre}, #{thirdGenre}, #{name})
     </insert>
 
     <update id="updateUser" parameterType="com.inyoon.bookkureomi.domain.User">
         UPDATE Users
         SET
-            password = #{pw}
+            password = #{password}
             first = #{firstGenre}
             second = #{secondGenre}
             third = #{thirdGenre}

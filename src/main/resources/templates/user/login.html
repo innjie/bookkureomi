@@ -16,14 +16,13 @@
 <body>
 <section layout:fragment="content">
     <div>
-<form action="/book/user/login" method="post">
-        id <input type="text" name="username" id="id"/> <br>
-        password <input type="password" name="password" id="pw"/> <br>
+		<form action="/book/user/login" method="post">
+			id <input type="text" name="username" id="id"/> <br>
+		    password <input type="password" name="password" id="password"/> <br>
 
-
-        <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
-        <button type="button" onClick="login()" >login</button>
-</form>
+			<input th:name="${_csrf.parameterName}" type="hidden" th:value="${_csrf.token}"/>
+		    <button type="submit">login</button>
+		</form>
     </div>
 </section>
 </body>

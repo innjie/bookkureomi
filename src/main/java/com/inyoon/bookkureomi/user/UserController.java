@@ -75,8 +75,12 @@ public class UserController {
             @RequestParam("genreArray[]") List<String> genreArray
                          ) throws Exception {
         System.out.println(id);
-        User user = new User(id, pw, name, phone, genreArray);
-        user.setPoint(2000);
+        User user = new User();
+        user.setId(id);
+        user.setPassword(pw);
+        user.setName(name);
+        user.setPhone(phone);
+        user.setGenreArray(genreArray);
 
         Iterator<String> it =  genreArray.iterator();
 
@@ -103,8 +107,9 @@ public class UserController {
             }
         }
         user.setUserNo(userService.getUserNo());
-        user.setPoint(1000);
+        
         userService.insertUser(user);
+        
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("result", "success");
         map.put("userNo", user.getUserNo());

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import com.inyoon.bookkureomi.domain.Sale;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.point.PointService;
 import com.inyoon.bookkureomi.sale.SaleService;
+import com.inyoon.bookkureomi.user.MyAuthentication;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,8 +43,6 @@ public class OrderController {
 	private DeliveryService deliveryService;
 	
 	
-	int userNo = 1;	//session
-
 	@ApiOperation(value="나의 주문 화면 이동", notes="나의 주문 화면으로 이동한다.")
 	@GetMapping("/order/view")
     public String viewOrder() {	
@@ -62,13 +62,15 @@ public class OrderController {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		
+		//user
+		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+		User user = (User) authentication.getUser();
+		int userNo = user.getUserNo();
+		
 		boolean isCart;
 		
 		int orderNo = orderService.getOrderNo();
 		int odNo = orderService.getODNo();
-		
-		User user = new User();
-		user.setUserNo(userNo);
 	
 		int nowPoint = pointService.checkPoint(user.getUserNo());	//현재 포인트 확인
 		int salePrice = 0;
@@ -215,6 +217,11 @@ public class OrderController {
 	@GetMapping("/order/list")
 	public Map<String, Object> listOrder(
 			@RequestParam("type") String type) {
+		
+		//user
+		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+		User user = (User) authentication.getUser();
+		int userNo = user.getUserNo();
 		
 		List<Order> orderList = new ArrayList<>();	
 		
