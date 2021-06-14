@@ -173,14 +173,15 @@ function detailSale(saleNo) {
 		$("#viewInfo").val(data.sale.info);
 		
 		//구매자만 readonly로 수정필요
-    	//$('#viewSalePrice').prop('readonly', true);
-    	//$('#viewInfo').prop('readonly', true);
-
+		if(!data.isSeller){
+			$('#viewSalePrice').prop('readonly', true);
+	    	$('#viewInfo').prop('readonly', true);
+		}
 		
 		//배송 세팅
 		if(data.delivery != null){
 			deliveryInfoUpdate(data.delivery.company, data.delivery.waybill);
-		} else if(data.sale.state == 'close'){ //판매자 추가
+		} else if(data.sale.state == 'close' && data.isSeller){ 
 			$('#deliveryInfo')[0].innerHTML = '';
 			var infoDelivery = '';
 			
@@ -197,13 +198,13 @@ function detailSale(saleNo) {
 		var resultBtn = '';
 		
 		if(data.sale.state != 'close'){
-			//if(data.sale.user.id != 'im'){
-			resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createSaleOrderForm()\">구매하기</button>";
-			resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createCartItem("+ data.sale.saleNo +")\">카트담기</button>";
-			//} else {
+			if(!data.isSeller){
+				resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createSaleOrderForm()\">구매하기</button>";
+				resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createCartItem("+ data.sale.saleNo +")\">카트담기</button>";
+			} else {
 				resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"updateSale()\">수정하기</button>";			
 				resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"deleteSale()\">삭제하기</button>";
-			//}	
+			}	
 		}
 		resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeSaleDetailPopup()\">닫기</button>";
 		

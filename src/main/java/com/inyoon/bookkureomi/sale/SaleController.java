@@ -104,6 +104,11 @@ public class SaleController{
 	public Map<String, Object> detailSale(
 				@RequestParam("saleNo") int saleNo) throws Exception {
 
+		//user
+		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+		User user = (User) authentication.getUser();
+		int userNo = user.getUserNo();
+		
 		Sale sale = new Sale();
 		sale = saleService.getSale(saleNo);
 		
@@ -119,6 +124,7 @@ public class SaleController{
 		map.put("sale", sale);
 		map.put("delivery", delivery);
 		map.put("orderDetail", orderDetail);
+		map.put("isSeller", userNo == sale.getUser().getUserNo());
 		
         return map;
 	}
