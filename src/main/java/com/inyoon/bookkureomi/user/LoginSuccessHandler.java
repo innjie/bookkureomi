@@ -15,7 +15,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                                         HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         HttpSession session = request.getSession();
         System.out.println(authentication.getName());
-        session.setAttribute("greeting", authentication.getName() + "님, 반값습니다.");
+        session.setAttribute("greeting", authentication.getName());
         response.sendRedirect("/book/");
     }
 }

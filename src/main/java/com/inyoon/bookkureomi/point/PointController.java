@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.inyoon.bookkureomi.domain.Recharge;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.kakao.KakaoPayService;
+import com.inyoon.bookkureomi.user.MyAuthentication;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +40,6 @@ public class PointController {
 	@Autowired
     private KakaoPayService kakaoPayService;
 	
-	int userNo = 1; //session
 	
 	@ApiOperation(value="포인트 확인 화면 이동", notes="포인트 확인 화면으로 이동한다.")
 	@GetMapping("/point/view")
@@ -48,7 +51,12 @@ public class PointController {
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/point/detail")
 	public Map<String, Object> detailPoint() throws Exception {
-
+		
+		//user
+		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+		User user = (User) authentication.getUser();
+		int userNo = user.getUserNo();
+		
 		int point = pointService.checkPoint(userNo);
 		
 /*		if(pointService.checkHasPoint(userNo) != 0) { // 가입 시 기본으로 포인트 0/1000 추가시키기. -> 조건문 통으로 삭제
@@ -66,6 +74,11 @@ public class PointController {
 	@GetMapping("/point/list")
 	public Map<String, Object> listPoint() {
 
+		//user
+		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+		User user = (User) authentication.getUser();
+		int userNo = user.getUserNo();
+		
 		List<Recharge> rechargeList = new ArrayList<Recharge>();
 		rechargeList = pointService.getRechargeList(userNo);
 		
@@ -83,8 +96,10 @@ public class PointController {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		User user = new User();
-		user.setUserNo(userNo);
+		//user
+		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+		User user = (User) authentication.getUser();
+		int userNo = user.getUserNo();
 		
 		Recharge recharge = new Recharge();
 		recharge.setRcType("recharging");

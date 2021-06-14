@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.inyoon.bookkureomi.domain.CartItem;
 import com.inyoon.bookkureomi.domain.Sale;
 import com.inyoon.bookkureomi.domain.User;
+import com.inyoon.bookkureomi.user.MyAuthentication;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,8 +31,6 @@ public class CartController {
 	@Autowired
 	private CartService cartService;
 	
-	int userNo = 1; //session
-
 	
 	@ApiOperation(value="카트 화면 이동", notes="카트 화면으로 이동한다.")
 	@GetMapping("/cart/view")
@@ -42,7 +42,12 @@ public class CartController {
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/cart/list")
 	public Map<String, Object> listCartItem() {		
-	
+
+		//user
+		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+		User user = (User) authentication.getUser();
+		int userNo = user.getUserNo();
+		
 		List<Sale> itemList = new ArrayList<>();	
 		itemList = cartService.checkCart(userNo);
 	
@@ -58,11 +63,13 @@ public class CartController {
 	public Map<String, Object> createCartItem(
 			@RequestParam("saleNo") int saleNo) {
 		
+		//user
+		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+		User user = (User) authentication.getUser();
+		int userNo = user.getUserNo();
+		
 		Sale sale = new Sale();
 		sale.setSaleNo(saleNo);
-		
-		User user = new User();
-		user.setUserNo(userNo);
 		
 		CartItem cartItem = new CartItem();
 		cartItem.setSale(sale);
@@ -86,12 +93,14 @@ public class CartController {
 	public Map<String, Object> deleteCartItem(
 			@RequestParam(value="saleNo", defaultValue = "-1", required = false) int saleNo) {
 		
+		//user
+		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+		User user = (User) authentication.getUser();
+		int userNo = user.getUserNo();
+		
 		if(saleNo != -1) {
 			Sale sale = new Sale();
 			sale.setSaleNo(saleNo);
-			
-			User user = new User();
-			user.setUserNo(userNo);
 			
 			CartItem cartItem = new CartItem();
 			cartItem.setSale(sale);

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -33,6 +34,7 @@ import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.genre.GenreService;
 import com.inyoon.bookkureomi.order.OrderService;
 import com.inyoon.bookkureomi.test.Test;
+import com.inyoon.bookkureomi.user.MyAuthentication;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -54,8 +56,6 @@ public class SaleController{
 	@Autowired
 	private OrderService orderService;
 	
-	
-	int userNo = 1; //session
 	
 	@ApiOperation(value="중고거래 화면 이동", notes="중고거래 목록화면으로 이동한다.")
 	@GetMapping("/sale/view")
@@ -137,9 +137,11 @@ public class SaleController{
 			@RequestParam("author") String author,
 			@RequestParam("genreType") String genreType) throws Exception {
 		
+		//user
+		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+		User user = (User) authentication.getUser();
+		
 		Sale sale = new Sale();
-		User user = new User();
-		user.setUserNo(userNo);
 		Genre genre = genreService.getGenreByName(genreType);
 		
 		sale.setSaleNo(saleService.getSaleNo());
@@ -210,6 +212,11 @@ public class SaleController{
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/mypage/sale/list")
 	public Map<String, Object> listMySale() {
+		
+		//user
+		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+		User user = (User) authentication.getUser();
+		int userNo = user.getUserNo();
 		
 		List<Sale> saleList = new ArrayList<>();	
 		saleList = saleService.getMySaleList(userNo);
