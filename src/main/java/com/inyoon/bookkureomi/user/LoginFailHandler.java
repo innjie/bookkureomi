@@ -1,6 +1,7 @@
 package com.inyoon.bookkureomi.user;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +20,16 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
 			AuthenticationException exception) throws IOException, ServletException {
 		
 		String msg = exception.getMessage();
-		response.sendRedirect("/book/user/login?msg="+msg);
 
+		response.setContentType("application/json"); 
+    	response.setCharacterEncoding("utf-8"); 
+    	String data = " { \"response\" : {"+ 
+    					" \"error\" : true , "+ 
+    					" \"message\" : \""+exception.getMessage()+"\"} } "; 
+    	PrintWriter out = response.getWriter(); 
+    	out.print(data); 
+    	out.flush(); 
+    	out.close(); 
 	}
 
 }
