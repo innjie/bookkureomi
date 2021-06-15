@@ -568,3 +568,58 @@ section {
 	border-radius: 0.35rem;  	
   	font-family: bookkureomi_main_font;
 }
+
+
+/* login */
+.login-div {
+	width: 1000px;
+    text-align: center;
+    margin: 0 25% 0 25%;
+    padding: 70px;
+}
+.login-div2{
+	padding: 15%;
+    display: flex;
+    flex-direction: column;
+	border: 5px solid #fed136;
+	border-radius: 5rem; 
+	/*outline : solid 10px #fed136;*/
+}
+.login-div3{
+    display: flex;
+    flex-direction: row;
+}
+.login-margin-field {
+	flex: 1 1 auto;
+	margin: 7px;
+}
+.login-input{
+	flex: 2 1 auto;
+	text-align: start;
+	padding-left: 15px;
+	font-size:15px;
+  	font-family: bookkureomi_main_font;
+}
+.login-text{
+	flex: 1 1 auto;
+	text-align: end;
+	width:100px;
+	font-size:15px;
+  	font-family: bookkureomi_main_font;
+}
+.login-err {
+	color:red;
+	height:20px;
+  	font-family: bookkureomi_main_font;
+}
+.login-btn {
+	width: 190px;
+	height: 30px;
+		
+	color: #495057;
+  	font-size:17px;
+  	background-color: yellow;
+  	border-color: #fed136;
+	border-radius: 0.35rem;  	
+  	font-family: bookkureomi_main_font;
+}
