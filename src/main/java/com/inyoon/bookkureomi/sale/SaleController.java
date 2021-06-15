@@ -104,10 +104,14 @@ public class SaleController{
 	public Map<String, Object> detailSale(
 				@RequestParam("saleNo") int saleNo) throws Exception {
 
-		//user
-		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-		User user = (User) authentication.getUser();
-		int userNo = user.getUserNo();
+		int userNo = -1;
+		
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			//user
+			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+			User user = (User) authentication.getUser();
+			userNo = user.getUserNo();
+		}
 		
 		Sale sale = new Sale();
 		sale = saleService.getSale(saleNo);
@@ -143,29 +147,35 @@ public class SaleController{
 			@RequestParam("author") String author,
 			@RequestParam("genreType") String genreType) throws Exception {
 		
-		//user
-		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-		User user = (User) authentication.getUser();
-		
-		Sale sale = new Sale();
-		Genre genre = genreService.getGenreByName(genreType);
-		
-		sale.setSaleNo(saleService.getSaleNo());
-		sale.setImage(image);
-		sale.setTitle(title);
-		sale.setPublisher(publisher);
-		sale.setSalePrice(salePrice);
-		sale.setInfo(info);
-		sale.setCostPrice(costPrice);
-		sale.setAuthor(author);
-		sale.setUser(user);
-		sale.setGenre(genre);
-		
-		saleService.saleBook(sale);
-		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", "success");
-		map.put("saleNo", sale.getSaleNo());
+
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			//user
+			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+			User user = (User) authentication.getUser();
+		
+			Sale sale = new Sale();
+			Genre genre = genreService.getGenreByName(genreType);
+			
+			sale.setSaleNo(saleService.getSaleNo());
+			sale.setImage(image);
+			sale.setTitle(title);
+			sale.setPublisher(publisher);
+			sale.setSalePrice(salePrice);
+			sale.setInfo(info);
+			sale.setCostPrice(costPrice);
+			sale.setAuthor(author);
+			sale.setUser(user);
+			sale.setGenre(genre);
+			
+			saleService.saleBook(sale);
+			
+			map.put("result", "success");
+			map.put("saleNo", sale.getSaleNo());
+		} else {
+			map.put("result", "fail");
+			map.put("reason", "로그인 후 이용이 가능합니다.");
+		}
 		
         return map;
 	}
@@ -179,16 +189,22 @@ public class SaleController{
 			@RequestParam("salePrice") String salePrice,
 			@RequestParam("info") String info) throws Exception {
 
-		Sale sale = new Sale();
-		sale.setSaleNo(Integer.parseInt(saleNo));
-		sale.setImage(image);
-		sale.setSalePrice(Integer.parseInt(salePrice));
-		sale.setInfo(info);
-		
-		saleService.updateSale(sale);
-		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", "success");
+
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			Sale sale = new Sale();
+			sale.setSaleNo(Integer.parseInt(saleNo));
+			sale.setImage(image);
+			sale.setSalePrice(Integer.parseInt(salePrice));
+			sale.setInfo(info);
+			
+			saleService.updateSale(sale);
+		
+			map.put("result", "success");
+		} else {
+			map.put("result", "fail");
+			map.put("reason", "로그인 후 이용이 가능합니다.");
+		}
 		
         return map;
 	}
@@ -199,10 +215,16 @@ public class SaleController{
 	public Map<String, Object> deleteSale(
 			@RequestParam("saleNo") String saleNo) throws Exception {
 
-		saleService.deleteSale(Integer.parseInt(saleNo));
-		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", "success");
+
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			saleService.deleteSale(Integer.parseInt(saleNo));
+			
+			map.put("result", "success");
+		} else {
+			map.put("result", "fail");
+			map.put("reason", "로그인 후 이용이 가능합니다.");
+		}
 		
         return map;
 	}
@@ -219,14 +241,17 @@ public class SaleController{
 	@GetMapping("/mypage/sale/list")
 	public Map<String, Object> listMySale() {
 		
-		//user
-		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-		User user = (User) authentication.getUser();
-		int userNo = user.getUserNo();
-		
 		List<Sale> saleList = new ArrayList<>();	
-		saleList = saleService.getMySaleList(userNo);
-	
+
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			//user
+			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+			User user = (User) authentication.getUser();
+			int userNo = user.getUserNo();
+		
+			saleList = saleService.getMySaleList(userNo);
+		}
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("saleList", saleList);
 		

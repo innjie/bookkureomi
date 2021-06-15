@@ -52,19 +52,25 @@ public class PointController {
 	@GetMapping("/point/detail")
 	public Map<String, Object> detailPoint() throws Exception {
 		
-		//user
-		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-		User user = (User) authentication.getUser();
-		int userNo = user.getUserNo();
-		
-		int point = pointService.checkPoint(userNo);
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			//user
+			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+			User user = (User) authentication.getUser();
+			int userNo = user.getUserNo();
+			
+			int point = pointService.checkPoint(userNo);
+			map.put("point", point);
+		} else {
+			map.put("point", 0);
+		}
+
 		
 /*		if(pointService.checkHasPoint(userNo) != 0) { // 가입 시 기본으로 포인트 0/1000 추가시키기. -> 조건문 통으로 삭제
 			point = pointService.checkPoint(userNo);
 		}
 */		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("point", point);
 		
         return map;
 	}
@@ -73,14 +79,17 @@ public class PointController {
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/point/list")
 	public Map<String, Object> listPoint() {
-
-		//user
-		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-		User user = (User) authentication.getUser();
-		int userNo = user.getUserNo();
 		
 		List<Recharge> rechargeList = new ArrayList<Recharge>();
-		rechargeList = pointService.getRechargeList(userNo);
+
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			//user
+			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+			User user = (User) authentication.getUser();
+			int userNo = user.getUserNo();
+		
+			rechargeList = pointService.getRechargeList(userNo);
+		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rechargeList", rechargeList);
@@ -96,26 +105,28 @@ public class PointController {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		//user
-		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-		User user = (User) authentication.getUser();
-		int userNo = user.getUserNo();
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			//user
+			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+			User user = (User) authentication.getUser();
+			int userNo = user.getUserNo();
 		
-		Recharge recharge = new Recharge();
-		recharge.setRcType("recharging");
-		recharge.setRcMethod("kakao");
-		recharge.setRcPoint(Integer.parseInt(rcPoint));
-		recharge.setUser(user);
-		recharge.setRechargeNo(pointService.getRechargeNo(userNo));
-		recharge.setTotalPoint(pointService.checkPoint(userNo) + Integer.parseInt(rcPoint));
-
-		/*		if(pointService.checkHasPoint(userNo) != 0) {	//기본으로 가입 시 포인트 추가 -> 조건문 필요없음
-			recharge.setTotalPoint(Integer.parseInt(rcPoint));
-		} else {
+			Recharge recharge = new Recharge();
+			recharge.setRcType("recharging");
+			recharge.setRcMethod("kakao");
+			recharge.setRcPoint(Integer.parseInt(rcPoint));
+			recharge.setUser(user);
+			recharge.setRechargeNo(pointService.getRechargeNo(userNo));
 			recharge.setTotalPoint(pointService.checkPoint(userNo) + Integer.parseInt(rcPoint));
-		}*/
-		
-		pointService.rechargePoint(recharge);
+	
+			/*		if(pointService.checkHasPoint(userNo) != 0) {	//기본으로 가입 시 포인트 추가 -> 조건문 필요없음
+				recharge.setTotalPoint(Integer.parseInt(rcPoint));
+			} else {
+				recharge.setTotalPoint(pointService.checkPoint(userNo) + Integer.parseInt(rcPoint));
+			}*/
+			
+			pointService.rechargePoint(recharge);
+		}
 				
         return map;
 	}

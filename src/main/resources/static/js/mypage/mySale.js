@@ -1,7 +1,22 @@
+var option = '';
+
 $(document).ready(function(){
 	if(($(location).attr('href').split('/book')[1]).includes('/mypage/sale/view')){
 		listMySale();
 	}
+	
+	$.ajax({
+		url: "/book/genre/list", 
+		method: 'GET',
+	    dataType: "json"
+	}).done(function( data ) {
+		for(var i = 0; i < data.genreList.length; i++){
+			option += "<option value=\""+data.genreList[i].genreType+"\">"+data.genreList[i].genreType+"</option>";
+		}
+	})
+    .fail( function( textStatus ) {
+        alert( "Request failed: " + textStatus );
+    });
 });
 
 //판매 중고 서적 나열
@@ -96,6 +111,9 @@ function detailMySale(saleNo) {
 		if(!data.isSeller){
 			$('#viewSalePrice').prop('readonly', true);
 			$('#viewInfo').prop('readonly', true);
+		} else{
+			$('#viewSalePrice').prop('readonly', false);
+	    	$('#viewInfo').prop('readonly', false);
 		}
 		
 		//주문 세팅
@@ -198,6 +216,8 @@ function createMySaleForm(){
 	
     var offset = $("#pop-sale-create").offset().top;
 	$("html").animate({scrollTop:offset},400);
+
+	$("#insertGenreType").html(option);
 }
 function createMySale() {	
 	var publisher = $("#insertPublisher").val();
@@ -267,6 +287,9 @@ function createMySale() {
     			
     			listMySale();
     			detailMySale(data.saleNo);
+    		} else{
+    			window.location = "/book/user/login";
+    			window.alert(data.reason);
     		}
     	})
         .fail( function( textStatus ) {
@@ -313,6 +336,9 @@ function updateMySale() {
     	}).done(function( data ) {
     		if(data.result == 'success'){
     			window.alert("중고 책 판매를 수정하였습니다.");
+    		} else{
+    			window.location = "/book/user/login";
+    			window.alert(data.reason);
     		}
     	})
         .fail( function( textStatus ) {
@@ -345,6 +371,9 @@ function deleteMySale() {
     	        
     			closeMySaleDetailPopup();
     			listMySale();
+    		} else{
+    			window.location = "/book/user/login";
+    			window.alert(data.reason);
     		}
     	})
         .fail( function( textStatus ) {
