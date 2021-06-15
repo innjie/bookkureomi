@@ -43,14 +43,17 @@ public class CartController {
 	@GetMapping("/cart/list")
 	public Map<String, Object> listCartItem() {		
 
-		//user
-		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-		User user = (User) authentication.getUser();
-		int userNo = user.getUserNo();
-		
 		List<Sale> itemList = new ArrayList<>();	
-		itemList = cartService.checkCart(userNo);
-	
+
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			//user
+			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+			User user = (User) authentication.getUser();
+			int userNo = user.getUserNo();
+			
+			itemList = cartService.checkCart(userNo);
+		}
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("itemList", itemList);
 		
@@ -63,25 +66,32 @@ public class CartController {
 	public Map<String, Object> createCartItem(
 			@RequestParam("saleNo") int saleNo) {
 		
-		//user
-		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-		User user = (User) authentication.getUser();
-		int userNo = user.getUserNo();
-		
-		Sale sale = new Sale();
-		sale.setSaleNo(saleNo);
-		
-		CartItem cartItem = new CartItem();
-		cartItem.setSale(sale);
-		cartItem.setUser(user);
-		
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		if(cartService.checkCartItem(cartItem) == 0) {
-			cartService.addCartItem(cartItem);
-			map.put("result", "success");
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			//user
+			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+			User user = (User) authentication.getUser();
+			int userNo = user.getUserNo();
+			
+			Sale sale = new Sale();
+			sale.setSaleNo(saleNo);
+			
+			CartItem cartItem = new CartItem();
+			cartItem.setSale(sale);
+			cartItem.setUser(user);
+			
+
+			if(cartService.checkCartItem(cartItem) == 0) {
+				cartService.addCartItem(cartItem);
+				map.put("result", "success");
+			} else {
+				map.put("result", "fail");
+				map.put("reason", "sameInCart");
+			}
 		} else {
 			map.put("result", "fail");
+			map.put("reason", "로그인 후 이용이 가능합니다.");
 		}
 
         return map;
@@ -93,26 +103,31 @@ public class CartController {
 	public Map<String, Object> deleteCartItem(
 			@RequestParam(value="saleNo", defaultValue = "-1", required = false) int saleNo) {
 		
-		//user
-		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-		User user = (User) authentication.getUser();
-		int userNo = user.getUserNo();
-		
-		if(saleNo != -1) {
-			Sale sale = new Sale();
-			sale.setSaleNo(saleNo);
-			
-			CartItem cartItem = new CartItem();
-			cartItem.setSale(sale);
-			cartItem.setUser(user);
-			
-			cartService.deleteCartItem(cartItem);
-		} else {
-			cartService.deleteAllCartItem(userNo);
-		}
-	
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", "success");
+
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			//user
+			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+			User user = (User) authentication.getUser();
+			int userNo = user.getUserNo();
+			
+			if(saleNo != -1) {
+				Sale sale = new Sale();
+				sale.setSaleNo(saleNo);
+				
+				CartItem cartItem = new CartItem();
+				cartItem.setSale(sale);
+				cartItem.setUser(user);
+				
+				cartService.deleteCartItem(cartItem);
+			} else {
+				cartService.deleteAllCartItem(userNo);
+			}
+		
+			map.put("result", "success");
+		} else {
+			map.put("result", "fail");
+		}
 		
         return map;
     }

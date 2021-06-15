@@ -1,7 +1,35 @@
+var option = '';
+
 $(document).ready(function(){
 	if(($(location).attr('href').split('/book')[1]).includes('/sale/view')){
 		listSale();
 	}
+	
+	$.ajax({
+		url: "/book/genre/list", 
+		method: 'GET',
+	    dataType: "json"
+	}).done(function( data ) {
+		for(var i = 0; i < data.genreList.length; i++){
+			option += "<option value=\""+data.genreList[i].genreType+"\">"+data.genreList[i].genreType+"</option>";
+		}
+	})
+    .fail( function( textStatus ) {
+        alert( "Request failed: " + textStatus );
+    });
+
+	
+	$("#findType").change(function () {
+	    if($("#findType").val() == 'title'){
+	    	$("#findTitle").css("display","inline");
+	    	$("#findGenre").css("display","none");
+	    } else if($("#findType").val() == 'genre') {
+	    	$("#findTitle").css("display","none");
+	    	$("#findGenre").css("display","inline");
+	    	
+	    	$("#findGenre").html(option);
+	    }
+	});
 });
 
 //판매 중고 서적 나열
@@ -73,9 +101,9 @@ function findSale(){
 	var type = $("#findType").val();
 	
 	if(type == "title"){
-		title = $("#findText").val();
+		title = $("#findTitle").val();
 	}else if(type == "genre"){
-		genre = $("#findText").val();
+		genre = $("#findGenre").val();
 	}
 		
 	$.ajax({
@@ -176,6 +204,9 @@ function detailSale(saleNo) {
 		if(!data.isSeller){
 			$('#viewSalePrice').prop('readonly', true);
 	    	$('#viewInfo').prop('readonly', true);
+		} else{
+			$('#viewSalePrice').prop('readonly', false);
+	    	$('#viewInfo').prop('readonly', false);
 		}
 		
 		//배송 세팅
@@ -250,6 +281,8 @@ function createSaleForm(){
 	
     var offset = $("#pop-sale-create").offset().top;
 	$("html").animate({scrollTop:offset},400);
+	
+	$("#insertGenreType").html(option);
 }
 function createSale() {	
 	var publisher = $("#insertPublisher").val();
@@ -319,6 +352,9 @@ function createSale() {
     			
     			listSale();
     			detailSale(data.saleNo);
+    		} else{
+    			window.location = "/book/user/login";
+    			window.alert(data.reason);
     		}
     	})
         .fail( function( textStatus ) {
@@ -366,6 +402,9 @@ function updateSale() {
     	}).done(function( data ) {
     		if(data.result == 'success'){
     			window.alert("중고 책 판매를 수정하였습니다.");
+    		} else{
+    			window.location = "/book/user/login";
+    			window.alert(data.reason);
     		}
     	})
         .fail( function( textStatus ) {
@@ -398,6 +437,9 @@ function deleteSale() {
     	        
     			closeSaleDetailPopup();
     			listSale();
+    		} else{
+    			window.location = "/book/user/login";
+    			window.alert(data.reason);
     		}
     	})
         .fail( function( textStatus ) {

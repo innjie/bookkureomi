@@ -62,151 +62,156 @@ public class OrderController {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		//user
-		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-		User user = (User) authentication.getUser();
-		int userNo = user.getUserNo();
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			//user
+			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+			User user = (User) authentication.getUser();
+			int userNo = user.getUserNo();
 		
-		boolean isCart;
+			boolean isCart;
+			
+			int orderNo = orderService.getOrderNo();
+			int odNo = orderService.getODNo();
 		
-		int orderNo = orderService.getOrderNo();
-		int odNo = orderService.getODNo();
-	
-		int nowPoint = pointService.checkPoint(user.getUserNo());	//현재 포인트 확인
-		int salePrice = 0;
+			int nowPoint = pointService.checkPoint(user.getUserNo());	//현재 포인트 확인
+			int salePrice = 0;
 
-		List<Sale> saleList = new ArrayList<>();
-		if(saleNoList.size() == 1) {	//일반 주문
-			isCart = false;
-			
-			Sale sale = new Sale();
-			sale = saleService.getSale(saleNoList.get(0));
-			
-			saleList.add(sale);
-			
-			salePrice = sale.getSalePrice();
-		} else{		//카트 주문
-			isCart = true;
-			
-			for(int i = 0; i < saleNoList.size(); i++) {
+			List<Sale> saleList = new ArrayList<>();
+			if(saleNoList.size() == 1) {	//일반 주문
+				isCart = false;
+				
 				Sale sale = new Sale();
-				sale = saleService.getSale(saleNoList.get(i));
+				sale = saleService.getSale(saleNoList.get(0));
 				
 				saleList.add(sale);
 				
-				salePrice += sale.getSalePrice();
-			}
-		}
-		
-		//point와 금액 비교 후 주문	
-		if(nowPoint < salePrice) {		
-			map.put("result", "fail");
-			map.put("reason", "※주문실패※\n주문 금액보다 충전된 포인트가 적습니다.");
-		} else {		
-			//주문
-			Order order = new Order();
-			order.setOrderNo(orderNo);
-			order.setPAddress(pAddress);
-			order.setRName(rName);
-			order.setRPhone(rPhone);
-			order.setRAddress(rAddress);
-			order.setTotal(salePrice);
-			order.setUser(user);
-			//order info
-			if(saleList.size() == 1) {
-				order.setInfo(saleList.get(0).getTitle());
-			}else {
-				order.setInfo(saleList.get(0).getTitle() + " 외 " + String.valueOf(saleList.size()-1) + "권");
-			}
-			
-			
-			//주문 상세
-			List<OrderDetail> orderDetailList = new ArrayList<>();
-			if(saleList.size() == 1) {
-				OrderDetail orderDetail = new OrderDetail();
-				orderDetail.setOdNo(odNo);
-				orderDetail.setOrder(order);
-				orderDetail.setSale(saleList.get(0));
+				salePrice = sale.getSalePrice();
+			} else{		//카트 주문
+				isCart = true;
 				
-				orderDetailList.add(orderDetail);
-			}else {
-				for(int i = 0; i < saleList.size(); i++) {
-					OrderDetail orderDetail = new OrderDetail();
-					orderDetail.setOdNo(odNo+i);
-					orderDetail.setOrder(order);
-					orderDetail.setSale(saleList.get(i));
+				for(int i = 0; i < saleNoList.size(); i++) {
+					Sale sale = new Sale();
+					sale = saleService.getSale(saleNoList.get(i));
 					
-					orderDetailList.add(orderDetail);
+					saleList.add(sale);
+					
+					salePrice += sale.getSalePrice();
 				}
 			}
+			
+			//point와 금액 비교 후 주문	
+			if(nowPoint < salePrice) {		
+				map.put("result", "fail");
+				map.put("reason", "※주문실패※\n주문 금액보다 충전된 포인트가 적습니다.");
+			} else {		
+				//주문
+				Order order = new Order();
+				order.setOrderNo(orderNo);
+				order.setPAddress(pAddress);
+				order.setRName(rName);
+				order.setRPhone(rPhone);
+				order.setRAddress(rAddress);
+				order.setTotal(salePrice);
+				order.setUser(user);
+				//order info
+				if(saleList.size() == 1) {
+					order.setInfo(saleList.get(0).getTitle());
+				}else {
+					order.setInfo(saleList.get(0).getTitle() + " 외 " + String.valueOf(saleList.size()-1) + "권");
+				}
+				
+				
+				//주문 상세
+				List<OrderDetail> orderDetailList = new ArrayList<>();
+				if(saleList.size() == 1) {
+					OrderDetail orderDetail = new OrderDetail();
+					orderDetail.setOdNo(odNo);
+					orderDetail.setOrder(order);
+					orderDetail.setSale(saleList.get(0));
+					
+					orderDetailList.add(orderDetail);
+				}else {
+					for(int i = 0; i < saleList.size(); i++) {
+						OrderDetail orderDetail = new OrderDetail();
+						orderDetail.setOdNo(odNo+i);
+						orderDetail.setOrder(order);
+						orderDetail.setSale(saleList.get(i));
+						
+						orderDetailList.add(orderDetail);
+					}
+				}
 
-			
-			//충전 - 이용
-			Recharge rechargeUsing = new Recharge();
-			rechargeUsing.setRechargeNo(pointService.getRechargeNo(userNo));
-			rechargeUsing.setTotalPoint(nowPoint - salePrice);	
-			rechargeUsing.setRcType("using");
-			rechargeUsing.setRcPoint(-1 * salePrice);
-			rechargeUsing.setUser(user);
-			
-			
-			//충전 - 판매
-			List<Recharge> rechargeSellingList = new ArrayList<>();
-			if(saleList.size() == 1) {	//일반 주문
-				int sellerNo = saleList.get(0).getUser().getUserNo();
-				int saleUserPoint = pointService.checkPoint(sellerNo);
-				User seller = new User();
-				seller.setUserNo(sellerNo);
-				Recharge rechargeSelling = new Recharge();
-				rechargeSelling.setTotalPoint(saleUserPoint + (int)(0.9 * salePrice));			
-				rechargeSelling.setRechargeNo(pointService.getRechargeNo(sellerNo));
-				rechargeSelling.setRcType("recharging");
-				rechargeSelling.setRcMethod("selling");
-				rechargeSelling.setRcPoint((int)(0.9 * salePrice));
-				rechargeSelling.setUser(seller);
 				
-				rechargeSellingList.add(rechargeSelling);
-			} else{		//카트 주문
-				Map<Integer, Integer> rechargeMap = new HashMap<>();
-				Map<Integer, Integer> pointMap = new HashMap<>();
+				//충전 - 이용
+				Recharge rechargeUsing = new Recharge();
+				rechargeUsing.setRechargeNo(pointService.getRechargeNo(userNo));
+				rechargeUsing.setTotalPoint(nowPoint - salePrice);	
+				rechargeUsing.setRcType("using");
+				rechargeUsing.setRcPoint(-1 * salePrice);
+				rechargeUsing.setUser(user);
 				
-				for(int i = 0; i < saleList.size(); i++) {
-					int sellerNo = saleList.get(i).getUser().getUserNo();
+				
+				//충전 - 판매
+				List<Recharge> rechargeSellingList = new ArrayList<>();
+				if(saleList.size() == 1) {	//일반 주문
+					int sellerNo = saleList.get(0).getUser().getUserNo();
 					int saleUserPoint = pointService.checkPoint(sellerNo);
-					
-					//RechargeNo
-					if(rechargeMap.containsKey(sellerNo)) {
-						rechargeMap.replace(sellerNo, pointService.getRechargeNo(sellerNo)+1);
-					} else {
-						rechargeMap.put(sellerNo, pointService.getRechargeNo(sellerNo));
-					}
-					
-					//totalPoint
-					if(pointMap.containsKey(sellerNo)) {
-						pointMap.replace(sellerNo, pointMap.get(sellerNo) + (int)(0.9 * saleList.get(i).getSalePrice()));
-					} else {
-						pointMap.put(sellerNo, pointService.checkPoint(sellerNo) + (int)(0.9 * saleList.get(i).getSalePrice()));
-					}
-					
 					User seller = new User();
 					seller.setUserNo(sellerNo);
 					Recharge rechargeSelling = new Recharge();
+					rechargeSelling.setTotalPoint(saleUserPoint + (int)(0.9 * salePrice));			
+					rechargeSelling.setRechargeNo(pointService.getRechargeNo(sellerNo));
 					rechargeSelling.setRcType("recharging");
 					rechargeSelling.setRcMethod("selling");
-					rechargeSelling.setRcPoint((int)(0.9 * saleList.get(i).getSalePrice()));
+					rechargeSelling.setRcPoint((int)(0.9 * salePrice));
 					rechargeSelling.setUser(seller);
-					rechargeSelling.setRechargeNo(rechargeMap.get(sellerNo));
-					//rechargeSelling.setTotalPoint(saleUserPoint + (int)(0.9 * saleList.get(i).getSalePrice()));
-					rechargeSelling.setTotalPoint(pointMap.get(sellerNo));
 					
 					rechargeSellingList.add(rechargeSelling);
+				} else{		//카트 주문
+					Map<Integer, Integer> rechargeMap = new HashMap<>();
+					Map<Integer, Integer> pointMap = new HashMap<>();
+					
+					for(int i = 0; i < saleList.size(); i++) {
+						int sellerNo = saleList.get(i).getUser().getUserNo();
+						int saleUserPoint = pointService.checkPoint(sellerNo);
+						
+						//RechargeNo
+						if(rechargeMap.containsKey(sellerNo)) {
+							rechargeMap.replace(sellerNo, pointService.getRechargeNo(sellerNo)+1);
+						} else {
+							rechargeMap.put(sellerNo, pointService.getRechargeNo(sellerNo));
+						}
+						
+						//totalPoint
+						if(pointMap.containsKey(sellerNo)) {
+							pointMap.replace(sellerNo, pointMap.get(sellerNo) + (int)(0.9 * saleList.get(i).getSalePrice()));
+						} else {
+							pointMap.put(sellerNo, pointService.checkPoint(sellerNo) + (int)(0.9 * saleList.get(i).getSalePrice()));
+						}
+						
+						User seller = new User();
+						seller.setUserNo(sellerNo);
+						Recharge rechargeSelling = new Recharge();
+						rechargeSelling.setRcType("recharging");
+						rechargeSelling.setRcMethod("selling");
+						rechargeSelling.setRcPoint((int)(0.9 * saleList.get(i).getSalePrice()));
+						rechargeSelling.setUser(seller);
+						rechargeSelling.setRechargeNo(rechargeMap.get(sellerNo));
+						//rechargeSelling.setTotalPoint(saleUserPoint + (int)(0.9 * saleList.get(i).getSalePrice()));
+						rechargeSelling.setTotalPoint(pointMap.get(sellerNo));
+						
+						rechargeSellingList.add(rechargeSelling);
+					}
 				}
-			}
-			
-			orderService.orderSale(orderDetailList, rechargeUsing, rechargeSellingList, isCart);	//order 추가
+				
+				orderService.orderSale(orderDetailList, rechargeUsing, rechargeSellingList, isCart);	//order 추가
 
-			map.put("result", "success");
-			map.put("order", order);
+				map.put("result", "success");
+				map.put("order", order);
+			}
+		} else {
+			map.put("result", "fail");
+			map.put("reason", "로그인 후 이용이 가능합니다.");
 		}
 		
         return map;
@@ -217,18 +222,20 @@ public class OrderController {
 	@GetMapping("/order/list")
 	public Map<String, Object> listOrder(
 			@RequestParam("type") String type) {
-		
-		//user
-		MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-		User user = (User) authentication.getUser();
-		int userNo = user.getUserNo();
-		
+	
 		List<Order> orderList = new ArrayList<>();	
+	
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			//user
+			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+			User user = (User) authentication.getUser();
+			int userNo = user.getUserNo();
 		
-		if(type.equals("sale")) {
-			orderList = orderService.getSaleOrderList(userNo);
-		} else if(type.equals("auction")){
-			orderList = orderService.getAuctionOrderList(userNo);
+			if(type.equals("sale")) {
+				orderList = orderService.getSaleOrderList(userNo);
+			} else if(type.equals("auction")){
+				orderList = orderService.getAuctionOrderList(userNo);
+			}
 		}
 	
 		Map<String, Object> map = new HashMap<String, Object>();

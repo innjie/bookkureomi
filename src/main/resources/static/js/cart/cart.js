@@ -162,7 +162,11 @@ function createCartItem(saleNo){
         			window.location = "/book/cart/view";
     			}
     		} else if(data.result == 'fail') {
-    			alert("중복된 아이템이 이미 카트에 있습니다.");
+    			if(data.reason == 'sameInCart'){
+        			alert("중복된 아이템이 이미 카트에 있습니다.");
+    			} else{
+    				alert(data.reason);
+    			}
     		}
     	})
         .fail( function( textStatus ) {
