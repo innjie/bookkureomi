@@ -108,6 +108,22 @@ public class AuctionController {
 //
 //
 //    //view myAuctionList by page
+    @GetMapping("/mypage/auction/page")
+    public String viewMyAuction() {
+        return "mypage/myAuction";
+    }
+
+    @ResponseBody
+    @GetMapping("/mypage/auction/list")
+    public Map<String, Object> myAuctionList() {
+        int userNo = 1;
+        List<Auction> auctionList = auctionService.getAuctionListByUserNo(userNo);
+        System.out.println(auctionList.size());
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("auctionList", auctionList);
+
+        return map;
+    }
 //    @RequestMapping("/auction/myListPage.do")
 //    public String listMyAuctionInPage(@RequestParam("page") String page,
 //                                      @ModelAttribute("auctionList") PagedListHolder<Auction> auctionList,
