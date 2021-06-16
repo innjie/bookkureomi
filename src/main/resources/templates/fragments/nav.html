@@ -25,13 +25,13 @@
 	            </li>
 	            
 				<li class="nav-item" th:if="${#authorization.expr('isAuthenticated()')}">
-	                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMypage" 
-	                	aria-expanded="false" aria-controls="">
+	                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMypage"
+	                    aria-expanded="false" aria-controls="collapseMypage">
 	                    <i class="fas fa-fw fa-wrench"></i>
 	                    <span>마이페이지</span>
 	                </a>
 	                <div id="collapseMypage" class="nav-collapse" aria-labelledby="headingUtilities"
-	                    aria-expanded="false" data-parent="#accordionSidebar" hidden>
+	                    data-parent="#accordionSidebar" hidden>
 	                    <div class="">
 	                        <a class="nav-collapse-item" href="">나의 정보</a>
 	                        <a class="nav-collapse-item" href="">나의 주소록</a>
