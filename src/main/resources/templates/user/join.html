@@ -15,32 +15,67 @@
 </head>
 <body>
 <section layout:fragment="content">
-    <h2>Join us</h2>
-    <div>
-            id <input type="text" name="id" id="id"/> <br>
-<!--            <span id="overlapError">This ID is already Using</span><br>-->
-            <span id="checkIdNull">Please input ID</span><br>
-
-            password <input type="password" name="pw" id="pw"/> <br>
-            <span id="passwordLen">Passwords are up to 8 characters long.</span><br>
-
-            confirm password <input type="password" name="confirmPw" id="confirmPw"/> <br>
-            <span id = "notSameError">mismatch to password</span><br>
-
-            name <input type="text" name="name" id="name"/> <br>
-            <span id = "checkNameNull">Please input your name</span><br>
-
-            phone <input type="text" name="phone" id="phone"/> <br>
-            <span id = "phoneFormatError">Use only number</span><br>
-            <span id = "phoneLengthError">you input wrong number</span>
-            <!-- Using checkbox tag -->
-            <div id="result"></div>
-            <span id = "overChecked">You must choose 3 categories. </span><br>
-
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
-            <button type="button" onClick="checkForm()" >sign up</button>
-
+	<div class="login-div">
+		<div class="join-div2">
+    		<h2 class="join-header">Join US</h2>
+    		<div class="login-margin-field">
+				<div class="join-id">
+					<div class="join-id-row1"><span>아이디</span></div>
+					<div class="join-id-row2">
+						<button type="button" class="btn-dark" onClick="overlapId()" >중복확인</button>
+					</div>
+				</div>
+				
+	            <input type="hidden" id="isOverlapCheck" value="notChecked" />
+				<input type="text" class="join-input" name="id" id="id"/>
+				<div class="join-text">
+	            	<span id="overlapCheck" class="join-err">This ID is already Using</span>
+				</div>
+			</div>
+			<div class="login-margin-field">
+				<div class="join-text"><span>비밀번호</span></div>
+			    <input type="password" class="join-input" name="pw" id="pw"/>
+				<div class="join-text">
+	            	<span id="passwordLen" class="join-err">Passwords are up to 8 characters long.</span>
+				</div>
+			</div>
+			<div class="login-margin-field">
+				<div class="join-text"><span>비밀번호 확인</span></div>
+				<input type="password" class="join-input" name="confirmPw" id="confirmPw"/> 
+				<div class="join-text">
+	            	<span id = "notSameError" class="join-err">mismatch to password</span>
+				</div>
+			</div>
+			<div class="login-margin-field">
+				<div class="join-text"><span>이름</span> </div> 
+				<input type="text" class="join-input" name="name" id="name"/> 
+				<div class="join-text">
+	            	<span id = "checkNameNull" class="join-err">Please input your name</span>
+				</div>
+			</div>
+			<div class="login-margin-field">
+				<div class="join-text"><span>전화번호</span> </div> 
+				<div class="join-phone">
+					<input type="text" class="join-phone-row" name="phone1" id="phone1"/>-
+					<input type="text" class="join-phone-row" name="phone2" id="phone2"/>-
+					<input type="text" class="join-phone-row" name="phone3" id="phone3"/>
+				</div> 
+	            <div class="join-text">
+	            	<span id = "phoneFormatError" class="join-err">you input wrong number</span>
+				</div>
+	        </div>
+	        <div class="login-margin-field">    
+	            <!-- Using checkbox tag -->
+	            <div class="join-text"><span>선호 장르</span> </div> 
+				<div id="result"></div>
+	            <div class="join-text">
+	            	<span id = "overChecked" class="join-err">You must choose 3 categories. </span>
+				</div>
+			</div>
+			<div>
+	            <button type="button" onClick="checkForm()" class="login-margin-field login-btn" >가입하기</button>
+    		</div>
+    	</div>
     </div>
 </section>
 </body>
