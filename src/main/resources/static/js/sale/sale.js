@@ -171,8 +171,13 @@ function findSale(){
 
 //판매 중고서적 상세보기
 function detailSale(saleNo) {	
-	closeSaleCreatePopup();
-
+	$("#pop-mask-sale-detail").css("display","block");
+	$("body").css("overflow","hidden");
+	$("#pop-sale-detail").css({
+        "top": (window.screen.height / 2) - ($("#pop-sale-detail").outerHeight() / 2)-50+"px",
+        "left": (window.screen.width / 2) - ($("#pop-sale-detail").outerWidth() / 2)+"px"     
+     }); 
+	
 	$.ajax({
 		url: "/book/sale/detail", 
 		method: 'GET',
@@ -250,11 +255,15 @@ function detailSale(saleNo) {
 //상세 팝업 닫기
 function closeSaleDetailPopup() {
 	$("#pop-sale-detail").css("display", "none");
+	$("#pop-mask-sale-detail").css("display","none");
+	$("body").css("overflow","auto");
 }
 
 //추가 팝업 닫기
 function closeSaleCreatePopup() {
 	$("#pop-sale-create").css("display", "none");
+	$("#pop-mask-sale-create").css("display","none");
+	$("body").css("overflow","auto");
 }
 
 //추가 폼 세팅
@@ -273,9 +282,14 @@ function setSaleDefault() {
 
 //중고 서적 판매
 function createSaleForm(){
+	$("#pop-mask-sale-create").css("display","block");
+	$("body").css("overflow","hidden");
+	$("#pop-sale-create").css({
+        "top": (window.screen.height / 2) - ($("#pop-sale-create").outerHeight() / 2)-50+"px",
+        "left": (window.screen.width / 2) - ($("#pop-sale-create").outerWidth() / 2)+"px"     
+     }); 
+	
 	setSaleDefault();
-	closeSaleDetailPopup();
-	closeOrderPopup();
 	setDefaultOrder();
 	$("#pop-sale-create").css("display", "block");
 	

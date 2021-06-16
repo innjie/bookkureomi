@@ -27,87 +27,65 @@
     		
     		<div class ="div-list-result" id="result"></div>
 			
-			<div id="pop-order-detail" class="pop">
-				<h2>주문 뷰</h2>
-				<ul class="pop-style1" style="height:20px;">
-					<li class="pop-style1-list">
-						<ul class="pop-style2">
-							<li class="pop-style2-list" style="text-align:center;">
-								<p class="text-size-17 text-highlight">상품 정보</p>
-							</li>
-							<li class="pop-style2-list" style="text-align:center;">
-								<p class="text-size-17 text-highlight">배송 정보</p>
-							</li>
-						</ul>
-					</li>
-				</ul>
-				<ul class="pop-style1">
-					<li class="pop-style1-list">
-						<div id="resultDetail"></</div>
-					</li>
-		<!--  			<li class="pop-style1-list">
-						<ul class="pop-style2">
-							<li class="pop-style2-list">
-								<ul class="pop-style3">
-									<li>
-										제목 <input type="text" id="viewTitle" readonly />
-									</li>
-									<li>
-										가격 <input type="number" id="viewPrice" readonly />
-									</li>
-								</ul>
-							</li>
-							<li class="pop-style2-list">
-								<ul class="pop-style3">
-									<li>
-										택배사 <input type="text" id="viewCompany" readonly />
-									</li>
-									<li>
-										송장번호 <input type="text" id="viewWaybill" readonly />
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</li>-->
-					<li class="pop-style1-list">
-						<ul class="pop-style2">
-							<li class="pop-style2-list">
-								<ul class="pop-style3">
-									<li>
-										주문번호 <input type="text" id="viewOrderNo" readonly />
-									</li>
-									<li>
-										주문정보 <input type="text" id="viewOrderInfo" readonly />
-									</li>
-									<li>
-										총액 <input type="text" id="viewOrderTotal" readonly />
-									</li>
-									<li>
-										주문일 <input type="text" id="viewOrderDate" readonly />
-									</li>
-									<li>
-										주문자 <input type="text" id="viewUserName" readonly />
-									</li>
-									<li>
-										주문자 주소 <input type="text" id="viewPAddress" readonly />
-									</li>
-									<li>
-										받는이 <input type="text" id="viewRName" readonly />
-									</li>
-									<li>
-										받는이 전화번호 <input type="text" id="viewRPhone" readonly />
-									</li>
-									<li>
-										배송지 주소 <input type="text" id="viewRAddress" readonly />
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</li>
-				</ul>
-				<div class="pop-btn-style">
-	    			<button type="button" class="pop-btn" onClick="closeOrderDetailPopup()">닫기</button>
-	    		</div>
+			<div id="pop-mask-order-detail" class="pop-mask">			
+				<div id="pop-order-detail" class="pop">
+					<h2>주문 뷰</h2>
+					<ul class="pop-style1" style="height:20px;">
+						<li class="pop-style1-list">
+							<ul class="pop-style2">
+								<li class="pop-style2-list" style="text-align:center;">
+									<p class="text-size-17 text-highlight">상품 정보</p>
+								</li>
+								<li class="pop-style2-list" style="text-align:center;">
+									<p class="text-size-17 text-highlight">배송 정보</p>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					<ul class="pop-style1" id="pop-style1-order">
+						<li class="pop-style1-list">
+							<div id="resultDetail"></</div>
+						</li>
+						<li class="pop-style1-list">
+							<ul class="pop-style2">
+								<li class="pop-style2-list">
+									<ul class="pop-style3">
+										<li>
+											주문번호 <input type="text" id="viewOrderNo" readonly />
+										</li>
+										<li>
+											주문정보 <input type="text" id="viewOrderInfo" readonly />
+										</li>
+										<li>
+											총액 <input type="text" id="viewOrderTotal" readonly />
+										</li>
+										<li>
+											주문일 <input type="text" id="viewOrderDate" readonly />
+										</li>
+										<li>
+											주문자 <input type="text" id="viewUserName" readonly />
+										</li>
+										<li>
+											주문자 주소 <input type="text" id="viewPAddress" readonly />
+										</li>
+										<li>
+											받는이 <input type="text" id="viewRName" readonly />
+										</li>
+										<li>
+											받는이 전화번호 <input type="text" id="viewRPhone" readonly />
+										</li>
+										<li>
+											배송지 주소 <input type="text" id="viewRAddress" readonly />
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					<div class="pop-btn-style">
+		    			<button type="button" class="pop-btn" onClick="closeOrderDetailPopup()">닫기</button>
+		    		</div>
+				</div>
 			</div>
     	</div>
   	</section>

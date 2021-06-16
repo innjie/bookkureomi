@@ -78,7 +78,13 @@ function listMySale(){
 
 //판매 중고서적 상세보기
 function detailMySale(saleNo) {	
-	closeMySaleCreatePopup();
+	$("#pop-mask-sale-detail").css("display","block");
+	$("#pop-mask-sale-detail").css("overflow","auto");
+	$("body").css("overflow","hidden");
+	$("#pop-sale-detail").css({
+        "top": (window.screen.height / 2) - ($("#pop-sale-detail").outerHeight() / 2)-50+"px",
+        "left": (window.screen.width / 2) - ($("#pop-sale-detail").outerWidth() / 2)+"px"     
+     }); 
 
 	$.ajax({
 		url: "/book/sale/detail", 
@@ -188,11 +194,17 @@ function closeMySaleDetailPopup() {
 	$("#pop-sale-detail").css("display", "none");
 	$("#pop-sale-detail").css("height","800px");
 	$("#detailUL").css("height","500px");
+	
+	$("#pop-mask-sale-detail").css("display","none");
+	$("#pop-mask-sale-detail").css("overflow","hidden");
+	$("body").css("overflow","auto");
 }
 
 //추가 팝업 닫기
 function closeMySaleCreatePopup() {
 	$("#pop-sale-create").css("display", "none");
+	$("#pop-mask-sale-create").css("display","none");
+	$("body").css("overflow","auto");
 }
 
 //추가 폼 세팅
@@ -210,8 +222,14 @@ function setMySaleDefault() {
 
 //중고 서적 판매
 function createMySaleForm(){
+	$("#pop-mask-sale-create").css("display","block");
+	$("body").css("overflow","hidden");
+	$("#pop-sale-create").css({
+        "top": (window.screen.height / 2) - ($("#pop-sale-create").outerHeight() / 2)-50+"px",
+        "left": (window.screen.width / 2) - ($("#pop-sale-create").outerWidth() / 2)+"px"     
+     }); 
+	
 	setMySaleDefault();
-	closeMySaleDetailPopup();
 	$("#pop-sale-create").css("display", "block");
 	
     var offset = $("#pop-sale-create").offset().top;
