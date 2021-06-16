@@ -58,14 +58,21 @@ public class UserConfig extends WebSecurityConfigurerAdapter {
 	                        "templates/layouts/**",
 	                        "/user/join",
 	                        "/user/login").permitAll()*/
-	                .antMatchers("/user/mypage/**").hasRole("USER")
+	                /*.antMatchers("/book/mypage/**").hasRole("USER")
+	                .antMatchers("/book/cart/**").hasRole("USER")
+	                .antMatchers("/book/point/**").hasRole("USER")
+	                .antMatchers("/book/order/**").hasRole("USER")*/
+			        .antMatchers("/book/mypage/**").authenticated()
+			        .antMatchers("/book/cart/**").authenticated()
+			        .antMatchers("/book/point/**").authenticated()
+			        .antMatchers("/book/order/**").authenticated()
 	                .antMatchers("/**").permitAll()
 
                 //security_login
                 .and()
 	                .formLogin()
 	                .loginProcessingUrl("/book/user/login")
-	                .loginPage("/book/user/login")
+	                .loginPage("/book/user/login")	//anyMatchers에서 롤없으면 여기로 이동
 	                .defaultSuccessUrl("/book")
 	                .successHandler(new LoginSuccessHandler())
 	                .failureHandler(new LoginFailHandler())

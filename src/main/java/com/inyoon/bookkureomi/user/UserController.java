@@ -53,15 +53,19 @@ public class UserController {
 
     @PostMapping("/user/overlapId")
     @ResponseBody
-    public String overlapId(@RequestParam ("id") String inputId) throws Exception {
-        System.out.println("overlapId in");
+    public Map<String, Object> overlapId(@RequestParam ("id") String inputId) throws Exception {
+       
+    	System.out.println("overlapId in");
         User user = userService.getUserById(inputId);
-        String usable = "";
+        
+        Map<String, Object> map = new HashMap<String, Object>();
         if(user == null) {
-            usable = "usable";
+            map.put("result", "success");
         } else {
+            map.put("result", "fail");
         }
-        return usable;
+        
+        return map;
     }
 
     //insert user

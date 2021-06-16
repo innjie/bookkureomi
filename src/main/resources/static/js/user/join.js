@@ -1,9 +1,101 @@
+var pwCheck = false;
+var cpwCheck = false;
+var nameCheck = false;
+var phoneCheck = false;
+
+$(document).ready(function(){
+	$("#id").on("propertychange change keyup paste input", function(){
+		$("#overlapCheck").css("display","inline");
+        $("#overlapCheck").text("아이디 중복 확인이 필요합니다.");
+		$("#isOverlapCheck").val('notChecked');
+	});
+	
+	$("#id").blur( function(){
+		if($("#id").val().length == 0 || $("#id").val() == "" || $("#id").val() == null) {
+	        $("#overlapCheck").css("display","inline");
+	        $("#overlapCheck").text("Please input ID ");
+	    } 
+	});
+	
+	$("#pw").blur( function(){
+		var reg=/^.{8,}$/;
+
+	    if(reg.test($("#pw").val())){
+	        $("#passwordLen").css("display","none");
+	        pwCheck = true;
+	    }else{
+	        $("#passwordLen").css("display","inline");
+	        pwCheck = false;
+	    }
+	});
+	
+	$("#confirmPw").blur( function(){
+		if($("#pw").val() == $("#confirmPw").val()) {
+	        $("#notSameError").css("display","none");
+	        cpwCheck = true;
+	    } else {
+	        $("#notSameError").css("display","inline");
+	        cpwCheck = false;
+	    }
+	});
+	
+	$("#name").blur( function(){
+		if($("#name").val().length == 0 || $("#name").val() == "" || $("#name").val() == null) {
+	        $("#checkNameNull").css("display","inline");
+	        nameCheck = false;
+	    } else {
+	        $("#checkNameNull").css("display","none");
+	        nameCheck = true;
+	    }
+	});
+	
+	$("#phone1").blur( function(){
+		var reg1 = /^[0-9]{3}$/;
+		var reg2 = /^[0-9]{3,4}$/;
+		var reg3 = /^[0-9]{4}$/;
+	    
+	    if(!reg1.test($("#phone1").val()) || !reg2.test($("#phone2").val()) || !reg3.test($("#phone3").val())) {
+	        $("#phoneFormatError").css("display","inline");
+	        phoneCheck = false;
+	    } else  {
+	    	$("#phoneFormatError").css("display","none");
+	    	phoneCheck = true;
+	    }
+	});
+	$("#phone2").blur( function(){
+		var reg1 = /^[0-9]{3}$/;
+		var reg2 = /^[0-9]{3,4}$/;
+		var reg3 = /^[0-9]{4}$/;
+	    
+	    if(!reg1.test($("#phone1").val()) || !reg2.test($("#phone2").val()) || !reg3.test($("#phone3").val())) {
+	        $("#phoneFormatError").css("display","inline");
+	        phoneCheck = false;
+	    } else  {
+	    	$("#phoneFormatError").css("display","none");
+	    	phoneCheck = true;
+	    }
+	});
+	$("#phone3").blur( function(){
+		var reg1 = /^[0-9]{3}$/;
+		var reg2 = /^[0-9]{3,4}$/;
+		var reg3 = /^[0-9]{4}$/;
+	    
+	    if(!reg1.test($("#phone1").val()) || !reg2.test($("#phone2").val()) || !reg3.test($("#phone3").val())) {
+	        $("#phoneFormatError").css("display","inline");
+	        phoneCheck = false;
+	    } else  {
+	    	$("#phoneFormatError").css("display","none");
+	    	phoneCheck = true;
+	    }
+	});
+});
+
 function checkForm() {
     var id = $("#id").val();
     var pw = $("#pw").val();
     var name = $("#name").val();
     var confirmPw = $("#confirmPw").val();
-    var phone = $("#phone").val();
+    var phone = $("#phone1").val()+$("#phone2").val()+$("#phone3").val();
     var genreArray = new Array();
 
     $('input:checkbox[name=genre]:checked').each(function() {
@@ -13,18 +105,28 @@ function checkForm() {
     //csrf
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-
-    // id 중복확인하고싶은데 post ajax처리가안돼서 일단 보류
-    if(!checkId(id)) return false;
-    // if(!overlapId(id, header, token)) return false;
-    if(!checkName(name)) return false;
-    if(!checkPwLen(pw)) return false;
-    if(!checkConfirmPw(pw, confirmPw)) return false;
-    if(!checkNameNull(name)) return false;
-    if(!checkPhoneNum(phone)) return false;
-    if(!checkPhoneLen(phone)) return false;
+    
+    if(!overlapIdCheck()) {
+    	$("#id").focus();
+    	return false;
+    }
+    if(!pwCheck) {
+    	$("#pw").focus();
+    	return false;
+    }
+    if(!cpwCheck) {
+    	$("#confirmPw").focus();
+    	return false;
+    }
+    if(!nameCheck) {
+    	$("#name").focus();
+    	return false;
+    }
+    if(!phoneCheck) {
+    	$("#phone").focus();
+    	return false;
+    }
     if(!checkGenre(genreArray)) return false;
-
 
 
     $.ajax({
@@ -52,105 +154,118 @@ function checkForm() {
     });
 
 }
+
 function checkId(id) {
-    if(id.length == 0) {
-        $("#checkIdNull").show();
+    if(id.length == 0 || id == "" || id == null) {
+        $("#overlapCheck").css("display","inline");
+        $("#overlapCheck").text("Please input ID ");
+        $("#isOverlapCheck").val('wrong');
         return false;
     } else {
-        $("#checkIdNull").hide();
         return true;
     }
 }
-// function overlapId(id, header, token) {
-//     $.ajax({
-//         url:"/book/user/overlapId",
-//         type: 'POST',
-//         dataType: "json",
-//         data: {
-//             id:id,
-//         },
-//         beforeSend : function(xhr)
-//         {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-//             xhr.setRequestHeader(header, token);
-//         },
-//         success:function(data){
-//             alert(data);
-//             if(data){//사용 가능한 아이디 라면
-//                 $("#overlapErr").hide();
-//                 // 성공한 상태로 바꾸는 함수 호출
-//                 alert(data);
-//                 return true;
-//
-//             }else{//사용 가능한 아이디가 아니라면
-//                 $("#overlapErr").show();
-//                 return false;
-//             }
-//         }
-//     });
-// }
-function checkName(name) {
-    if(name.length == 0) {
-        $("#checkNameNull").show();
+
+function checkGenre(genreArray) {
+    if(genreArray.length != 3) {
+        $("#overChecked").css("display","inline");
         return false;
     } else {
-        $("#checkNameNull").show();
+        $("#overChecked").css("display","none");
         return true;
     }
 }
+
+function overlapIdCheck() {
+	if($("#isOverlapCheck").val() == 'checked'){
+		return true;
+	} else{
+		if($("#isOverlapCheck").val() == 'notChecked'){
+			$("#overlapCheck").css("display","inline");
+	        $("#overlapCheck").text("아이디 중복 확인이 필요합니다.");
+		} else if($("#isOverlapCheck").val() == 'wrong'){
+			$("#overlapCheck").css("display","inline");
+		}
+        
+		return false;
+	}
+}
+
+
+function overlapId() {
+	var id = $("#id").val();
+	    
+	//csrf
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	      
+    if(!checkId(id)) return false;
+	 
+    $.ajax({
+         url:"/book/user/overlapId",
+         type: 'POST',
+         dataType: "json",
+         data: {
+             id:id,
+         },
+         beforeSend : function(xhr)
+         {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+             xhr.setRequestHeader(header, token);
+         }
+     }).done(function( data ) {
+    	 if(data.result == 'success'){//사용 가능한 아이디 라면
+             $("#isOverlapCheck").val('checked');
+             $("#overlapCheck").css("display","inline");
+             $("#overlapCheck").text("확인 완료");
+           // 성공한 상태로 바꾸는 함수 호출
+         }else{//사용 가능한 아이디가 아니라면
+             $("#isOverlapCheck").val('wrong');
+             
+             $("#overlapCheck").css("display","inline");
+             $("#overlapCheck").text("This ID is already Using");
+         }    	
+	})
+}
+
+/*
 function checkPwLen(pw) {
     var reg=/^.{8,}$/;
 
     if(reg.test(pw)){
-        $("#passwordLen").hide();
+        $("#passwordLen").css("display","none");
         return true;
     }else{
-        $("#passwordLen").show();
+        $("#passwordLen").css("display","inline");
         return false;
     }
 }
 function checkConfirmPw(pw, confirmPw) {
     if(pw == confirmPw) {
-        $("#notSameError").hide();
+        $("#notSameError").css("display","none");
         return true;
     } else {
-        $("#notSameError").show();
+        $("#notSameError").css("display","inline");
         return false;
     }
 }
-function checkNameNull(name) {
-    if(name == "") {
-        $("#checkNameNull").show();
+function checkName(name) {
+    if(name.length == 0 || name == "" || name == null) {
+        $("#checkNameNull").css("display","inline");
         return false;
     } else {
-        $("#checkNameNull").hide();
+        $("#checkNameNull").css("display","none");
         return true;
     }
 }
 function checkPhoneNum(phone) {
-    var reg = /^[0-9]*$/;
-    if(reg.test(phone)) {
-        $("#phoneFormatError").hide();
-        return true;
+    var reg = /^[0-9]{11}$/;
+    
+    if(!reg.test(phone)) {
+        $("#phoneFormatError").css("display","inline");
+        return false;
     } else  {
-        $("#phoneFormatError").show();
-        return false;
-    }
-}
-function checkPhoneLen(phone) {
-    if(phone.length != 11) {
-        $("#phoneLengthError").show();
-        return false;
-    } else {
-        $("#phoneLengthError").hide();
+    	$("#phoneFormatError").css("display","none");
         return true;
     }
 }
-function checkGenre(genreArray) {
-    if(genreArray.length != 3) {
-        $("#overChecked").show();
-        return false;
-    } else {
-        $("#overChecked").hide();
-        return true;
-    }
-}
+*/
