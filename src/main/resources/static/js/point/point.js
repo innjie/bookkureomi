@@ -83,6 +83,8 @@ function detailPoint() {
 //추가 팝업 닫기
 function closeRechargeCreatePopup() {
 	$("#pop-recharge-create").css("display", "none");
+	$("#pop-mask-recharge-create").css("display","none");
+	$("body").css("overflow","auto");
 }
 
 //추가 폼 세팅
@@ -94,6 +96,13 @@ function setRechargeDefault() {
 
 //충전
 function createRechargeForm(){
+	$("#pop-mask-recharge-create").css("display","block");
+	$("body").css("overflow","hidden");
+	$("#pop-recharge-create").css({
+        "top": (window.screen.height / 2) - ($("#pop-recharge-create").outerHeight() / 2)-50+"px",
+        "left": (window.screen.width / 2) - ($("#pop-recharge-create").outerWidth() / 2)+"px"     
+     }); 
+	
 	setRechargeDefault();
 	$("#pop-recharge-create").css("display", "block");
 	

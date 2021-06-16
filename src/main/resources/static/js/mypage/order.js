@@ -69,6 +69,15 @@ function auctionOrder(orderNo){
 	//detailDelivery(orderNo);
 }
 function detailOrder(orderNo, type) {	
+	$("#pop-mask-order-detail").css("display","block");
+	$("#pop-mask-order-detail").css("overflow","auto");
+	$("body").css("overflow","hidden");
+	$("#pop-order-detail").css({
+        "top": (window.screen.height / 2) - ($("#pop-order-detail").outerHeight() / 2)-50+"px",
+        "left": (window.screen.width / 2) - ($("#pop-order-detail").outerWidth() / 2)+"px"     
+     }); 
+	
+	
 	$.ajax({
 		url: "/book/order/detail", 
 		method: 'GET',
@@ -77,11 +86,16 @@ function detailOrder(orderNo, type) {
 			orderNo : orderNo,
 			type: type
 		}
-	}).done(function( data ) {
+	}).done(function( data ) {		
 		$('#resultDetail')[0].innerHTML = '';
 		var result = '';
 		
 		if(data.orderDetailList[0].auction == null){
+			if(data.orderDetailList.length > 3){
+				$(".pop").css("height", (800+(70*(data.orderDetailList.length-3)))+"px");
+				$("#pop-style1-order").css("height", (500+(70*(data.orderDetailList.length-3)))+"px");
+			}
+			
 			for(var i=0; i<data.orderDetailList.length; i++){
 				result += "<ul class=\"pop-style2\">"
 						+ "<li class=\"pop-style2-list\">"
@@ -103,7 +117,7 @@ function detailOrder(orderNo, type) {
 				}
 
 			}	
-		} else if(data.orderDetailList[0].auction == null){
+		} else if(data.orderDetailList[0].sale == null){
 			result += "<ul class=\"pop-style2\">"
 					+ "<li class=\"pop-style2-list\">"
 					+ "<ul class=\"pop-style3\">"
@@ -140,34 +154,30 @@ function detailOrder(orderNo, type) {
 }
 
 
-//배송 정보
-/*function detailDelivery (odNo){
-	$.ajax({
-		url: "/book/delivery/detail", 
-		method: 'GET',
-	    dataType: "json",
-		data: {
-			odNo : odNo
-		}
-	}).done(function( data ) {
-		$("#viewCompany").val(data.delivery.company);
-		$("#viewWaybill").val(data.delivery.waybill);
-    })
-    .fail( function( textStatus ) {
-        alert( "Request failed: " + textStatus );
-    });
-}*/
-
 //주문 상세 팝업 닫기
 function closeOrderDetailPopup() {
 	$("#pop-order-detail").css("display", "none");
+	$("#pop-mask-order-detail").css("display","none");
+	$("#pop-mask-order-detail").css("overflow","hidden");
+	$("body").css("overflow","auto");
+	
+	$(".pop").css("height", "800px");
+	$("#pop-style1-order").css("height", "500px");
 }
 
+
+var isCart = false;
 
 //sale.html
 //주문 팝업 닫기
 function closeOrderPopup() {
 	$("#pop-order-create").css("display", "none");
+	$("#pop-mask-order-create").css("display","none");
+	$("#pop-mask-order-create").css("background-color","rgba( 0, 0, 0, 0.8 )");
+	if(isCart){
+		$("body").css("overflow","auto");
+		isCart = false;
+	}
 }
 
 //주문 추가 폼 세팅
@@ -180,6 +190,13 @@ function setDefaultOrder() {
 
 //구매(주문)
 function createSaleOrderForm(){
+	$("#pop-mask-order-create").css("display","block");
+	$("#pop-mask-order-create").css("background-color","rgba( 0, 0, 0, 0 )");
+	$("#pop-order-create").css({
+        "top": (window.screen.height / 2) - ($("#pop-order-create").outerHeight() / 2)-50+"px",
+        "left": (window.screen.width / 2) - ($("#pop-order-create").outerWidth() / 2)+"px"     
+     }); 
+	
 	setDefaultOrder();
 	$("#pop-order-create").css("display", "block");
 	
@@ -236,6 +253,15 @@ function createCartItemOrderForm(){
 	if($("#table-result input:checked").length == 0) {
 		alert("선택한 책이 없습니다.");
 	} else{
+		$("#pop-mask-order-create").css("display","block");
+		$("#pop-mask-order-create").css("background-color","rgba( 0, 0, 0, 0.8 )");
+		$("body").css("overflow","hidden");
+		$("#pop-order-create").css({
+	        "top": (window.screen.height / 2) - ($("#pop-order-create").outerHeight() / 2)-50+"px",
+	        "left": (window.screen.width / 2) - ($("#pop-order-create").outerWidth() / 2)+"px"     
+	     });
+		isCart = true;
+		
 		setDefaultOrder();
 		$("#pop-order-create").css("display", "block");
 		
