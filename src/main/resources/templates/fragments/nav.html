@@ -26,13 +26,12 @@
 	            
 				<li class="nav-item" th:if="${#authorization.expr('isAuthenticated()')}">
 	                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMypage"
-	                    aria-expanded="true" aria-controls="collapseMypage">
+	                    aria-expanded="false" aria-controls="collapseMypage">
 	                    <i class="fas fa-fw fa-wrench"></i>
 	                    <span>마이페이지</span>
 	                </a>
 	                <div id="collapseMypage" class="nav-collapse" aria-labelledby="headingUtilities"
-	                    data-parent="#accordionSidebar">
-				<!--		<div th:if="${#authorization.expr('isAuthenticated()')}">-->
+	                    data-parent="#accordionSidebar" hidden>
 	                    <div class="">
 	                        <a class="nav-collapse-item" href="">나의 정보</a>
 	                        <a class="nav-collapse-item" href="">나의 주소록</a>
@@ -42,7 +41,6 @@
 	                        <a class="nav-collapse-item" href="">나의 리뷰</a>
 	                        <a class="nav-collapse-item" href="/book/kakao/kakaoPay?saleNo=1">카카오 테스트</a>
 	                    </div>
-					<!--	</div>-->
 	                </div>
 	            </li>
 	                        
