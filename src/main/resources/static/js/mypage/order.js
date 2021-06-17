@@ -236,6 +236,8 @@ function createSaleOrder() {
           }
     	}).done(function( data ) {
     		if(data.result == 'success'){
+    			setPoint(data.totalPoint);
+    			
     			window.alert("※주문성공※\n중고 책을 구입하였습니다.");
     	        
     			window.location = "/book/order/view";
@@ -300,6 +302,8 @@ function createCartItemOrder() {
           }
     	}).done(function( data ) {
     		if(data.result == 'success'){
+    			setPoint(data.totalPoint);
+    			
     			window.alert("※주문성공※\n중고 책을 구입하였습니다.");
     	        
     			window.location = "/book/order/view";

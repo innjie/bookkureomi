@@ -364,6 +364,7 @@ function createSale() {
     	        
     			$("#pop-sale-insert").css("display", "none");
     			
+    			closeSaleCreatePopup();
     			listSale();
     			detailSale(data.saleNo);
     		} else{

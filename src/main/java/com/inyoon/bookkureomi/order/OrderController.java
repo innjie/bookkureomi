@@ -208,6 +208,7 @@ public class OrderController {
 
 				map.put("result", "success");
 				map.put("order", order);
+				map.put("totalPoint", rechargeUsing.getTotalPoint());
 			}
 		} else {
 			map.put("result", "fail");

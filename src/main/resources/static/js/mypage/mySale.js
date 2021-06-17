@@ -303,6 +303,7 @@ function createMySale() {
     	        
     			$("#pop-sale-insert").css("display", "none");
     			
+    			closeMySaleCreatePopup();
     			listMySale();
     			detailMySale(data.saleNo);
     		} else{

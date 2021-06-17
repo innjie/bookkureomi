@@ -72,7 +72,7 @@ function detailPoint() {
 		data: {
 		}
 	}).done(function( data ) {
-		$("#myPoint")[0].innerHTML = data.point + $("#myPoint")[0].innerHTML;
+		$("#myPoint")[0].innerHTML = data.point + " 포인트";
     })
     .fail( function( textStatus ) {
         alert( "Request failed: " + textStatus );
@@ -132,10 +132,48 @@ function createRecharge(){
 	        alert( "Request failed: " + textStatus );
 	    });
 	} else if(rcMethod == 'card') {
-		alert("신용카드 결제는 도입 예정입니다.");
+		//alert("신용카드 결제는 도입 예정입니다.");
+		$.ajax({
+			url: "/book/point/create", 
+			method: 'GET',
+			dataType: "json",
+			data: {
+				rcPoint:rcPoint
+			}
+		}).done(function( data ) {		
+			setPoint(data.totalPoint);
+			
+			alert(rcPoint + "포인트 충전 완료");
+			closeRechargeCreatePopup();
+			
+			location.reload();
+		})
+	    .fail( function( textStatus ) {
+	        alert( "Request failed: " + textStatus );
+	    });
 	} else if(rcMethod == 'deposit') {
 		alert("무통장 입금은 도입 예정입니다.");		
 	}
 	
 }
 
+
+function setPoint(totalPoint){
+	$.ajax({
+		url: "/book/point/update", 
+		method: 'GET',
+		dataType: "json",
+		data: {
+			totalPoint:totalPoint
+		}
+	}).done(function( data ) {
+		if(data.result == 'success'){
+			
+		} else{
+			alert("로그인 후 이용이 가능합니다.");
+		}
+	})
+    .fail( function( textStatus ) {
+        alert( "Request failed: " + textStatus );
+    });
+}

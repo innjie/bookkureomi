@@ -106,10 +106,12 @@ public class UserServiceImpl implements UserService {
         if(user != null) {
            authorities.add(new SimpleGrantedAuthority(user.getUserRole()));
            user.setAuthorities(user.getAuthorities());
+           user.setPoint(pointMapper.checkPoint(user.getUserNo()));
         }
         
         return user;
     }
+
 
   /*  public void setEnableGroups(boolean enableGroups) {
 		this.enableGroups = enableGroups;

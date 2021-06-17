@@ -17,6 +17,5 @@ public interface UserService extends UserDetailsService {
     public String login(User user);
     public void logout(User user);
     
-    UserDetails loadUserByUsername(String id);
-
+    public UserDetails loadUserByUsername(String id);
 }

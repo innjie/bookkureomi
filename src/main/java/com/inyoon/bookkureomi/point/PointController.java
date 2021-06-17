@@ -23,6 +23,7 @@ import com.inyoon.bookkureomi.domain.Recharge;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.kakao.KakaoPayService;
 import com.inyoon.bookkureomi.user.MyAuthentication;
+import com.inyoon.bookkureomi.user.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +40,8 @@ public class PointController {
 	private PointService pointService;
 	@Autowired
     private KakaoPayService kakaoPayService;
+	@Autowired
+    private UserService userService;
 	
 	
 	@ApiOperation(value="포인트 확인 화면 이동", notes="포인트 확인 화면으로 이동한다.")
@@ -46,6 +49,27 @@ public class PointController {
     public String viewPoint() {	
         return "point/point";
     }
+	
+	@ApiOperation(value="포인트 세팅", notes="포인트를 세팅한다.")
+	@ResponseBody 
+	@GetMapping("/point/update")
+	public Map<String, Object> settingPoint(
+			@RequestParam("totalPoint") int totalPoint) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			//user
+			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 	
+			authentication.setPoint(totalPoint);
+			
+			map.put("result", "success");
+		} else {
+			map.put("result", "fail");
+		}		
+		
+        return map;
+	}
 	
 	@ApiOperation(value="포인트 확인", notes="포인트를 확인한다.")
 	@ResponseBody //@RestController 시 생략 가능
@@ -64,13 +88,7 @@ public class PointController {
 			map.put("point", point);
 		} else {
 			map.put("point", 0);
-		}
-
-		
-/*		if(pointService.checkHasPoint(userNo) != 0) { // 가입 시 기본으로 포인트 0/1000 추가시키기. -> 조건문 통으로 삭제
-			point = pointService.checkPoint(userNo);
-		}
-*/		
+		}		
 		
         return map;
 	}
@@ -113,19 +131,15 @@ public class PointController {
 		
 			Recharge recharge = new Recharge();
 			recharge.setRcType("recharging");
-			recharge.setRcMethod("kakao");
+			recharge.setRcMethod("kakao");	//수정필요 - 파라미터로 받아오기
 			recharge.setRcPoint(Integer.parseInt(rcPoint));
 			recharge.setUser(user);
 			recharge.setRechargeNo(pointService.getRechargeNo(userNo));
 			recharge.setTotalPoint(pointService.checkPoint(userNo) + Integer.parseInt(rcPoint));
-	
-			/*		if(pointService.checkHasPoint(userNo) != 0) {	//기본으로 가입 시 포인트 추가 -> 조건문 필요없음
-				recharge.setTotalPoint(Integer.parseInt(rcPoint));
-			} else {
-				recharge.setTotalPoint(pointService.checkPoint(userNo) + Integer.parseInt(rcPoint));
-			}*/
 			
 			pointService.rechargePoint(recharge);
+			
+			map.put("totalPoint", recharge.getTotalPoint());
 		}
 				
         return map;
