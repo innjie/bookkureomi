@@ -41,15 +41,7 @@
     	Insert into Recharge (rechargeNo, userNo, rcPoint, totalPoint, rcMethod, rcType)
     	Values (#{rechargeNo}, #{user.userNo}, #{rcPoint}, #{totalPoint}, #{rcMethod}, #{rcType})
     </insert>
-    
-	<!-- 포인트 세팅 (이용/충전 시) -->
-    <update id="setPoint" parameterType="com.inyoon.bookkureomi.domain.Recharge">
-        UPDATE Users
-        SET
-            point = #{totalPoint}
-        WHERE 
-        	userNo = #{user.userNo}
-    </update>
+
     
  	<!-- 포인트 사용 -->
     <insert id="usePoint" parameterType="com.inyoon.bookkureomi.domain.Recharge">

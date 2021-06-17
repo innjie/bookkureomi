@@ -69,7 +69,6 @@ public class OrderService {
 			orderMapper.updateSaleStateClose(orderDetailList.get(i).getSale().getSaleNo());	//state 변경
 			
 			pointMapper.rechargePoint(rechargeSellingList.get(i));		//포인트 충전 내역 추가
-			pointMapper.setPoint(rechargeSellingList.get(i));			//포인트 판매 세팅
 		
 			if(isCart) {
 				Sale sale = new Sale();
@@ -86,7 +85,6 @@ public class OrderService {
 		}		
 		
 		pointMapper.usePoint(rechargeUsing);			//포인트 사용 내역 추가
-		pointMapper.setPoint(rechargeUsing);			//포인트 판매 세팅
 	}
 	
 	

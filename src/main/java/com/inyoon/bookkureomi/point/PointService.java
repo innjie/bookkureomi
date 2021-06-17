@@ -25,10 +25,8 @@ public class PointService {
 	}
 	
 	//포인트 충전
-	@Transactional
 	public void rechargePoint(Recharge recharge){
 		pointMapper.rechargePoint(recharge);
-		pointMapper.setPoint(recharge);
 	}
 	
 	//해당 유저번호의 포인트 이용/충전내역 확인
