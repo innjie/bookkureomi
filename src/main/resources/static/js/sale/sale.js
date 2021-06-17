@@ -2,7 +2,7 @@ var option = '';
 
 $(document).ready(function(){
 	if(($(location).attr('href').split('/book')[1]).includes('/sale/view')){
-		listSale();
+		listSale(nowPageNo);
 	}
 	
 	$.ajax({
@@ -33,17 +33,26 @@ $(document).ready(function(){
 });
 
 //판매 중고 서적 나열
-function listSale(){
+function listSale(pageNo){
+	nowPageNo = pageNo;
+	
 	$.ajax({
 		url: "/book/sale/list", 
 		method: 'GET',
 	    dataType: "json",
 		data: {
+			pageNo: pageNo
 		}
 	}).done(function( data ) {
 		$('#result')[0].innerHTML = '';
 		
 		if(data.saleList.length > 0) {
+			window.scrollTo(0,0);
+			
+			$("#saleCnt").text(data.saleCnt);
+			
+			paging(data);
+			
 			var result = "<table class=\"table-list\">"
 				+ "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
 	
@@ -365,7 +374,7 @@ function createSale() {
     			$("#pop-sale-insert").css("display", "none");
     			
     			closeSaleCreatePopup();
-    			listSale();
+    			listSale(1);
     			detailSale(data.saleNo);
     		} else{
     			window.location = "/book/user/login";
@@ -451,7 +460,7 @@ function deleteSale() {
     			window.alert("중고 책 판매를 삭제하였습니다.");
     	        
     			closeSaleDetailPopup();
-    			listSale();
+    			listSale(nowPageNo);
     		} else{
     			window.location = "/book/user/login";
     			window.alert(data.reason);

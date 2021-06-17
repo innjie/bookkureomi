@@ -707,3 +707,20 @@ section {
 	flex: 1 1 auto;
 	text-align: end;
 }
+
+
+/* page */
+.paging {
+	margin: 5% 0% 0 0%;
+    height: 50px;
+    text-align: center;
+}
+.paging-num{
+	margin: 0 10px;
+	font-size: 17px;
+}
+.paging-nowpage{
+	text-decoration: underline;
+	font-weight: bold;
+	color: burlywood;
+}
