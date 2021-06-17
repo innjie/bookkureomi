@@ -1,6 +1,8 @@
 package com.inyoon.bookkureomi.sale;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,7 +12,7 @@ import com.inyoon.bookkureomi.domain.Sale;
 public interface SaleMapper {
 	public int getSaleNo();
 	
-	public List<Sale> getSaleList();
+	public List<Sale> getSaleList(Map<String, Object> paramMap);
 	public Sale getSale(int saleNo);
 	public List<Sale> findSaleByTitle(String title);
 	public List<Sale> findSaleByGenre(String type);
@@ -21,4 +23,6 @@ public interface SaleMapper {
 
 	public List<Sale> getMySaleList(int userNo);
 	public List<Sale> recommend(int genreNo);
+	
+	public int countSaleList();
 }

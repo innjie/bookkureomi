@@ -1,6 +1,8 @@
 package com.inyoon.bookkureomi.sale;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +21,8 @@ public class SaleService {
 	}
 	
 	//전체 판매 목록 확인
-	public List<Sale> getSaleList(){
-		return saleMapper.getSaleList();
+	public List<Sale> getSaleList(Map<String, Object> paramMap){
+		return saleMapper.getSaleList(paramMap);
 	}
 	
 	//해당 판매 정보 확인
@@ -58,7 +60,10 @@ public class SaleService {
 		return saleMapper.getMySaleList(userNo);
 	}
 	
-	
+	//전체 판매 카운트
+	public int countSaleList() {
+		return saleMapper.countSaleList();
+	}
 	
 	
 	

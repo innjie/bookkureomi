@@ -66,13 +66,31 @@ public class SaleController{
 	@ApiOperation(value="중고거래 목록", notes="중고거래 전체 목록을 보여준다.")
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/sale/list")
-	public Map<String, Object> listSale() {
+	public Map<String, Object> listSale(
+			@RequestParam("pageNo") int pageNo) {
 
+		int showCnt = 12;	//보여주는 개수
+		int saleCnt = saleService.countSaleList();	//리스트 개수
+		int pageCnt = 0;
+		
 		List<Sale> saleList = new ArrayList<>();	
-		saleList = saleService.getSaleList();
+
+		if(saleCnt > 0) {
+			pageCnt = (saleCnt % showCnt == 0) ? (saleCnt / showCnt) : (saleCnt / showCnt + 1);		//페이지 개수
+			int start = 1+(showCnt*(pageNo-1));
+			int end = showCnt+(showCnt*(pageNo-1));
+			
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("start", start);
+			paramMap.put("end", end);
+			
+			saleList = saleService.getSaleList(paramMap);
+		}
 	
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("saleList", saleList);
+		map.put("saleCnt", saleCnt);
+		map.put("pageCnt", pageCnt);
 		
         return map;
     }
