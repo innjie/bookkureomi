@@ -129,7 +129,7 @@
   	<!-- order 추가 -->
     <insert id="orderSale" parameterType="com.inyoon.bookkureomi.domain.Order">
     	Insert into Orders (orderNo, userNo, pAddress, rAddress, rName, rPhone, total, info)
-    	Values (#{orderNo}, 1, #{pAddress}, #{rAddress}, #{rName}, #{rPhone}, #{total}, #{info})
+    	Values (#{orderNo}, #{user.userNo}, #{pAddress}, #{rAddress}, #{rName}, #{rPhone}, #{total}, #{info})
     </insert>
     
   	<!-- orderDetail 추가 -->

@@ -43,12 +43,12 @@
     </insert>
     
 	<!-- 포인트 세팅 (이용/충전 시) -->
-    <update id="setPoint"> <!--  parameterType="hashmap" -->
+    <update id="setPoint" parameterType="com.inyoon.bookkureomi.domain.Recharge">
         UPDATE Users
         SET
             point = #{totalPoint}
         WHERE 
-        	userNo = 1
+        	userNo = #{user.userNo}
     </update>
     
  	<!-- 포인트 사용 -->

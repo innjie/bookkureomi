@@ -19,4 +19,8 @@ public class MyAuthentication extends UsernamePasswordAuthenticationToken {
 	public User getUser() {
 		return this.user;
 	}
+	
+	public void setPoint(int point) {
+		this.user.setPoint(point);
+	}
 }

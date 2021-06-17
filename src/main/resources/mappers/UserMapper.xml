@@ -8,7 +8,7 @@
     </select>
     <select id = "getUser" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.User">
         SELECT
-            userNo, ID, password, point, firstGenre, secondGenre, thirdGenre, name
+            userNo, ID, password, firstGenre, secondGenre, thirdGenre, name
         FROM
             Users
         WHERE
@@ -17,7 +17,7 @@
 
     <select id = "getUserById" parameterType="String" resultType="com.inyoon.bookkureomi.domain.User">
         SELECT
-            userNo, ID, password, point, firstGenre, secondGenre, thirdGenre, name, userRole
+            userNo, ID, password, firstGenre, secondGenre, thirdGenre, name, userRole
         FROM
             Users
         WHERE
@@ -25,8 +25,8 @@
     </select>
     
     <insert id = "insertUser" parameterType = "com.inyoon.bookkureomi.domain.User">
-        INSERT INTO Users (userNo, ID, password, phone, point, firstGenre, secondGenre, thirdGenre, name)
-        VALUES (#{userNo}, #{id}, #{password}, #{phone}, #{point}, #{firstGenre}, #{secondGenre}, #{thirdGenre}, #{name})
+        INSERT INTO Users (userNo, ID, password, phone, firstGenre, secondGenre, thirdGenre, name)
+        VALUES (#{userNo}, #{id}, #{password}, #{phone}, #{firstGenre}, #{secondGenre}, #{thirdGenre}, #{name})
     </insert>
 
     <update id="updateUser" parameterType="com.inyoon.bookkureomi.domain.User">
