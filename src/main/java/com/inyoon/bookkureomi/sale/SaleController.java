@@ -100,18 +100,37 @@ public class SaleController{
 	@GetMapping("/sale/find")
 	public Map<String, Object> findSale(
 			@RequestParam("title") String title,
-			@RequestParam("genre") String genre) {
+			@RequestParam("genre") String genre,
+			@RequestParam("pageNo") int pageNo) {
 
-		List<Sale> saleList = new ArrayList<>();
-		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
 		if(!title.equals("") && title != null) {
-			saleList = saleService.findSaleByTitle(title);
+			paramMap.put("title", title);
 		} else if(!genre.equals("") && genre != null) {
-			saleList = saleService.findSaleByGenre(genre);
+			paramMap.put("genreType", genre);
 		} 
 		
+		int showCnt = 12;	//보여주는 개수
+		int saleCnt = saleService.countFindSaleList(paramMap);	//리스트 개수
+		int pageCnt = 0;
+		
+		List<Sale> saleList = new ArrayList<>();
+		
+		if(saleCnt > 0) {
+			pageCnt = (saleCnt % showCnt == 0) ? (saleCnt / showCnt) : (saleCnt / showCnt + 1);		//페이지 개수
+			int start = 1+(showCnt*(pageNo-1));
+			int end = showCnt+(showCnt*(pageNo-1));
+			
+			paramMap.put("start", start);
+			paramMap.put("end", end);			
+			
+			saleList = saleService.findSaleList(paramMap);
+		}
+	
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("saleList", saleList);
+		map.put("saleCnt", saleCnt);
+		map.put("pageCnt", pageCnt);
 		
         return map;
     }

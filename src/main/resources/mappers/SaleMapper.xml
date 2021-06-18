@@ -54,31 +54,29 @@
 			AND saleNo = #{saleNo}
     </select>
     
- 	<!-- 제목으로 판매 검색  -->
-    <select id="findSaleByTitle" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
-        SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, author,
-			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"
-		FROM 
-			Sale, Genre
-		where
-			Sale.genreNo = Genre.genreNo		
-			AND title like  '%'|| #{title} ||'%' 
-		ORDER BY saleNo desc
+ 	<!-- 판매 검색  -->
+    <select id="findSaleList" resultType="com.inyoon.bookkureomi.domain.Sale">
+        SELECT * 
+		FROM ( 
+		    SELECT ROWNUM AS RNUM, Z.* 
+		    FROM ( 
+		        SELECT 
+					saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, author,
+					Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"
+				FROM 
+					Sale, Genre
+				where
+					Sale.genreNo = Genre.genreNo		
+					<if test="title != null">
+						AND title like  '%'|| #{title} ||'%'
+					</if>
+					<if test="genreType != null">
+						AND genreType like '%'|| #{genreType} ||'%'
+					</if>
+				ORDER BY saleNo desc
+		    ) Z WHERE ROWNUM <![CDATA[ <= ]]> #{end} 
+		) WHERE RNUM >= #{start}
     </select>
-    
-	<!-- 장르로 판매 검색  -->
-    <select id="findSaleByGenre" parameterType="String" resultType="com.inyoon.bookkureomi.domain.Sale">
-        SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, author, 
-			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"
-		FROM 
-			Sale, Genre 
-		where
-			Sale.genreNo = Genre.genreNo 
-			AND genreType like  '%'|| #{genreType} ||'%'
-		ORDER BY saleNo desc
-    </select>    
     
  	<!-- 판매 책 등록  -->
     <insert id="saleBook" parameterType="com.inyoon.bookkureomi.domain.Sale">
@@ -126,7 +124,20 @@
 			Sale
     </select>
     
-    
+    <select id="countFindSaleList" resultType="integer">
+        SELECT 
+			count(*)
+		FROM 
+			Sale, Genre
+		where
+			Sale.genreNo = Genre.genreNo
+			<if test="title != null">
+				AND title like  '%'|| #{title} ||'%'
+			</if>
+			<if test="genreType != null">
+				AND genreType like '%'|| #{genreType} ||'%'
+			</if>
+    </select>
     
     
     <select id="recommend" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">

@@ -7,7 +7,7 @@ $(document).ready(function(){
 	//}
 });
 
-function paging(data){
+function paging(data, funcName){
 	var start = 1;
 	var end = 1;
 	
@@ -28,28 +28,30 @@ function paging(data){
 	
 	var page = '';
 	
-	if(nowPageNo == 1){
-		page += "<a class=\"paging-num\"><<</a>";
-		page += "<a class=\"paging-num\"><</a>";
-	}else{
-		page += "<a class=\"paging-num\" onclick=\"listSale("+1+")\"><<</a>";
-		page += "<a class=\"paging-num\" onclick=\"listSale("+(nowPageNo-1)+")\"><</a>";
-	}
-	
-	for(var i=start; i <= end; i++){
-		if(nowPageNo == i){
-			page += "<a class=\"paging-num paging-nowpage\" onclick=\"listSale("+i+")\">"+ i + "</a>";
-		} else{
-			page += "<a class=\"paging-num\" onclick=\"listSale("+i+")\">"+ i + "</a>";
+	if(data.pageCnt != 0){
+		if(nowPageNo == 1){
+			page += "<a class=\"paging-num\"><<</a>";
+			page += "<a class=\"paging-num\"><</a>";
+		}else{
+			page += "<a class=\"paging-num\" onclick=\""+funcName+"("+1+")\"><<</a>";
+			page += "<a class=\"paging-num\" onclick=\""+funcName+"("+(nowPageNo-1)+")\"><</a>";
 		}
-	}
-	
-	if(nowPageNo == data.pageCnt){
-		page += "<a class=\"paging-num\">></a>";
-		page += "<a class=\"paging-num\">>></a>";
-	}else{
-		page += "<a class=\"paging-num\" onclick=\"listSale("+(nowPageNo+1)+")\">></a>";
-		page += "<a class=\"paging-num\" onclick=\"listSale("+data.pageCnt+")\">>></a>";
+		
+		for(var i=start; i <= end; i++){
+			if(nowPageNo == i){
+				page += "<a class=\"paging-num paging-nowpage\" onclick=\""+funcName+"("+i+")\">"+ i + "</a>";
+			} else{
+				page += "<a class=\"paging-num\" onclick=\""+funcName+"("+i+")\">"+ i + "</a>";
+			}
+		}
+		
+		if(nowPageNo == data.pageCnt){
+			page += "<a class=\"paging-num\">></a>";
+			page += "<a class=\"paging-num\">>></a>";
+		}else{
+			page += "<a class=\"paging-num\" onclick=\""+funcName+"("+(nowPageNo+1)+")\">></a>";
+			page += "<a class=\"paging-num\" onclick=\""+funcName+"("+data.pageCnt+")\">>></a>";
+		}
 	}
 	
 	$("#paging").html(page);
