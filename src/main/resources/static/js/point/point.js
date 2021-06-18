@@ -1,8 +1,15 @@
+var type = 'all';
+
 $(document).ready(function(){
 	if(($(location).attr('href').split('/book')[1]).includes('/point/view')){
 		detailPoint();
 		listRecharge(nowPageNo);
 	}
+	
+	$("#listType").change(function(){
+		type = $("#listType").val();
+		listRecharge(1);
+	});
 });
 
 //충전/사용 내역 나열
@@ -14,7 +21,8 @@ function listRecharge(pageNo){
 		method: 'GET',
 	    dataType: "json",
 		data: {
-			pageNo: pageNo
+			pageNo: pageNo,
+			type: type
 		}
 	}).done(function( data ) {
 		window.scrollTo(0,0);

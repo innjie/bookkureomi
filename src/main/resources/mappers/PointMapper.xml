@@ -26,6 +26,9 @@
 					Recharge 
 				where
 					userNo = #{userNo}
+					<if test="type == 'recharging' || type == 'using'">
+						AND rcType = #{type}
+					</if>
 				ORDER BY rechargeNo desc
 		    ) Z WHERE ROWNUM <![CDATA[ <= ]]> #{end} 
 		) WHERE RNUM >= #{start} 
@@ -63,6 +66,9 @@
 			Recharge
 		WHERE
 			userNo = #{userNo}
+			<if test="type == 'recharging' || type == 'using'">
+				AND rcType = #{type}
+			</if>
     </select>
     
     

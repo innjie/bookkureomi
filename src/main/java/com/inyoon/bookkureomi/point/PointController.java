@@ -90,7 +90,8 @@ public class PointController {
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/point/list")
 	public Map<String, Object> listPoint(
-			@RequestParam("pageNo") int pageNo) {
+			@RequestParam("pageNo") int pageNo,
+			@RequestParam("type") String type) {
 		
 		int showCnt = 10;	//보여주는 개수
 		int pointCnt = 0;	//리스트 개수
@@ -104,17 +105,18 @@ public class PointController {
 			User user = (User) authentication.getUser();
 			int userNo = user.getUserNo();			
 			
-			pointCnt = pointService.countRechargeList(userNo);
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("userNo", userNo);					
+			paramMap.put("type", type);					
+			pointCnt = pointService.countRechargeList(paramMap);
 			
 			if(pointCnt > 0) {
 				pageCnt = (pointCnt % showCnt == 0) ? (pointCnt / showCnt) : (pointCnt / showCnt + 1);		//페이지 개수
 				int start = 1+(showCnt*(pageNo-1));
 				int end = showCnt+(showCnt*(pageNo-1));
 				
-				Map<String, Object> paramMap = new HashMap<String, Object>();
 				paramMap.put("start", start);
 				paramMap.put("end", end);					
-				paramMap.put("userNo", userNo);					
 				
 				rechargeList = pointService.getRechargeList(paramMap);
 			}
