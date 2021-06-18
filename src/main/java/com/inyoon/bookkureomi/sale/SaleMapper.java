@@ -19,9 +19,10 @@ public interface SaleMapper {
 	public void updateSale(Sale sale);
 	public void deleteSale(int saleNo);
 
-	public List<Sale> getMySaleList(int userNo);
+	public List<Sale> getMySaleList(Map<String, Object> paramMap);
 	public List<Sale> recommend(int genreNo);
 	
 	public int countSaleList();
 	public int countFindSaleList(Map<String, Object> paramMap);
+	public int countMySaleList(int userNo);
 }

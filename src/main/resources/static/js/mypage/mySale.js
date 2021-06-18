@@ -2,7 +2,7 @@ var option = '';
 
 $(document).ready(function(){
 	if(($(location).attr('href').split('/book')[1]).includes('/mypage/sale/view')){
-		listMySale();
+		listMySale(nowPageNo);
 	}
 	
 	$.ajax({
@@ -20,12 +20,21 @@ $(document).ready(function(){
 });
 
 //판매 중고 서적 나열
-function listMySale(){
+function listMySale(pageNo){
+	nowPageNo = pageNo;
+
 	$.ajax({
 		url: "/book/mypage/sale/list", 
 		method: 'GET',
-	    dataType: "json"
+	    dataType: "json",
+		data: {
+			pageNo: pageNo
+		}
 	}).done(function( data ) {
+		window.scrollTo(0,0);
+		$("#saleCnt").text(data.saleCnt);
+		paging(data, 'listMySale');
+		
 		$('#result')[0].innerHTML = '';
 		
 		var result = "<table class=\"table-list\">"

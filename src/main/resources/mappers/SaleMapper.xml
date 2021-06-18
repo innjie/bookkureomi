@@ -103,18 +103,24 @@
     </delete>
     
  	<!-- 나의 판매 내역 확인  -->
-    <select id="getMySaleList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
-        SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, author,
-			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType", 
-			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"
-		FROM 
-			Sale, Genre, Users 
-		where
-			Sale.userNo = Users.userNo
-			AND Sale.genreNo = Genre.genreNo
-			AND Users.userNo = #{userNo}
-		ORDER BY saleNo desc
+    <select id="getMySaleList" resultType="com.inyoon.bookkureomi.domain.Sale">
+        SELECT * 
+		FROM ( 
+		    SELECT ROWNUM AS RNUM, Z.* 
+		    FROM ( 
+		        SELECT 
+					saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, author,
+					Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType", 
+					Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"
+				FROM 
+					Sale, Genre, Users 
+				where
+					Sale.userNo = Users.userNo
+					AND Sale.genreNo = Genre.genreNo
+					AND Users.userNo = #{userNo}
+				ORDER BY saleNo desc
+		    ) Z WHERE ROWNUM <![CDATA[ <= ]]> #{end} 
+		) WHERE RNUM >= #{start}
     </select>
     
     <select id="countSaleList" resultType="integer">
@@ -137,6 +143,15 @@
 			<if test="genreType != null">
 				AND genreType like '%'|| #{genreType} ||'%'
 			</if>
+    </select>
+    
+    <select id="countMySaleList" parameterType="integer" resultType="integer">
+        SELECT 
+			count(*)
+		FROM 
+			Sale
+		WHERE
+			userNo = #{userNo}
     </select>
     
     
