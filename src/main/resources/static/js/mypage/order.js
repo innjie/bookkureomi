@@ -1,29 +1,39 @@
+var type= ''
+
 $(document).ready(function(){
 	if(($(location).attr('href').split('/book')[1]).includes('/order/view')){
-		listSaleOrder();
+		listSaleOrder(nowPageNo);
 	}
 });
 
 //주문 나열
-function listSaleOrder(){
-	var type = 'sale';
+function listSaleOrder(pageNo){
+	type = 'sale';
 		
-	listOrder(type);
+	listOrder(pageNo);
 }
-function listAuctionOrder(){
-	var type = 'auction';
+function listAuctionOrder(pageNo){
+	type = 'auction';
 		
-	listOrder(type);
+	listOrder(pageNo);
 }
-function listOrder(type) {
+function listOrder(pageNo) {
+	nowPageNo = pageNo;
+
 	$.ajax({
 		url: "/book/order/list", 
 		method: 'GET',
 	    dataType: "json",
 		data: {
-			type: type
+			type: type,
+			pageNo: pageNo
 		}
 	}).done(function( data ) {
+		window.scrollTo(0,0);
+		$("#orderCnt").text(data.orderCnt);
+		paging(data, 'listOrder');
+		var orderCnt = data.orderCnt
+		
 		$('#result')[0].innerHTML = '';
 		
 		if(data.orderList.length > 0) {
@@ -33,8 +43,9 @@ function listOrder(type) {
 			
 			for(var i=0; i<data.orderList.length; i++){
 				result += "<tr>"
-							+ "<td class=\"table-text\">" + ((-1 * (i+1)) + data.orderList.length + 1)  + "</td>";
-
+						+ "<td class=\"table-text\">" + ((orderCnt--) - (pageNo-1)*10) + "</td>";
+						//+ "<td class=\"table-text\">" + ((-1 * (i+1)) + data.orderList.length + 1)  + "</td>";
+				
 				result += "<td class=\"table-text\"><a onclick=\"saleOrder("+data.orderList[i].orderNo+");\">" + data.orderList[i].orderNo  + "</a></td>"
 						+ "<td class=\"table-text\">" + data.orderList[i].info + "</td>"
 						+ "<td class=\"table-text\">" + data.orderList[i].total + "</td>";

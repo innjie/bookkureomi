@@ -9,6 +9,7 @@
 	<!--    필요 css, script 추가영역 -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/dist/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common/paging.js}" src="../../static/js/common/paging.js"></script>
 	<script type="text/javascript" th:src="@{/js/mypage/order.js}" src="../../static/js/mypage/order.js"></script>
 	<meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -20,12 +21,14 @@
     	<div class="container-section">
     		<div class="div-list-head">
     			<div class="insert-style">
-	    			<button type="button" class="insert-btn" onClick="listSaleOrder()">일반</button>
-	    			<button type="button" class="insert-btn" onClick="listAuctionOrder()">경매</button>
+	    			<button type="button" class="insert-btn" onClick="listSaleOrder(1)">일반</button>
+	    			<button type="button" class="insert-btn" onClick="listAuctionOrder(1)">경매</button>
 	    		</div>
     		</div>
     		
+     		<div>총&nbsp;<span id="orderCnt"></span>건</div>
     		<div class ="div-list-result" id="result"></div>
+    		<div class="paging" id="paging"></div>
 			
 			<div id="pop-mask-order-detail" class="pop-mask">			
 				<div id="pop-order-detail" class="pop">

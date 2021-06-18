@@ -222,8 +222,13 @@ public class OrderController {
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/order/list")
 	public Map<String, Object> listOrder(
-			@RequestParam("type") String type) {
+			@RequestParam("type") String type,
+			@RequestParam("pageNo") int pageNo) {
 	
+		int showCnt = 10;	//보여주는 개수
+		int orderCnt = 0;	//리스트 개수
+		int pageCnt = 0;
+		
 		List<Order> orderList = new ArrayList<>();	
 	
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
@@ -231,16 +236,32 @@ public class OrderController {
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
 			User user = (User) authentication.getUser();
 			int userNo = user.getUserNo();
-		
+
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("userNo", userNo);		
 			if(type.equals("sale")) {
-				orderList = orderService.getSaleOrderList(userNo);
+				paramMap.put("type", "sale");	
 			} else if(type.equals("auction")){
-				orderList = orderService.getAuctionOrderList(userNo);
+				paramMap.put("type", "auction");	
+			}		
+			orderCnt = orderService.countOrderList(paramMap);
+			
+			if(orderCnt > 0) {
+				pageCnt = (orderCnt % showCnt == 0) ? (orderCnt / showCnt) : (orderCnt / showCnt + 1);		//페이지 개수
+				int start = 1+(showCnt*(pageNo-1));
+				int end = showCnt+(showCnt*(pageNo-1));
+				
+				paramMap.put("start", start);
+				paramMap.put("end", end);					
+				
+				orderList = orderService.getOrderList(paramMap);
 			}
 		}
 	
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("orderList", orderList);
+		map.put("orderCnt", orderCnt);
+		map.put("pageCnt", pageCnt);
 		
         return map;
     }

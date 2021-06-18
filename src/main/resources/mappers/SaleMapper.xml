@@ -123,6 +123,7 @@
 		) WHERE RNUM >= #{start}
     </select>
     
+    <!-- 전체 판매 카운트 -->
     <select id="countSaleList" resultType="integer">
         SELECT 
 			count(*)
@@ -130,6 +131,7 @@
 			Sale
     </select>
     
+    <!-- 검색 판매 카운트  -->
     <select id="countFindSaleList" resultType="integer">
         SELECT 
 			count(*)
@@ -145,6 +147,7 @@
 			</if>
     </select>
     
+    <!-- 나의 판매 카운트  -->
     <select id="countMySaleList" parameterType="integer" resultType="integer">
         SELECT 
 			count(*)
