@@ -1,17 +1,27 @@
 $(document).ready(function(){
 	if(($(location).attr('href').split('/book')[1]).includes('/point/view')){
 		detailPoint();
-		listRecharge();
+		listRecharge(nowPageNo);
 	}
 });
 
 //충전/사용 내역 나열
-function listRecharge(){
+function listRecharge(pageNo){
+	nowPageNo = pageNo;
+
 	$.ajax({
 		url: "/book/point/list", 
 		method: 'GET',
-	    dataType: "json"
+	    dataType: "json",
+		data: {
+			pageNo: pageNo
+		}
 	}).done(function( data ) {
+		window.scrollTo(0,0);
+		$("#pointCnt").text(data.pointCnt);
+		paging(data, 'listRecharge');
+		var pointCnt = data.pointCnt
+		
 		$('#result')[0].innerHTML = '';
 		
 		var result;
@@ -23,7 +33,8 @@ function listRecharge(){
 			
 			for(var i=0; i<data.rechargeList.length; i++){
 				result += "<tr>"
-							+ "<td class=\"table-text\">" + ((-1 * (i+1)) + data.rechargeList.length + 1)  + "</td>"
+							+ "<td class=\"table-text\">" + ((pointCnt--) - (pageNo-1)*10)  + "</td>"
+							//+ "<td class=\"table-text\">" + ((-1 * (i+1)) + data.rechargeList.length + 1)  + "</td>"
 							+ "<td class=\"table-text\">" + data.rechargeList[i].rcDate + "</td>";
 				
 				//충전/사용 구분
@@ -126,7 +137,7 @@ function createRecharge(){
 			//alert(data.result);
 			window.open(data.result);
 			detailPoint();
-			listRecharge();
+			listRecharge(1);
 		})
 	    .fail( function( textStatus ) {
 	        alert( "Request failed: " + textStatus );

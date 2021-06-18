@@ -5,11 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,7 +19,6 @@ import com.inyoon.bookkureomi.domain.Recharge;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.kakao.KakaoPayService;
 import com.inyoon.bookkureomi.user.MyAuthentication;
-import com.inyoon.bookkureomi.user.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,8 +35,6 @@ public class PointController {
 	private PointService pointService;
 	@Autowired
     private KakaoPayService kakaoPayService;
-	@Autowired
-    private UserService userService;
 	
 	
 	@ApiOperation(value="포인트 확인 화면 이동", notes="포인트 확인 화면으로 이동한다.")
@@ -96,7 +89,12 @@ public class PointController {
 	@ApiOperation(value="포인트 이용 내역", notes="포인트 이용 내역을 보여준다.")
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/point/list")
-	public Map<String, Object> listPoint() {
+	public Map<String, Object> listPoint(
+			@RequestParam("pageNo") int pageNo) {
+		
+		int showCnt = 10;	//보여주는 개수
+		int pointCnt = 0;	//리스트 개수
+		int pageCnt = 0;
 		
 		List<Recharge> rechargeList = new ArrayList<Recharge>();
 
@@ -104,13 +102,28 @@ public class PointController {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
 			User user = (User) authentication.getUser();
-			int userNo = user.getUserNo();
-		
-			rechargeList = pointService.getRechargeList(userNo);
+			int userNo = user.getUserNo();			
+			
+			pointCnt = pointService.countRechargeList(userNo);
+			
+			if(pointCnt > 0) {
+				pageCnt = (pointCnt % showCnt == 0) ? (pointCnt / showCnt) : (pointCnt / showCnt + 1);		//페이지 개수
+				int start = 1+(showCnt*(pageNo-1));
+				int end = showCnt+(showCnt*(pageNo-1));
+				
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("start", start);
+				paramMap.put("end", end);					
+				paramMap.put("userNo", userNo);					
+				
+				rechargeList = pointService.getRechargeList(paramMap);
+			}
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rechargeList", rechargeList);
+		map.put("pointCnt", pointCnt);
+		map.put("pageCnt", pageCnt);
 		
         return map;
     }
