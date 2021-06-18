@@ -5,39 +5,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.support.PagedListHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.inyoon.bookkureomi.delivery.DeliveryService;
 import com.inyoon.bookkureomi.domain.Delivery;
 import com.inyoon.bookkureomi.domain.Genre;
-import com.inyoon.bookkureomi.domain.Order;
 import com.inyoon.bookkureomi.domain.OrderDetail;
 import com.inyoon.bookkureomi.domain.Sale;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.genre.GenreService;
 import com.inyoon.bookkureomi.order.OrderService;
-import com.inyoon.bookkureomi.test.Test;
 import com.inyoon.bookkureomi.user.MyAuthentication;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
 
@@ -276,21 +266,41 @@ public class SaleController{
 	@ApiOperation(value="나의 판매 목록", notes="나의 판매 전체 목록을 보여준다.")
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/mypage/sale/list")
-	public Map<String, Object> listMySale() {
+	public Map<String, Object> listMySale(
+			@RequestParam("pageNo") int pageNo) {
 		
-		List<Sale> saleList = new ArrayList<>();	
-
+		int showCnt = 12;	//보여주는 개수
+		int saleCnt = 0;	//리스트 개수
+		int pageCnt = 0;
+		
+		List<Sale> saleList = new ArrayList<>();
+		
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
 			User user = (User) authentication.getUser();
 			int userNo = user.getUserNo();
 		
-			saleList = saleService.getMySaleList(userNo);
+			saleCnt = saleService.countMySaleList(userNo);
+			
+			if(saleCnt > 0) {
+				pageCnt = (saleCnt % showCnt == 0) ? (saleCnt / showCnt) : (saleCnt / showCnt + 1);		//페이지 개수
+				int start = 1+(showCnt*(pageNo-1));
+				int end = showCnt+(showCnt*(pageNo-1));
+				
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("start", start);
+				paramMap.put("end", end);					
+				paramMap.put("userNo", userNo);					
+				
+				saleList = saleService.getMySaleList(paramMap);
+			}
 		}
-		
+	
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("saleList", saleList);
+		map.put("saleCnt", saleCnt);
+		map.put("pageCnt", pageCnt);
 		
         return map;
     }

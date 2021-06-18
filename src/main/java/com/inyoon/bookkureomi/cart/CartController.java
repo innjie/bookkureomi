@@ -72,7 +72,6 @@ public class CartController {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
 			User user = (User) authentication.getUser();
-			int userNo = user.getUserNo();
 			
 			Sale sale = new Sale();
 			sale.setSaleNo(saleNo);

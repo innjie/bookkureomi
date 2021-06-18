@@ -51,8 +51,8 @@ public class SaleService {
 	}
 	
 	//나의 판매 내역 확인
-	public List<Sale> getMySaleList(int userNo){
-		return saleMapper.getMySaleList(userNo);
+	public List<Sale> getMySaleList(Map<String, Object> paramMap){
+		return saleMapper.getMySaleList(paramMap);
 	}
 	
 	//전체 판매 카운트
@@ -63,6 +63,11 @@ public class SaleService {
 	//검색 판매 카운트
 	public int countFindSaleList(Map<String, Object> paramMap) {
 		return saleMapper.countFindSaleList(paramMap);
+	}
+	
+	//나의 판매 카운트
+	public int countMySaleList(int userNo) {
+		return saleMapper.countMySaleList(userNo);
 	}
 	
 	
