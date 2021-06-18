@@ -1,6 +1,7 @@
 package com.inyoon.bookkureomi.point;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,15 @@ public class PointService {
 	}
 	
 	//해당 유저번호의 포인트 이용/충전내역 확인
-	public List<Recharge> getRechargeList(int userNo){
-		return pointMapper.getRechargeList(userNo);
+	public List<Recharge> getRechargeList(Map<String, Object> paramMap){
+		return pointMapper.getRechargeList(paramMap);
 	}
+	
+	//나의 충전/이용 카운트
+	public int countRechargeList(int userNo) {
+		return pointMapper.countRechargeList(userNo);
+	}
+	
 
 	
 	/*	public int checkHasPoint(int userNo){
