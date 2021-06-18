@@ -249,7 +249,12 @@ function detailAuction(auctionNo) {
         $("#viewAuctionNo").val(data.auction.auctionNo);
         $("#viewTitle").val(data.auction.title);
         $("#viewPublisher").val(data.auction.publisher);
-        $("#viewEndDate").val(data.auction.endDate);
+        var endArr = data.auction.endDate.split("T");
+        var endDate = "";
+        for(var i in endArr) {
+            endDate = endArr[0];
+        }
+        $("#viewEndDate").val(endDate);
         $("#viewBidPrice").val(data.auction.bidPrice);
         $("#viewImmediPrice").val(data.auction.immediPrice);
         $("#viewGenreType").val(data.auction.genreType);
