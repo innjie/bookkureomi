@@ -30,14 +30,9 @@ public class SaleService {
 		return saleMapper.getSale(saleNo);
 	}
 	
-	//제목으로 판매 검색
-	public List<Sale> findSaleByTitle(String title){
-		return saleMapper.findSaleByTitle(title);
-	}
-	
-	//장르로 판매 검색
-	public List<Sale> findSaleByGenre(String type){
-		return saleMapper.findSaleByGenre(type);
+	//판매 검색
+	public List<Sale> findSaleList(Map<String, Object> paramMap){
+		return saleMapper.findSaleList(paramMap);
 	}
 	
 	//판매 책 등록
@@ -65,6 +60,10 @@ public class SaleService {
 		return saleMapper.countSaleList();
 	}
 	
+	//검색 판매 카운트
+	public int countFindSaleList(Map<String, Object> paramMap) {
+		return saleMapper.countFindSaleList(paramMap);
+	}
 	
 	
 	

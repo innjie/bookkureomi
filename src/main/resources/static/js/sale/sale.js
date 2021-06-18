@@ -44,15 +44,13 @@ function listSale(pageNo){
 			pageNo: pageNo
 		}
 	}).done(function( data ) {
+		window.scrollTo(0,0);
+		$("#saleCnt").text(data.saleCnt);
+		paging(data, 'listSale');
+		
 		$('#result')[0].innerHTML = '';
 		
-		if(data.saleList.length > 0) {
-			window.scrollTo(0,0);
-			
-			$("#saleCnt").text(data.saleCnt);
-			
-			paging(data);
-			
+		if(data.saleList.length > 0) {			
 			var result = "<table class=\"table-list\">"
 				+ "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
 	
@@ -104,7 +102,9 @@ function listSale(pageNo){
 }
 
 //판매 중고 서적 찾기
-function findSale(){
+function findSale(pageNo){
+	nowPageNo = pageNo;
+	
 	var title = '';
 	var genre = '';
 	var type = $("#findType").val();
@@ -121,9 +121,14 @@ function findSale(){
 	    dataType: "json",
 		data: {
 			title : title,
-			genre : genre
+			genre : genre,
+			pageNo : pageNo
 		}
 	}).done(function( data ) {
+		window.scrollTo(0,0);		
+		$("#saleCnt").text(data.saleCnt);		
+		paging(data, 'findSale');
+		
 		$('#result')[0].innerHTML = '';
 		var result;
 		
