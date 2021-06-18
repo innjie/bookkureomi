@@ -1,6 +1,7 @@
 package com.inyoon.bookkureomi.order;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,14 +36,9 @@ public class OrderService {
 		return orderMapper.getODNo();
 	}
 
-	//해당 유저번호의 일반 거래 주문 목록 확인
-	public List<Order> getSaleOrderList(int userNo){
-		return orderMapper.getSaleOrderList(userNo);
-	}
-	
-	//해당 유저번호의 경매 주문 목록 확인
-	public List<Order> getAuctionOrderList(int userNo){
-		return orderMapper.getAuctionOrderList(userNo);
+	//해당 유저번호의 일반 거래/경매 주문 목록 확인
+	public List<Order> getOrderList(Map<String, Object> paramMap){
+		return orderMapper.getOrderList(paramMap);
 	}
 	
 	//해당 일반 거래 주문번호의 상세 주문 정보 확인 (주문자 입장에서 주문 확인)
@@ -87,8 +83,10 @@ public class OrderService {
 		pointMapper.usePoint(rechargeUsing);			//포인트 사용 내역 추가
 	}
 	
-	
-	
+	//주문 카운트
+	public int countOrderList(Map<String, Object> paramMap) {
+		return orderMapper.countOrderList(paramMap);
+	}
 
 	
 	

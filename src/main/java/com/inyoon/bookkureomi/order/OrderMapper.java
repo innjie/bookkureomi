@@ -1,6 +1,7 @@
 package com.inyoon.bookkureomi.order;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,10 +20,11 @@ public interface OrderMapper {
 	public void orderAuction(Order order);
 	public void orderDetailAuction(OrderDetail orderDetail);
 	
-	public List<Order> getSaleOrderList(int userNo);
-	public List<Order> getAuctionOrderList(int userNo);
+	public List<Order> getOrderList(Map<String, Object> paramMap);
 	
 	public List<OrderDetail> getSaleOrder(int orderNo);
 	public List<OrderDetail> getAuctionOrder(int orderNo);
 	public OrderDetail getOrderBySale (int saleNo);
+	
+	public int countOrderList(Map<String, Object> paramMap);
 }

@@ -14,44 +14,32 @@
         SELECT MAX(odNo)+1 from OrderDetail
     </select>
     
-	<!-- 해당 유저번호의 일반 거래 주문 목록 확인 -->
-	<select id="getSaleOrderList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
-        SELECT distinct
-			Orders.orderNo, orderDate, info, total	
-		FROM 
-			Orders, OrderDetail 
-		where
-			userNo = #{userNo}
-			AND Orders.orderNo = OrderDetail.orderNo
-			AND OrderDetail.saleNo is not null
-		ORDER BY
-			Orders.orderNo desc
-			
-		 <!--  paging
-		SELECT
-			F.*
-		FROM
-			(
-			SELECT
-				ROWNUM AS ROW_NUM, R.*
-			FROM
-				(
-					SELECT 
-						orderNo, saleNo, auctionNo, userNo, pAddress, orderDate, rAddress, rName, rPhone
-					FROM 
-						Orders 
-					where
-						userNo = #{userNo}
-					ORDER BY
-						orderNo
-				) R ) F
-		WHERE
-			F.ROW_NUM BETWEEN #{start} and #{end}
-		 --> 
+	<!-- 해당 유저번호의 일반 거래/경매 주문 목록 확인 -->
+	<select id="getOrderList" resultType="com.inyoon.bookkureomi.domain.Order">
+        SELECT * 
+		FROM ( 
+		    SELECT ROWNUM AS RNUM, Z.* 
+		    FROM ( 
+		        SELECT distinct
+					Orders.orderNo, orderDate, info, total
+				FROM 
+					Orders, OrderDetail  
+				where
+					userNo = #{userNo}
+					AND Orders.orderNo = OrderDetail.orderNo
+					<if test="type == 'sale'">
+						AND OrderDetail.saleNo is not null
+					</if>
+					<if test="type == 'auction'">
+						AND OrderDetail.auctionNo is not null
+					</if>
+				ORDER BY Orders.orderNo desc
+		    ) Z WHERE ROWNUM <![CDATA[ <= ]]> #{end} 
+		) WHERE RNUM >= #{start} 
     </select>
     
  	<!-- 해당 유저번호의 경매 주문 목록 확인 -->
-    <select id="getAuctionOrderList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
+ <!--     <select id="getAuctionOrderList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
         SELECT distinct
 			orderNo, orderDate, info, total	
 		FROM 
@@ -63,7 +51,7 @@
 		ORDER BY
 			Orders.orderNo desc
 	</select>
-   
+   -->
 		 
 	<!-- 해당 일반 거래 주문번호의 상세 주문 정보 확인 (주문자 입장에서 주문 확인)-->
     <select id="getSaleOrder" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.OrderDetail">
@@ -147,6 +135,22 @@
         	saleNo = #{saleNo}
     </update>
     
+    <!-- 검색 판매 카운트  -->
+    <select id="countOrderList" resultType="integer">
+        SELECT 
+			count(distinct Orders.orderNo)
+		FROM 
+			Orders, OrderDetail 
+		where
+			userNo = #{userNo}
+			AND Orders.orderNo = OrderDetail.orderNo
+			<if test="type == 'sale'">
+				AND OrderDetail.saleNo is not null
+			</if>
+			<if test="type == 'auction'">
+				AND OrderDetail.auctionNo is not null
+			</if>
+    </select>
     
     
     
