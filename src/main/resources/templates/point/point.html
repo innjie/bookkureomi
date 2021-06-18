@@ -28,7 +28,16 @@
 	    		</div>
     		</div>
     		
-    		<div>총&nbsp;<span id="pointCnt"></span>건</div>
+    		<div style="margin-bottom:50px;">
+    			<div style="float:left;">총&nbsp;<span id="pointCnt"></span>건</div>
+    			<div style="float:right;">
+    				<select class="" id="listType" name="listType">
+		    			<option value="all">전체내역</option>
+		    			<option value="recharging">충전내역</option>
+		    			<option value="using">이용내역</option>
+		    		</select>
+    			</div>
+    		</div>
     		<div class ="div-list-result" id="result"></div>
     		<div class="paging" id="paging"></div>
 	

@@ -17,5 +17,5 @@ public interface PointMapper {
 	public void usePoint(Recharge recharge);
 	public List<Recharge> getRechargeList(Map<String, Object> paramMap);
 	
-	public int countRechargeList(int userNo);
+	public int countRechargeList(Map<String, Object> paramMap);
 }

@@ -36,8 +36,8 @@ public class PointService {
 	}
 	
 	//나의 충전/이용 카운트
-	public int countRechargeList(int userNo) {
-		return pointMapper.countRechargeList(userNo);
+	public int countRechargeList(Map<String, Object> paramMap) {
+		return pointMapper.countRechargeList(paramMap);
 	}
 	
 
