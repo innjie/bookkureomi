@@ -22,17 +22,35 @@ public class AuctionController {
     //    //view auctionList
     @GetMapping("/auction/page")
     public String auctionPage()  {
-        System.out.println("page Controller in"); return "auction/page";
+        return "auction/page";
     }
-    //
-//    //view auctionList by page
+
+    //view auctionList by page
     @GetMapping("/auction/list")
     @ResponseBody
-    public Map<String, Object> listAuction() {
+    public Map<String, Object> listAuction(@RequestParam("pageNo") int pageNo) {
+        int showCnt = 12;
+        int auctionCnt = auctionService.countAuctionList();
+        int pageCnt = 0;
+
         List<Auction> auctionList = new ArrayList<>();
-        auctionList = auctionService.getAllAuctionList();
+        System.out.println(auctionList.size());
+        if(auctionCnt > 0) {
+            pageCnt = (auctionCnt % showCnt == 0) ? (auctionCnt / showCnt) : (auctionCnt / showCnt + 1);
+            int start = 1 + (showCnt * (pageNo - 1));
+            int end = showCnt + (showCnt * (pageNo - 1));
+
+            Map<String, Object> paramMap = new HashMap<String, Object>();
+            paramMap.put("start", start);
+            paramMap.put("end", end);
+
+            auctionList = auctionService.getAllAuctionList();
+        }
+
 
         Map<String, Object> map = new HashMap<String, Object>();
+        map.put("auctionCnt", auctionCnt);
+        map.put("pageCnt", pageCnt);
         map.put("auctionList", auctionList);
         return map;
     }
