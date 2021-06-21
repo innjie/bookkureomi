@@ -1,16 +1,26 @@
+var option = '';
 $(document).ready(function () {
     if (($(location).attr('href').split('/book')[1]).includes('/auction/page')) {
-        listAuction();
+        listAuction(nowPageNo);
     }
+
 });
 //판매 중고 서적 나열
-function listAuction() {
+function listAuction(pageNo) {
+    nowPageNo = pageNo;
+    alert("hello");
     $.ajax({
         url: "/book/auction/list",
         method: 'GET',
         dataType: "json",
-        data: {}
+        data: {
+            pageNo: pageNo
+        }
     }).done(function (data) {
+        window.scrollTo(0,0);
+        $("#auctionCnt").text(data.auctionCnt);
+        paging(data, 'listAuction');
+
         $('#result')[0].innerHTML = '';
 
         if (data.auctionList.length > 0) {
@@ -33,8 +43,6 @@ function listAuction() {
 
                 //info
                 var endDate = data.auctionList[i].endDate.split("T");
-
-
 
                 result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
                     + "<li class=\"table-list-content-list-style\"><strong>" + data.auctionList[i].title + "</strong></li>"

@@ -9,9 +9,12 @@
     <!--    필요 css, script 추가영역 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/dist/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common/paging.js}" src="../../static/js/common/paging.js"></script>
     <script type="text/javascript" th:src="@{/js/auction/auction.js}" src="../../static/js/auction/auction.js"></script>
     <script type="text/javascript" th:src="@{/js/auction/validation.js}" src="../../static/js/auction/validation.js"></script>
     <script type="text/javascript" th:src="@{/js/mypage/order.js}" src="../../static/js/mypage/order.js"></script>
+
+
 
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -34,9 +37,11 @@
                 <button type="button" class="insert-btn" onClick="createAuctionForm()">판매하기</button>
             </div>
         </div>
-
+        <div>총 <span id = "auctionCnt"></span>건</div>
         <div class ="div-list-result" id="result"></div>
+        <div class ="paging" id = "paging"></div>
 
+        <div id="pop-mask-sale-create" class="pop-mask">
         <div id="pop-sale-create" class="pop">
             <h2>중고 서적 판매하기</h2>
             <ul class="pop-style1">
@@ -122,7 +127,7 @@
             </ul>
             <div class="pop-btn-style" id="buttonResult"></div>
         </div>
-
+        </div>
     </div>
 </section>
 </body>
