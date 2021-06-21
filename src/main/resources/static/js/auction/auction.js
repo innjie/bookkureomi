@@ -8,7 +8,6 @@ $(document).ready(function () {
 //판매 중고 서적 나열
 function listAuction(pageNo) {
     nowPageNo = pageNo;
-    alert("hello");
     $.ajax({
         url: "/book/auction/list",
         method: 'GET',
@@ -237,8 +236,6 @@ function findAuction() {
 //판매 중고서적 상세보기
 function detailAuction(auctionNo) {
     closeAuctionCreatePopup();
-
-    alert(auctionNo);
     $.ajax({
         url: "/book/auction/detail",
         method: 'GET',
