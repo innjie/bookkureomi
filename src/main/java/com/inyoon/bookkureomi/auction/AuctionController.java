@@ -112,12 +112,32 @@ public class AuctionController {
 
     @ResponseBody
     @GetMapping("/auction/find")
-    public Map<String, Object> findAuction(@RequestParam("title") String title) {
+    public Map<String, Object> findAuction(
+            @RequestParam("title") String title,
+            @RequestParam("pageNo") int pageNo) {
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+
+        int showCnt = 12;
+        int auctionCnt = auctionService.countFindAuctionList(title);
+        int pageCnt = 0;
+
         List<Auction> auctionList = new ArrayList<>();
-        auctionList = auctionService.findAuction(title);
+
+        if(auctionCnt > 0) {
+            pageCnt = (auctionCnt % showCnt == 0) ? (auctionCnt / showCnt) : (auctionCnt / showCnt + 1);		//페이지 개수
+            int start = 1+(showCnt*(pageNo-1));
+            int end = showCnt+(showCnt*(pageNo-1));
+
+            paramMap.put("start", start);
+            paramMap.put("end", end);
+            auctionList = auctionService.findAuction(title);
+        }
+
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("auctionList", auctionList);
+        map.put("auctionCnt", auctionCnt);
+        map.put("pageCnt", pageCnt);
         return map;
     }
 

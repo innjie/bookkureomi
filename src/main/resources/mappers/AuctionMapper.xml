@@ -61,4 +61,8 @@
     <select id="countMyAuctionList" parameterType = "integer" resultType="integer">
         SELECT count(*) FROM Auction WHERE userNo = #{userNo}
     </select>
+
+    <select id = "countFindAuctionList" parameterType = "String" resultType="integer">
+        SELECT count(*) FROM Auction WHERE title LIKE '%' || #{title} || '%'
+    </select>
 </mapper>

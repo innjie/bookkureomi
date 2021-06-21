@@ -109,7 +109,6 @@ function createAuctionForm() {
 }
 
 function createAuction() {
-
     var publisher = $("#insertPublisher").val();
     var title = $("#insertTitle").val();
     var bidPrice = $("#insertBidPrice").val();
@@ -170,18 +169,22 @@ function createAuction() {
 
 }
 //findAuction
-function findAuction() {
+function findAuction(pageNo) {
+    nowPageNo = pageNo;
     var title = $("#findTitle").val();
-
 
     $.ajax({
         url: "/book/auction/find",
         method: 'GET',
         dataType: "json",
         data: {
-            title : title
+            title : title,
+            pageNo : pageNo
         }
     }).done(function(data) {
+        window.scrollTo(0,0);
+        $("#auctionCnt").text(data.auctionCnt);
+        paging(data, 'findAuction');
         $('#result')[0].innerHTML = '';
         var result;
 
