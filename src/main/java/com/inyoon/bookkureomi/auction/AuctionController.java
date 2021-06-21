@@ -4,7 +4,9 @@ import com.inyoon.bookkureomi.domain.Auction;
 import com.inyoon.bookkureomi.domain.Genre;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.genre.GenreService;
+import com.inyoon.bookkureomi.user.MyAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -135,29 +137,32 @@ public class AuctionController {
     @GetMapping("/mypage/auction/list")
     public Map<String, Object> myAuctionList(
             @RequestParam("pageNo") int pageNo) {
-        int userNo = 1;
         int showCnt = 12;
         int auctionCnt = 0;
         int pageCnt = 0;
 
-
         List<Auction> auctionList = new ArrayList<>();
-        auctionCnt = auctionService.countMyAuctionList(userNo);
-        System.out.println(auctionCnt);
-        if(auctionCnt > 0) {
-            auctionCnt = (auctionCnt % showCnt == 0) ? (auctionCnt / showCnt) : (auctionCnt / showCnt + 1);		//페이지 개수
-            int start = 1+(showCnt*(pageNo-1));
-            int end = showCnt+(showCnt*(pageNo-1));
+        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("annonymousUser")) {
+            MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.
+                    getContext().getAuthentication();
+            User user = (User) authentication.getUser();
+            int userNo = user.getUserNo();
+            auctionCnt = auctionService.countMyAuctionList(userNo);
+            if(auctionCnt > 0) {
+                auctionCnt = (auctionCnt % showCnt == 0) ? (auctionCnt / showCnt) : (auctionCnt / showCnt + 1);		//페이지 개수
+                int start = 1+(showCnt*(pageNo-1));
+                int end = showCnt+(showCnt*(pageNo-1));
 
-            Map<String, Object> paramMap = new HashMap<String, Object>();
-            paramMap.put("start", start);
-            paramMap.put("end", end);
-            paramMap.put("userNo", userNo);
+                Map<String, Object> paramMap = new HashMap<String, Object>();
+                paramMap.put("start", start);
+                paramMap.put("end", end);
+                paramMap.put("userNo", userNo);
 
-            auctionList = auctionService.getAuctionListByUserNo(userNo);
+                auctionList = auctionService.getAuctionListByUserNo(userNo);
 
+            }
         }
-        System.out.println(auctionCnt);
+
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("auctionList", auctionList);
         map.put("auctionCnt", auctionCnt);
