@@ -1,16 +1,24 @@
+var option = '';
 $(document).ready(function () {
     if (($(location).attr('href').split('/book')[1]).includes('/mypage/auction/page')) {
-        listAuction();
+        listAuction(nowPageNo);
     }
 });
 
-function listAuction() {
+function listAuction(pageNo) {
+    nowPageNo = pageNo;
     $.ajax({
         url: "/book/mypage/auction/list",
         method: 'GET',
         dataType: "json",
-        data: {}
+        data: {
+            pageNo: pageNo
+        }
     }).done(function (data) {
+        window.scrollTo(0,0);
+        $("#auctionCnt").text(data.auctionCnt);
+        paging(data, 'listAuction');
+
         $('#result')[0].innerHTML = '';
 
         if (data.auctionList.length > 0) {
@@ -34,8 +42,6 @@ function listAuction() {
                 //info
                 var endDate = data.auctionList[i].endDate.split("T");
 
-
-
                 result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
                     + "<li class=\"table-list-content-list-style\"><strong>" + data.auctionList[i].title + "</strong></li>"
                     + "<li class=\"table-list-content-list-style\">" + endDate[0] + " / " + data.auctionList[i].publisher + "</li>"
@@ -58,9 +64,8 @@ function listAuction() {
                 }
             }
             result += "</tbody></table>";
-        } else {
-            result = "<p class=\"find-nothing\">결과가 없습니다.</p>";
         }
+
 
         $('#result').append(result);
     })

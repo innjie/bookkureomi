@@ -133,21 +133,39 @@ public class AuctionController {
 
     @ResponseBody
     @GetMapping("/mypage/auction/list")
-    public Map<String, Object> myAuctionList() {
+    public Map<String, Object> myAuctionList(
+            @RequestParam("pageNo") int pageNo) {
         int userNo = 1;
-        List<Auction> auctionList = auctionService.getAuctionListByUserNo(userNo);
-        System.out.println(auctionList.size());
+        int showCnt = 12;
+        int auctionCnt = 0;
+        int pageCnt = 0;
+
+
+        List<Auction> auctionList = new ArrayList<>();
+        auctionCnt = auctionService.countMyAuctionList(userNo);
+        System.out.println(auctionCnt);
+        if(auctionCnt > 0) {
+            auctionCnt = (auctionCnt % showCnt == 0) ? (auctionCnt / showCnt) : (auctionCnt / showCnt + 1);		//페이지 개수
+            int start = 1+(showCnt*(pageNo-1));
+            int end = showCnt+(showCnt*(pageNo-1));
+
+            Map<String, Object> paramMap = new HashMap<String, Object>();
+            paramMap.put("start", start);
+            paramMap.put("end", end);
+            paramMap.put("userNo", userNo);
+
+            auctionList = auctionService.getAuctionListByUserNo(userNo);
+
+        }
+        System.out.println(auctionCnt);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("auctionList", auctionList);
+        map.put("auctionCnt", auctionCnt);
+        map.put("pageCnt", pageCnt);
 
         return map;
     }
-//    @RequestMapping("/auction/myListPage.do")
-//    public String listMyAuctionInPage(@RequestParam("page") String page,
-//                                      @ModelAttribute("auctionList") PagedListHolder<Auction> auctionList,
-//                                      BindingResult result) throws Exception {
-//
-//    }
+
 //
 //    //find auctionList
 //    @RequestMapping("/auction/find.do")
