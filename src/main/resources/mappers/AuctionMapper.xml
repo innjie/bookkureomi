@@ -51,4 +51,14 @@
         WHERE
             title LIKE '%' || #{title} || '%'
     </select>
+
+    <select id = "countAuctionList" resultType="integer">
+        SELECT
+            count(*)
+        FROM Auction
+    </select>
+
+    <select id="countMyAuctionList" parameterType = "integer" resultType="integer">
+        SELECT count(*) FROM Auction WHERE userNo = #{userNo}
+    </select>
 </mapper>
