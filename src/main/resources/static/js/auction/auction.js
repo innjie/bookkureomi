@@ -91,6 +91,13 @@ function setAuctionDefault() {
 
 //중고 서적 판매
 function createAuctionForm() {
+    $("#pop-mask-sale-create").css("display","block");
+    $("body").css("overflow","hidden");
+    $("#pop-sale-create").css({
+        "top": (window.screen.height / 2) - ($("#pop-sale-create").outerHeight() / 2)-50+"px",
+        "left": (window.screen.width / 2) - ($("#pop-sale-create").outerWidth() / 2)+"px"
+    });
+
     setAuctionDefault();
     closeAuctionDetailPopup();
     closeOrderPopup();
@@ -102,6 +109,7 @@ function createAuctionForm() {
 }
 
 function createAuction() {
+
     var publisher = $("#insertPublisher").val();
     var title = $("#insertTitle").val();
     var bidPrice = $("#insertBidPrice").val();
@@ -235,7 +243,13 @@ function findAuction() {
 }
 //판매 중고서적 상세보기
 function detailAuction(auctionNo) {
-    closeAuctionCreatePopup();
+    $("#pop-mask-sale-detail").css("display","block");
+    $("body").css("overflow","hidden");
+    $("#pop-sale-detail").css({
+        "top": (window.screen.height / 2) - ($("#pop-sale-detail").outerHeight() / 2)-50+"px",
+        "left": (window.screen.width / 2) - ($("#pop-sale-detail").outerWidth() / 2)+"px"
+    });
+
     $.ajax({
         url: "/book/auction/detail",
         method: 'GET',
@@ -296,10 +310,14 @@ function detailAuction(auctionNo) {
 //상세 팝업 닫기
 function closeAuctionDetailPopup() {
     $("#pop-sale-detail").css("display", "none");
+    $("#pop-mask-sale-detail").css("display","none");
+    $("body").css("overflow","auto");
 }
 
 //추가 팝업 닫기
 function closeAuctionCreatePopup() {
     $("#pop-sale-create").css("display", "none");
+    $("#pop-mask-sale-create").css("display","none");
+    $("body").css("overflow","auto");
 }
 

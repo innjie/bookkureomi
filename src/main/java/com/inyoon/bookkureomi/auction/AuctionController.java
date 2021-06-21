@@ -21,7 +21,7 @@ public class AuctionController {
     @Autowired
     private GenreService genreService;
 
-    //    //view auctionList
+    //view auctionList
     @GetMapping("/auction/page")
     public String auctionPage()  {
         return "auction/page";
@@ -120,14 +120,8 @@ public class AuctionController {
         map.put("auctionList", auctionList);
         return map;
     }
-//    //view  myAuctionList
-//    @RequestMapping("/auction/myList.do")
-//    public String myAuctionList(ModelMap model, HttpServletRequest request) throws Exception {
-//
-//    }
-//
-//
-//    //view myAuctionList by page
+
+    //view myAuctionList by page
     @GetMapping("/mypage/auction/page")
     public String viewMyAuction() {
         return "mypage/myAuction";
@@ -192,9 +186,6 @@ public class AuctionController {
         System.out.println("auction detail controller in");
         auction = auctionService.getAuction(auctionNo);
         auction.setGenreType(genreService.getGenre(auction.getGenreNo()).getGenreType());
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        Date endDateFormat = dateFormat.parse(auction.getEndDate().toString());
-//        auction.setEndDate(endDateFormat);
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("auction", auction);
