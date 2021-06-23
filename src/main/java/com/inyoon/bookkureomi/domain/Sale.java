@@ -1,6 +1,7 @@
 package com.inyoon.bookkureomi.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,8 +22,8 @@ public class Sale {
 	private int costPrice;
 	@ApiModelProperty(value = "판매가", dataType = "int")
 	private int salePrice;
-	@ApiModelProperty(value = "이미지소스", dataType = "String")
-	private String image;
+	//@ApiModelProperty(value = "이미지소스", dataType = "String")
+	//private String image;
 	@ApiModelProperty(value = "설명", dataType = "String")
 	private String info;
 	@ApiModelProperty(value = "판매자", dataType = "User")
@@ -35,4 +36,7 @@ public class Sale {
 	private Genre genre;
 	@ApiModelProperty(value = "저자", dataType = "String")
 	private String author;
+	
+	@ApiModelProperty(value = "이미지소스", dataType = "List<Image>")
+	private List<Image> imageList;
 }
