@@ -20,7 +20,7 @@
 					Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"  , 
 					Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"
 				FROM 
-					Sale, Genre, Users 
+					Sale, Genre, Users
 				where
 					Sale.userNo = Users.userNo
 					AND Sale.genreNo = Genre.genreNo
@@ -80,8 +80,8 @@
     
  	<!-- 판매 책 등록  -->
     <insert id="saleBook" parameterType="com.inyoon.bookkureomi.domain.Sale">
-    	Insert into Sale (saleNo, publisher, title, costPrice, salePrice, image, info, userNo, author, genreNo)
-    	Values (#{saleNo}, #{publisher}, #{title}, #{costPrice}, #{salePrice}, #{image}, #{info}, #{user.userNo}, #{author}, #{genre.genreNo})
+    	Insert into Sale (saleNo, publisher, title, costPrice, salePrice, info, userNo, author, genreNo)
+    	Values (#{saleNo}, #{publisher}, #{title}, #{costPrice}, #{salePrice}, #{info}, #{user.userNo}, #{author}, #{genre.genreNo})
     </insert>
     
  	<!-- 판매 책 수정 -->
@@ -89,7 +89,6 @@
         UPDATE Sale
         SET
             salePrice = #{salePrice},
-            image = #{image},
             info = #{info}
         WHERE 
         	saleNo = #{saleNo}

@@ -13,6 +13,7 @@
 	<script type="text/javascript" th:src="@{/js/sale/sale.js}" src="../../static/js/sale/sale.js"></script>
 	<script type="text/javascript" th:src="@{/js/mypage/order.js}" src="../../static/js/mypage/order.js"></script>
 	<script type="text/javascript" th:src="@{/js/cart/cart.js}" src="../../static/js/cart/cart.js"></script>
+	<script type="text/javascript" th:src="@{/js/image/image.js}" src="../../static/js/image/image.js"></script>
 	<script type="text/javascript" th:src="@{/js/delivery/delivery.js}" src="../../static/js/delivery/delivery.js"></script>
 	<script type="text/javascript" th:src="@{/js/point/point.js}" src="../../static/js/point/point.js"></script>
 	<meta name="_csrf" th:content="${_csrf.token}"/>
@@ -53,7 +54,19 @@
 						<li class="pop-style1-list">
 							<ul class="pop-style2">
 								<li class="pop-style2-list">
-									<input type="file"id="insertImage" />
+									<ul class="pop-style3">
+										<li style="margin-bottom:5px;">
+											첨부 파일
+										</li>
+										<li>
+											<form method="POST" enctype="multipart/form-data" id="insertImage">
+												<input type="file" name="file" id="insertImageFile" multiple="multiple" />
+												<div class="img-select">
+													<img src="" id="selectImage" />
+												</div>
+											</form>
+										</li>
+									</ul>
 								</li>
 								<li class="pop-style2-list">
 									<ul class="pop-style3">
@@ -99,7 +112,25 @@
 						<li class="pop-style1-list">
 							<ul class="pop-style2">
 								<li class="pop-style2-list">
-									<img src="" id="viewImage" class="pop-img"/>
+									<ul class="pop-style3">
+										<li>
+											<div class="img-select">
+												<img src="" id="viewImage" class="pop-img"/>
+												<input type="hidden" id="imageNo" />
+												<input type="hidden" id="filePath" />
+											</div>
+										</li>
+										<li id="imageForm">
+											<form method="POST" enctype="multipart/form-data" id="updateImage">
+												<input type="file" name="file" id="updateImageFile" multiple="multiple" />
+												
+											</form>
+										</li>										
+										<li id="imageBtn">
+											<button id="btnUpdateImage" type="button" onclick="updateImage('sale')">사진 수정</button>
+											<button id="btnDeleteImage" type="button" onclick="deleteImage('sale')">사진 삭제</button>
+										</li>
+									</ul>
 								</li>
 								<li class="pop-style2-list">
 									<ul class="pop-style3">

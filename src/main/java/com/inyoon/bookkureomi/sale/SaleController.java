@@ -1,10 +1,13 @@
 package com.inyoon.bookkureomi.sale;
 
 import java.util.List;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,14 +19,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.inyoon.bookkureomi.MD5Generator;
 import com.inyoon.bookkureomi.delivery.DeliveryService;
 import com.inyoon.bookkureomi.domain.Delivery;
 import com.inyoon.bookkureomi.domain.Genre;
+import com.inyoon.bookkureomi.domain.Image;
 import com.inyoon.bookkureomi.domain.OrderDetail;
 import com.inyoon.bookkureomi.domain.Sale;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.genre.GenreService;
+import com.inyoon.bookkureomi.image.ImageService;
 import com.inyoon.bookkureomi.order.OrderService;
 import com.inyoon.bookkureomi.user.MyAuthentication;
 
@@ -45,6 +52,8 @@ public class SaleController{
 	private DeliveryService deliveryService;
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private ImageService imageService;
 	
 	
 	@ApiOperation(value="중고거래 화면 이동", notes="중고거래 목록화면으로 이동한다.")
@@ -142,7 +151,7 @@ public class SaleController{
 		
 		Sale sale = new Sale();
 		sale = saleService.getSale(saleNo);
-		
+				
 		Delivery delivery = null;		
 		OrderDetail orderDetail = new OrderDetail();
 		orderDetail = orderService.getOrderBySale(saleNo);	//주문 정보 확인
@@ -170,9 +179,11 @@ public class SaleController{
 			@RequestParam("salePrice") int salePrice,
 			@RequestParam("info") String info,
 			@RequestParam("costPrice") int costPrice,
-			@RequestParam("image") String image,
+			//@RequestParam("image") String image,
 			@RequestParam("author") String author,
-			@RequestParam("genreType") String genreType) throws Exception {
+			@RequestParam("genreType") String genreType,
+			@RequestParam("file") List<MultipartFile> files,
+			HttpServletRequest req) throws Exception {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 
@@ -185,7 +196,7 @@ public class SaleController{
 			Genre genre = genreService.getGenreByName(genreType);
 			
 			sale.setSaleNo(saleService.getSaleNo());
-			sale.setImage(image);
+			//sale.setImage(image);
 			sale.setTitle(title);
 			sale.setPublisher(publisher);
 			sale.setSalePrice(salePrice);
@@ -195,7 +206,42 @@ public class SaleController{
 			sale.setUser(user);
 			sale.setGenre(genre);
 			
-			saleService.saleBook(sale);
+			List<Image> imageList = new ArrayList<Image>();
+			for(int i = 0; i < files.size(); i++) {
+				if(!files.get(i).getOriginalFilename().equals("")) {
+					String date = String.valueOf((new Date()).getYear()+1900)
+									+String.valueOf((new Date()).getMonth()+1)
+									+String.valueOf((new Date()).getDate())
+									+String.valueOf((new Date()).getHours())
+									+String.valueOf((new Date()).getMinutes())
+									+String.valueOf((new Date()).getSeconds());
+					String originName = date+files.get(i).getOriginalFilename();
+		            String filename = new MD5Generator(originName).toString();
+		            
+		            String savePath = System.getProperty("user.dir") + "\\files";
+		            if (!new File(savePath).exists()) {
+		                try{
+		                    new File(savePath).mkdir();
+		                }
+		                catch(Exception e){
+		                    e.getStackTrace();
+		                }
+		            }
+		            String filePath = savePath + "\\" + filename;
+		            files.get(i).transferTo(new File(filePath));
+
+		            Image image = new Image();
+		            image.setOriginName(originName);
+		            image.setName(filename);
+		            image.setFilePath(filePath);
+		            image.setSale(sale);
+		            image.setImageNo(imageService.getImageNo());
+		            
+		            imageList.add(image);
+				}
+			}
+			
+			saleService.saleBook(sale, imageList);
 			
 			map.put("result", "success");
 			map.put("saleNo", sale.getSaleNo());
@@ -212,7 +258,7 @@ public class SaleController{
 	@PutMapping("/sale/update")
 	public Map<String, Object> updateSale(
 			@RequestParam("saleNo") String saleNo,
-			@RequestParam("image") String image,
+			//@RequestParam("image") String image,
 			@RequestParam("salePrice") String salePrice,
 			@RequestParam("info") String info) throws Exception {
 
@@ -221,7 +267,7 @@ public class SaleController{
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
 			Sale sale = new Sale();
 			sale.setSaleNo(Integer.parseInt(saleNo));
-			sale.setImage(image);
+			//sale.setImage(image);
 			sale.setSalePrice(Integer.parseInt(salePrice));
 			sale.setInfo(info);
 			

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.inyoon.bookkureomi.image.ImageMapper">
+	<!-- 새로운 이미지번호 가져오기 -->
+	<select id="getImageNo" resultType="int">
+        SELECT IMAGESEQ.nextval from dual
+    </select>
+	
+	<!--해당 판매번호의 사진 파일 확인  -->
+	<select id="getImageList" resultType="com.inyoon.bookkureomi.domain.Image">
+        SELECT 
+			imageNo, originName, name, filePath
+		FROM 
+			Image
+		where
+			<if test="saleNo != -1">
+				saleNo = #{saleNo}
+			</if>
+			<if test="auctionNo != -1">
+				auctionNo = #{auctionNo}
+			</if>
+    </select>
+    
+ 	<!-- 일반 중고판매 사진파일 추가  -->   
+    <insert id="createSaleImage" parameterType="com.inyoon.bookkureomi.domain.Image">
+    	Insert into Image (imageNo, originName, name, filePath, saleNo)
+    	Values (#{imageNo}, #{originName}, #{name}, #{filePath}, #{sale.saleNo})
+    </insert>
+    
+    <!-- 경매 사진파일 추가  -->   
+    <insert id="createAuctionImage" parameterType="com.inyoon.bookkureomi.domain.Image">
+    	Insert into Image (imageNo, originName, name, filePath, auctionNo)
+    	Values (#{imageNo}, #{originName}, #{name}, #{filePath}, #{auction.auctionNo})
+    </insert>
+    
+	<!-- 사진파일 수정  -->
+    <update id="updateImage" parameterType="com.inyoon.bookkureomi.domain.Image">
+    	UPDATE Image
+    	SET
+            originName = #{originName},
+            name = #{name},
+            filePath = #{filePath}
+        WHERE 
+        	imageNo = #{imageNo}
+    </update>
+
+	<!-- 사진파일 삭제  -->
+    <delete id="deleteImage" parameterType="int">
+        DELETE FROM Image
+        WHERE 
+        	imageNo = #{imageNo}
+    </delete>
+    
+    <!-- 판매의 전체 사진파일 삭제  -->
+    <delete id="deleteAllSaleImage" parameterType="int">
+        DELETE FROM Image
+        WHERE 
+        	saleNo = #{saleNo}
+    </delete>
+</mapper>

@@ -30,6 +30,20 @@ $(document).ready(function(){
 	    	$("#findGenre").html(option);
 	    }
 	});
+	
+	$("#insertImageFile").change(function () {
+		if(this.files && this.files[0]){
+			var reader = new FileReader;
+			reader.onload = function(data) {
+				$("#selectImage").css("display","inline");
+				$("#selectImage").attr("src", data.target.result).width(150).height(200);
+			}
+			reader.readAsDataURL(this.files[0]);
+		} else{
+			$("#selectImage").css("display","none");
+			$("#selectImage").attr("src", "");
+		}
+	});
 });
 
 //판매 중고 서적 나열
@@ -64,9 +78,15 @@ function listSale(pageNo){
 				result += "<td><ul class=\"list-style\">";
 				
 				//image
-				result += "<li class=\"table-list-image\">"
-							+ "<img src=\"" + data.saleList[i].image + "\" class=\"img-fit\"/>"
+				if(data.saleList[i].imageList.length > 0){
+					result += "<li class=\"table-list-image\">"
+							+ "<img src=\"" + "/book/image?path="+encodeURI(data.saleList[i].imageList[0].filePath) + "\" class=\"img-fit\"/>"
 							+ "</li>";
+				} else{
+					result += "<li class=\"table-list-image\">"
+						+ "<img src=\"/images/sale/0.png\" class=\"img-fit\"/>"
+						+ "</li>";
+				}
 				
 				//info
 				result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
@@ -146,9 +166,15 @@ function findSale(pageNo){
 				result += "<td><ul class=\"list-style\">";
 				
 				//image
-				result += "<li class=\"table-list-image\">"
-							+ "<img src=\"" + data.saleList[i].image + "\" class=\"img-fit\"/>"
+				if(data.saleList[i].imageList.length > 0){
+					result += "<li class=\"table-list-image\">"
+							+ "<img src=\"" + "/book/image?path="+encodeURI(data.saleList[i].imageList[0].filePath) + "\" class=\"img-fit\"/>"
 							+ "</li>";
+				} else{
+					result += "<li class=\"table-list-image\">"
+						+ "<img src=\"/images/sale/0.png\" class=\"img-fit\"/>"
+						+ "</li>";
+				}
 				
 				//info
 				result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
@@ -185,6 +211,8 @@ function findSale(pageNo){
 
 //판매 중고서적 상세보기
 function detailSale(saleNo) {	
+	$("#updateImageFile").val('');
+	
 	$("#pop-mask-sale-detail").css("display","block");
 	$("body").css("overflow","hidden");
 	$("#pop-sale-detail").css({
@@ -223,9 +251,22 @@ function detailSale(saleNo) {
 		if(!data.isSeller){
 			$('#viewSalePrice').prop('readonly', true);
 	    	$('#viewInfo').prop('readonly', true);
+	    	$('#imageForm').css("display","none");
+	    	$('#imageBtn').css("display","none");
 		} else{
 			$('#viewSalePrice').prop('readonly', false);
 	    	$('#viewInfo').prop('readonly', false);
+	    	$('#imageForm').css("display","inline");
+	    	$('#imageBtn').css("display","inline");
+		}
+		
+		//사진 세팅
+		if(data.sale.imageList.length > 0){
+			$("#viewImage").attr("src", "/book/image?path="+encodeURI(data.sale.imageList[0].filePath));
+			$("#imageNo").val(data.sale.imageList[0].imageNo);
+			$("#filePath").val(data.sale.imageList[0].filePath);
+		} else{
+			$("#viewImage").attr("src", "/images/sale/0.png");
 		}
 		
 		//배송 세팅
@@ -282,6 +323,9 @@ function closeSaleCreatePopup() {
 
 //추가 폼 세팅
 function setSaleDefault() {
+	$("#insertImageFile").val('');
+	$("#selectImage").attr("src", '').width(0).height(0);
+	
 	$("#insertTitle").val('');
 	$("#insertPublisher").val('');
 	$("#insertAuthor").val('');
@@ -312,13 +356,102 @@ function createSaleForm(){
 	
 	$("#insertGenreType").html(option);
 }
-function createSale() {	
+function createSale() {		
 	var publisher = $("#insertPublisher").val();
 	var title = $("#insertTitle").val();
 	var costPrice = $("#insertCostPrice").val();
 	var author = $("#insertAuthor").val();
 	var genreType = $("#insertGenreType").val();
-	var image = '/images/sale/0.png'; //폼처리?
+	var salePrice = $("#insertSalePrice").val();
+	var info = $("#insertInfo").val();	
+
+	var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    
+    if(title == '' || title == undefined){
+    	alert("제목을 입력하세요.");
+    	return;
+    } else if(publisher == '' || publisher == undefined){
+    	alert("출판사를 입력하세요.");
+    	return;
+    } else if(author == '' || author == undefined){
+    	alert("저자를 입력하세요.");
+    	return;
+    } else if(costPrice == '' || costPrice == undefined){
+    	alert("원가를 입력하세요.");
+    	return;
+    } else if(!Number.isInteger(parseInt(costPrice))){
+    	alert("원가는 숫자로 입력하세요.");
+    	return;
+    } else if(salePrice == '' || salePrice == undefined){
+    	alert("판매가를 입력하세요.");
+    	return;
+    } else if(!Number.isInteger(parseInt(salePrice))){
+    	alert("판매가는 숫자로 입력하세요.");
+    	return;
+    } else if(genreType == '' || genreType == undefined){
+    	alert("장르를 입력하세요.");
+    	return;
+    } else if(info == '' || info == undefined){
+    	alert("정보를 입력하세요.");
+    	return;
+    }
+    
+    
+    var form = $('#insertImage')[0];
+    var formData = new FormData(form);
+    
+    formData.append("title", title);
+    formData.append("publisher", publisher);
+    formData.append("salePrice", salePrice);
+    formData.append("info", info);
+    formData.append("costPrice", costPrice);
+    formData.append("author", author);
+    formData.append("genreType", genreType);
+    
+    
+    
+    if(confirm("판매 등록하시겠습니까?")) {
+    	$.ajax({
+    		url: "/book/sale/create", 
+    		method: 'POST',
+    		enctype: 'multipart/form-data',
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+    		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            }
+    	}).done(function( data ) {
+    		if(data.result == 'success'){
+    			window.alert("중고 책을 등록하였습니다.");
+    	        
+    			$("#pop-sale-insert").css("display", "none");
+    			
+    			closeSaleCreatePopup();
+    			listSale(1);
+    			detailSale(data.saleNo);
+    		} else{
+    			window.location = "/book/user/login";
+    			window.alert(data.reason);
+    		}
+    	})
+        .fail( function( textStatus ) {
+            alert( "Request failed: " + textStatus );
+        });
+    }
+}
+/*
+function createSale() {	
+	var files = $("#insertImageFile").val();
+	
+	var publisher = $("#insertPublisher").val();
+	var title = $("#insertTitle").val();
+	var costPrice = $("#insertCostPrice").val();
+	var author = $("#insertAuthor").val();
+	var genreType = $("#insertGenreType").val();
+	//var image = '/images/sale/0.png'; //폼처리?
 	var salePrice = $("#insertSalePrice").val();
 	var info = $("#insertInfo").val();	
 
@@ -359,17 +492,19 @@ function createSale() {
     		url: "/book/sale/create", 
     		method: 'POST',
     	    dataType: "json",
+    	    enctype="multipart/form-data",
     		data: {
     			title : title,
     			publisher : publisher,
     			salePrice : salePrice,
     			info : info, 
     			costPrice : costPrice,
-    			image : image,
+    			//image : image,
     			author : author,
-    			genreType : genreType
+    			genreType : genreType,
+    			files: files
     		},
-    		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+    		beforeSend : function(xhr){
                 xhr.setRequestHeader(header, token);
             }
     	}).done(function( data ) {
@@ -391,7 +526,7 @@ function createSale() {
         });
     }
 }
-
+*/
 
 //판매 수정
 function updateSale() {	
@@ -431,6 +566,7 @@ function updateSale() {
     	}).done(function( data ) {
     		if(data.result == 'success'){
     			window.alert("중고 책 판매를 수정하였습니다.");
+    			$("#updateImageFile").val('');
     		} else{
     			window.location = "/book/user/login";
     			window.alert(data.reason);

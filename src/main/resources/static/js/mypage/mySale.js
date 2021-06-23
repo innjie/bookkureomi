@@ -17,6 +17,20 @@ $(document).ready(function(){
     .fail( function( textStatus ) {
         alert( "Request failed: " + textStatus );
     });
+	
+	$("#insertImageFile").change(function () {
+		if(this.files && this.files[0]){
+			var reader = new FileReader;
+			reader.onload = function(data) {
+				$("#selectImage").css("display","inline");
+				$("#selectImage").attr("src", data.target.result).width(150).height(200);
+			}
+			reader.readAsDataURL(this.files[0]);
+		} else{
+			$("#selectImage").css("display","none");
+			$("#selectImage").attr("src", "");
+		}
+	});
 });
 
 //판매 중고 서적 나열
@@ -51,9 +65,15 @@ function listMySale(pageNo){
 			result += "<td><ul class=\"list-style\">";
 			
 			//image
-			result += "<li class=\"table-list-image\">"
-						+ "<img src=\"" + data.saleList[i].image + "\" class=\"img-fit\"/>"
+			if(data.saleList[i].imageList.length > 0){
+				result += "<li class=\"table-list-image\">"
+						+ "<img src=\"" + "/book/image?path="+encodeURI(data.saleList[i].imageList[0].filePath) + "\" class=\"img-fit\"/>"
 						+ "</li>";
+			} else{
+				result += "<li class=\"table-list-image\">"
+					+ "<img src=\"/images/sale/0.png\" class=\"img-fit\"/>"
+					+ "</li>";
+			}
 			
 			//info
 			result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
@@ -87,6 +107,8 @@ function listMySale(pageNo){
 
 //판매 중고서적 상세보기
 function detailMySale(saleNo) {	
+	$("#updateImageFile").val('');
+
 	$("#pop-mask-sale-detail").css("display","block");
 	$("#pop-mask-sale-detail").css("overflow","auto");
 	$("body").css("overflow","hidden");
@@ -126,9 +148,22 @@ function detailMySale(saleNo) {
 		if(!data.isSeller){
 			$('#viewSalePrice').prop('readonly', true);
 			$('#viewInfo').prop('readonly', true);
+			$('#imageForm').css("display","none");
+	    	$('#imageBtn').css("display","none");
 		} else{
 			$('#viewSalePrice').prop('readonly', false);
 	    	$('#viewInfo').prop('readonly', false);
+	    	$('#imageForm').css("display","inline");
+	    	$('#imageBtn').css("display","inline");
+		}
+		
+		//사진 세팅
+		if(data.sale.imageList.length > 0){
+			$("#viewImage").attr("src", "/book/image?path="+encodeURI(data.sale.imageList[0].filePath));
+			$("#imageNo").val(data.sale.imageList[0].imageNo);
+			$("#filePath").val(data.sale.imageList[0].filePath);
+		} else{
+			$("#viewImage").attr("src", "/images/sale/0.png");
 		}
 		
 		//주문 세팅
@@ -218,6 +253,9 @@ function closeMySaleCreatePopup() {
 
 //추가 폼 세팅
 function setMySaleDefault() {
+	$("#insertImageFile").val('');
+	$("#selectImage").attr("src", '').width(0).height(0);
+	
 	$("#insertTitle").val('');
 	$("#insertPublisher").val('');
 	$("#insertAuthor").val('');
@@ -252,7 +290,6 @@ function createMySale() {
 	var costPrice = $("#insertCostPrice").val();
 	var author = $("#insertAuthor").val();
 	var genreType = $("#insertGenreType").val();
-	var image = '/images/sale/0.png'; //폼처리?
 	var salePrice = $("#insertSalePrice").val();
 	var info = $("#insertInfo").val();	
 
@@ -288,21 +325,27 @@ function createMySale() {
     	return;
     }
     
+    
+    var form = $('#insertImage')[0];
+    var formData = new FormData(form);
+    
+    formData.append("title", title);
+    formData.append("publisher", publisher);
+    formData.append("salePrice", salePrice);
+    formData.append("info", info);
+    formData.append("costPrice", costPrice);
+    formData.append("author", author);
+    formData.append("genreType", genreType);
+    
     if(confirm("판매 등록하시겠습니까?")) {
     	$.ajax({
     		url: "/book/sale/create", 
     		method: 'POST',
-    	    dataType: "json",
-    		data: {
-    			title : title,
-    			publisher : publisher,
-    			salePrice : salePrice,
-    			info : info, 
-    			costPrice : costPrice,
-    			image : image,
-    			author : author,
-    			genreType : genreType
-    		},
+    		enctype: 'multipart/form-data',
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
     		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
                 xhr.setRequestHeader(header, token);
             }
@@ -313,7 +356,7 @@ function createMySale() {
     			$("#pop-sale-insert").css("display", "none");
     			
     			closeMySaleCreatePopup();
-    			listMySale();
+    			listMySale(1);
     			detailMySale(data.saleNo);
     		} else{
     			window.location = "/book/user/login";
