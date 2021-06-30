@@ -53,8 +53,8 @@ public class AddressController {
             }
         }
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("auctionList", addressList);
-        map.put("auctionCnt", addressCnt);
+        map.put("addressList", addressList);
+        map.put("addressCnt", addressCnt);
         map.put("pageCnt", pageCnt);
         return map;
 
