@@ -11,13 +11,13 @@
     </select>
 
     <select id = "getAddressList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Address">
-        SELECT addrNo, userNo, addr, aName, zipcode
+        SELECT addrNo, userNo, addr as "Address", aName, zipcode
         FROM Address
         WHERE userNo = #{userNo}
     </select>
 
     <select id="getAddress" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Address">
-        SELECT addrNo, userNo, addr, aName, zipcode
+        SELECT addrNo, userNo, addr as "Address", aName, zipcode
         FROM Address
         WHERE addrNo = #{addrNo}
     </select>

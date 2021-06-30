@@ -35,10 +35,10 @@ function listAddress(pageNo) {
 
                 //info
 
-                result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
+                result += "<li class=\"table-list-content\" style=\"width: 100%;\"><ul class=\"table-list-content-style\">"
                     + "<li class=\"table-list-content-list-style\"><strong>" + data.addressList[i].addrNo + "</strong></li>"
-                    + "<li class=\"table-list-content-list-style\"> 주소명 : \\" +  data.addressList[i].aName + "</li>"
-                    + "<li class=\"table-list-content-list-style\"> 우편번호 : \\" + data.addressList[i].zipcode + "</li>"
+                    + "<li class=\"table-list-content-list-style\"> 주소명 : " +  data.addressList[i].aname + "</li>"
+                    + "<li class=\"table-list-content-list-style\"> 우편번호 : " + data.addressList[i].zipcode + "</li>"
                     + "<li class=\"table-list-content-list-style\">  주소 :"+ data.addressList[i].address + "</li>"
                     + "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale" + data.addressList[i].addressNo + "\" class=\"view-btn\" onClick=\"detailAddress(" + data.addressList[i].addressNo +")\" class=\"view-btn\" onClick=\"detailAddress("+ data.addressList[i].addrNo +")\">상세보기</button><li>"
                     + "</ul></li>";
@@ -56,7 +56,9 @@ function listAddress(pageNo) {
                 }
             }
             result += "</tbody></table>";
-        }
+        } else {
+			var result = "<p class=\"find-nothing\">결과가 없습니다.</p>";
+		}
 
 
         $('#result').append(result);
@@ -67,18 +69,25 @@ function listAddress(pageNo) {
 }
 //추가 폼 세팅
 function setAddressDefault() {
-    $("#aName").val('');
-    $("#address").val('');
-    $("#zipcode").val('');
+    $("#insertAName").val('');
+    $("#insertAddress").val('');
+    $("#insertZipcode").val('');
 }
 function createAddressForm() {
-    setAddressDefault();
-    closeAddressDetailPopup();
-
-    $("#pop-sale-create").css("display", "block");
-
-    var offset = $("#pop-sale-create").offset().top;
-    $("html").animate({scrollTop: offset}, 400);
+	$("#pop-mask-address-create").css("display","block");
+	$("body").css("overflow","hidden");
+	$("#pop-address-create").css({
+        "top": (window.screen.height / 2) - ($("#pop-address-create").outerHeight() / 2)-50+"px",
+        "left": (window.screen.width / 2) - ($("#pop-address-create").outerWidth() / 2)+"px"     
+     }); 
+	
+	setAddressDefault();
+	closeAddressDetailPopup();
+	
+	$("#pop-address-create").css("display", "block");
+	
+    var offset = $("#pop-address-create").offset().top;
+	$("html").animate({scrollTop:offset},400);
 }
 function createAddress() {
     var aName = $("#insertAName").val();
@@ -108,10 +117,10 @@ function createAddress() {
             if (data.result == 'success') {
                 window.alert("새 주소를 등록했습니다.");
 
-                $("#pop-sale-insert").css("display", "none");
+                closeAddressCreatePopup();
 
                 listAddress();
-                detailAddress(data.addrNo);
+                //detailAddress(data.addrNo);
             }
         })
             .fail(function (textStatus) {
@@ -121,10 +130,12 @@ function createAddress() {
 }
 //상세 팝업 닫기
 function closeAddressDetailPopup() {
-    $("#pop-sale-detail").css("display", "none");
+    //$("#pop-sale-detail").css("display", "none");
 }
 
 //추가 팝업 닫기
 function closeAddressCreatePopup() {
-    $("#pop-sale-create").css("display", "none");
+	$("#pop-address-create").css("display", "none");
+	$("#pop-mask-address-create").css("display","none");
+	$("body").css("overflow","auto");
 }

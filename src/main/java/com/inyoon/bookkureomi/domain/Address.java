@@ -8,5 +8,5 @@ class Address {
     private int userNo;
     private String address;
     private String aName;
-    private int zipcode;
+    private String zipcode;
 }

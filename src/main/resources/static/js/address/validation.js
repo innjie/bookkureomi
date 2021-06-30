@@ -19,7 +19,7 @@ function checkZipcode(zipcode) {
     } else if(!Number.isInteger(parseInt(zipcode))) {
         alert("우편번호는 숫자로 입력하세요.");
         return true;
-    } else if(zipcode.length() < 5) {
+    } else if(zipcode.length != 5) {
         alert("우편번호는 5자리입니다.");
         return true;
     }
