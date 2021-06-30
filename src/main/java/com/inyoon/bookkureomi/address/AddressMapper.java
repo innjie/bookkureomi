@@ -13,4 +13,5 @@ public interface AddressMapper {
     public void insertAdress(Address address);
     public void updateAddress(int addressNo, Address address);
     public void deleteAddress(int addressNo);
+    public int countAddressList(int userNo);
 }

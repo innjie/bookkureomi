@@ -28,4 +28,5 @@ public class AddressService {
         addressMapper.deleteAddress(addressNo);
     }
 
+    public int countAddressList(int userNo) { return addressMapper.countAddressList(userNo); }
 }

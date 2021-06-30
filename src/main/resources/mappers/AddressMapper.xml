@@ -41,4 +41,8 @@
         DELETE FROM ADDRESS
         WHERE addrNo = #{addrNo}
     </delete>
+
+    <select id = "countAddressList" parameterType="integer" resultType="integer">
+        SELECT count(*) FROM ADDRESS WHERE userNo = #{userNo}
+    </select>
 </mapper>

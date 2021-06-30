@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+
+<head>
+    <!--    thymeleaf layout dialect가 contents페이지의 head태그를 layout의 head태그에 자동으로 추가해준다. -->
+    <!--    필요 css, script 추가영역 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/dist/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common/paging.js}" src="../../static/js/common/paging.js"></script>
+    <script type="text/javascript" th:src="@{/js/address/address.js}" src="../../static/js/address/address.js"></script>
+    <script type="text/javascript" th:src="@{/js/address/validation.js}"
+            src="../../static/js/address/validation.js"></script>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body>
+<section layout:fragment="content">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <div class="container-section">
+        <div class="div-list-head">
+            <div class="insert-style">
+                <button type="button" class="insert-btn" onClick="createAddressForm()">신규등록</button>
+            </div>
+        </div>
+
+        <div>총&nbsp;<span id="addressCnt"></span>건</div>
+        <div class="div-list-result" id="result"></div>
+        <div class="paging" id="paging"></div>
+
+
+        <div id="pop-mask-sale-create" class="pop-mask">
+            <div id="pop-sale-create" class="pop">
+                <h2>신규 주소 등록하기</h2>
+                <ul class="pop-style1">
+                    <li class="pop-style1-list">
+                        <ul class="pop-style2">
+                            <li class="pop-style2-list">
+                                <ul class="pop-style3">
+                                    <li>
+                                        주소명 <input type="text" id="insertAName"/>
+                                    </li>
+                                    <li>
+                                        주소 <input type="text" id="insertAddress"/>
+                                    </li>
+                                    <li>
+                                        우편번호 <input type="number" id="insertZipcode"/>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="pop-btn-style">
+                    <button type="button" class="pop-btn" onClick="createAddress()">등록하기</button>
+                    <button type="button" class="pop-btn" onClick="closeAddressCreatePopup()">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
