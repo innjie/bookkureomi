@@ -6,7 +6,7 @@ public @Data
 class Address {
     private int addrNo;
     private int userNo;
-    private String address;
+    private String addr;
     private String aName;
     private String zipcode;
 }
