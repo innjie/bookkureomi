@@ -19,10 +19,10 @@ public class AddressService {
         return addressMapper.getAddress(addrNo);
     }
     public void insertAddress(Address address) {
-        addressMapper.insertAdress(address);
+        addressMapper.insertAddress(address);
     }
-    public void updateAddress(int addressNo, Address address) {
-        addressMapper.updateAddress(addressNo, address);
+    public void updateAddress(Address address) {
+        addressMapper.updateAddress(address);
     }
     public void deleteAddress(int addressNo) {
         addressMapper.deleteAddress(addressNo);

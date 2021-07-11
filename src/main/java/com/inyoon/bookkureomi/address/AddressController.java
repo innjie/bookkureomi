@@ -1,8 +1,10 @@
 package com.inyoon.bookkureomi.address;
 
 import com.inyoon.bookkureomi.domain.Address;
+import com.inyoon.bookkureomi.domain.Sale;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.user.MyAuthentication;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -92,29 +94,46 @@ public class AddressController {
         return map;
     }
 
-//    //create address ... form
-//    @RequestMapping(value="/address/insert.do", method=RequestMethod.GET)
-//    public String insertAddressForm(@ModelAttribute("addressCommand") AddressCommand
-//                                            addressCommand, HttpServletRequest request) {
-//
-//    }
-//
+    //update address
+    @ResponseBody
+    @PutMapping("/address/update")
+    public Map<String, Object> updateAddress(@RequestParam("addrNo") String addrNo,
+                                             @RequestParam("aName") String aName,
+                                             @RequestParam("addr") String addr,
+                                             @RequestParam("zipcode") String zipcode) {
+        Map<String, Object> map = new HashMap<String, Object>();
 
-//
-//    //update address ... form
-//    @RequestMapping(value="/address/update.do", method=RequestMethod.GET)
-//    public String updateAddressForm(@ModelAttribute("addressCommand") AddressCommand
-//                                            addressCommand, HttpServletRequest request) {
-//    }
-//
-//    //update address ... update
-//    @RequestMapping(value="/address/update.do", method= RequestMethod.POST)
-//    public String update(@Valid @ModelAttribute("addressCommand") AddressCommand
-//                                 addressCommand, BindingResult result) throws Exception {
-//    }
-//    //delete address
-//    @RequestMapping("/address/delete.do")
-//    public String delete(@RequestParam("addrNo") int addrNo) throws Exception {
-//    }
+        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+            Address address = new Address();
+            address.setAddrNo(Integer.parseInt(addrNo));
+            address.setAddr(addr);
+            address.setZipcode(zipcode);
+            address.setAName(aName);
+            addressService.updateAddress(address);
+
+            map.put("result", "success");
+        } else {
+            map.put("result", "fail");
+            map.put("reason", "로그인 후 이용이 가능합니다.");
+        }
+        return map;
+    }
+
+    //delete address
+    @ResponseBody
+    @DeleteMapping("/address/delete")
+    public Map<String, Object> delete(@RequestParam("addrNo") String addrNo) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+
+        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+            addressService.deleteAddress(Integer.parseInt(addrNo));
+
+            map.put("result", "success");
+        } else {
+            map.put("result", "fail");
+            map.put("reason", "로그인 후 이용이 가능합니다.");
+        }
+        return map;
+    }
 
 }

@@ -170,12 +170,80 @@ function detailAddress(addrNo) {
         $('#buttonResult')[0].innerHTML = '';
         var resultBtn = '';
 
-
+        resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"updateAddress()\">수정하기</button>";
         resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeAddressDetailPopup()\">닫기</button>";
+        resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"deleteAddress()\">삭제하기</button>";
 
         $('#buttonResult').append(resultBtn);
     })
         .fail( function( textStatus ) {
             alert( "Request failed: " + textStatus );
         });
+}
+function updateAddress() {
+    var addrNo = $("#viewAddrNo").val();
+    var aName = $("#viewaName").val();
+    var addr = $("#viewAddr").val();
+    var zipcode = $("#viewZipcode").val();
+
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    if(checkAName(aName)) return;
+    if(checkAddress(addr)) return;
+    if(checkZipcode(zipcode)) return;
+
+    if(confirm("수정하시겠습니까?")) {
+        $.ajax({
+            url: "/book/address/update",
+            method: 'PUT',
+            dataType: "json",
+            data: {
+                addrNo : addrNo,
+                aName : aName,
+                addr : addr,
+                zipcode : zipcode
+            },
+            beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            }
+        }).done(function(data) {
+            if(data.result == 'success') {
+                window.alert("주소 수정 완료");
+            } else {
+                window.location = "/book/user/login";
+                window.alert(data.reason);
+            }
+        })
+    }
+}
+function deleteAddress() {
+    var addrNo = $("#viewAddrNo").val();
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    if(confirm("주소를 삭제하시겠습니까?")) {
+        $.ajax({
+            url: "/book/address/delete",
+            method: 'DELETE',
+            dataType: "json",
+            data: {
+                addrNo : addrNo
+            },
+            beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            }
+        }).done(function(data) {
+            if(data.result =='success') {
+                window.alert("삭제가 완료되었습니다.");
+                closeAddressDetailPopup();
+                listAddress(nowPageNo);
+            } else {
+                window.location = "/book/user/login";
+                window.alert(data.reason);
+            }
+        }).fail(function(textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
 }

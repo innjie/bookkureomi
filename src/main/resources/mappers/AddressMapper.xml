@@ -27,10 +27,10 @@
         VALUES (#{addrNo}, #{userNo}, #{addr}, #{aName}, #{zipcode})
     </insert>
 
-    <update id="updateAddress" parameterType="integer">
+    <update id="updateAddress" parameterType="com.inyoon.bookkureomi.domain.Address">
         UPDATE ADDRESS
         SET
-            addr = #{address},
+            addr = #{addr},
             aName = #{aName},
             zipcode = #{zipcode}
         WHERE

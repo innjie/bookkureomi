@@ -11,7 +11,7 @@ public interface AddressMapper {
     public List<Address> getAddressList(int userNo);
     public Address getAddress(int addrNo);
     public void insertAddress(Address address);
-    public void updateAddress(int addressNo, Address address);
+    public void updateAddress(Address address);
     public void deleteAddress(int addressNo);
     public int countAddressList(int userNo);
 }
