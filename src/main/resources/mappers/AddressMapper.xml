@@ -11,20 +11,20 @@
     </select>
 
     <select id = "getAddressList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Address">
-        SELECT addrNo, userNo, addr as "Address", aName, zipcode
+        SELECT addrNo, userNo, addr, aName, zipcode
         FROM Address
         WHERE userNo = #{userNo}
     </select>
 
     <select id="getAddress" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Address">
-        SELECT addrNo, userNo, addr as "Address", aName, zipcode
+        SELECT addrNo, userNo, addr, aName, zipcode
         FROM Address
         WHERE addrNo = #{addrNo}
     </select>
 
     <insert id="insertAddress" parameterType="com.inyoon.bookkureomi.domain.Address">
         INSERT INTO Address (addrNo, userNo, addr, aName, zipcode)
-        VALUES (#{addrNo}, #{userNo}, #{address}, #{aName}, #{zipcode})
+        VALUES (#{addrNo}, #{userNo}, #{addr}, #{aName}, #{zipcode})
     </insert>
 
     <update id="updateAddress" parameterType="integer">

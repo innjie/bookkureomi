@@ -36,11 +36,10 @@ function listAddress(pageNo) {
                 //info
 
                 result += "<li class=\"table-list-content\" style=\"width: 100%;\"><ul class=\"table-list-content-style\">"
-                    + "<li class=\"table-list-content-list-style\"><strong>" + data.addressList[i].addrNo + "</strong></li>"
                     + "<li class=\"table-list-content-list-style\"> 주소명 : " +  data.addressList[i].aname + "</li>"
                     + "<li class=\"table-list-content-list-style\"> 우편번호 : " + data.addressList[i].zipcode + "</li>"
-                    + "<li class=\"table-list-content-list-style\">  주소 :"+ data.addressList[i].address + "</li>"
-                    + "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale" + data.addressList[i].addressNo + "\" class=\"view-btn\" onClick=\"detailAddress(" + data.addressList[i].addressNo +")\" class=\"view-btn\" onClick=\"detailAddress("+ data.addressList[i].addrNo +")\">상세보기</button><li>"
+                    + "<li class=\"table-list-content-list-style\">  주소 :"+ data.addressList[i].addr + "</li>"
+                    + "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale" + data.addressList[i].addrNo + "\" class=\"view-btn\" onClick=\"detailAddress(" + data.addressList[i].addrNo +")\" class=\"view-btn\" onClick=\"detailAddress("+ data.addressList[i].addrNo +")\">상세보기</button><li>"
                     + "</ul></li>";
 
                 result += "</ul></td>";
@@ -130,7 +129,9 @@ function createAddress() {
 }
 //상세 팝업 닫기
 function closeAddressDetailPopup() {
-    //$("#pop-sale-detail").css("display", "none");
+    $("#pop-address-detail").css("display", "none");
+    $("#pop-mask-address-detail").css("display","none");
+    $("body").css("overflow","auto");
 }
 
 //추가 팝업 닫기
@@ -138,4 +139,43 @@ function closeAddressCreatePopup() {
 	$("#pop-address-create").css("display", "none");
 	$("#pop-mask-address-create").css("display","none");
 	$("body").css("overflow","auto");
+}
+
+//주소 상세보기
+function detailAddress(addrNo) {
+    $("#pop-mask-address-detail").css("display","block");
+    $("body").css("overflow","hidden");
+    $("#pop-address-detail").css({
+        "top": (window.screen.height / 2) - ($("#pop-address-detail").outerHeight() / 2)-50+"px",
+        "left": (window.screen.width / 2) - ($("#pop-address-detail").outerWidth() / 2)+"px"
+    });
+    $.ajax( {
+        url: "/book/address/detail",
+        method: 'GET',
+        dataType: "json",
+        data: {
+            addrNo : addrNo
+        }
+    }).done(function(data) {
+        $("#pop-address-detail").css("display", "block");
+        var offset = $("#pop-address-detail").offset().top;
+        $("html").animate({scrollTop:offset},400);
+
+
+        $("#viewAddrNo").val(data.address.addrNo);
+        $("#viewaName").val(data.address.aname);
+        $("#viewAddr").val(data.address.addr);
+        $("#viewZipcode").val(data.address.zipcode);
+        //버튼 세팅
+        $('#buttonResult')[0].innerHTML = '';
+        var resultBtn = '';
+
+
+        resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeAddressDetailPopup()\">닫기</button>";
+
+        $('#buttonResult').append(resultBtn);
+    })
+        .fail( function( textStatus ) {
+            alert( "Request failed: " + textStatus );
+        });
 }

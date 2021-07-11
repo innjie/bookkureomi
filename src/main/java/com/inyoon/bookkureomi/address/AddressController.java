@@ -6,11 +6,8 @@ import com.inyoon.bookkureomi.user.MyAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,13 +56,42 @@ public class AddressController {
         return map;
 
     }
-//
-//    //view address
-//    @RequestMapping("/address/view.do")
-//    public ModelAndView viewAddress(@RequestParam("addrNo") int addrNo)
-//            throws Exception {
-//    }
-//
+    //create address ... insert
+    @ResponseBody
+    @PostMapping("/address/insert")
+    public Map<String, Object> insertAddress(@RequestParam("aName") String aName,
+                                @RequestParam("address") String address,
+                                @RequestParam("zipcode") String zipcode
+    ) throws Exception {
+        System.out.println("insert Address in");
+        Address addressDTO = new Address();
+        MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getUser();
+
+        addressDTO.setAddr(address);
+        addressDTO.setZipcode(zipcode);
+        addressDTO.setAName(aName);
+        addressDTO.setUserNo(user.getUserNo());
+        addressService.insertAddress(addressDTO);
+
+        Map <String, Object> map = new HashMap<String, Object>();
+        map.put("result", "success");
+        map.put("addrNo", addressDTO.getAddrNo());
+
+        return map;
+
+    }
+
+    //view address
+    @GetMapping("/address/detail")
+    @ResponseBody
+    public Map<String, Object> viewAddress(@RequestParam("addrNo") int addrNo) {
+        Address address = addressService.getAddress(addrNo);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("address", address);
+        return map;
+    }
+
 //    //create address ... form
 //    @RequestMapping(value="/address/insert.do", method=RequestMethod.GET)
 //    public String insertAddressForm(@ModelAttribute("addressCommand") AddressCommand
@@ -73,12 +99,7 @@ public class AddressController {
 //
 //    }
 //
-//    //create address ... insert
-//    @RequestMapping(value="/address/insert.do", method=RequestMethod.POST)
-//    public String insertAddress(@Valid @ModelAttribute("addressCommand") AddressCommand
-//                                        addressCommand, BindingResult result, HttpServletRequest request)
-//            throws Exception {
-//    }
+
 //
 //    //update address ... form
 //    @RequestMapping(value="/address/update.do", method=RequestMethod.GET)
