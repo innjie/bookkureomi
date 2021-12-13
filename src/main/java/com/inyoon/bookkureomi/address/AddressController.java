@@ -6,6 +6,7 @@ import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.user.MyAuthentication;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,35 +22,34 @@ public class AddressController {
     @Autowired
     private AddressService addressService;
 
-    @GetMapping ("/mypage/address/page")
-    public String viewAddressPage() {return "mypage/address";}
+    @GetMapping("/mypage/address/page")
+    public String viewAddressPage() {
+        return "mypage/address";
+    }
+
     //view address by page
-    @GetMapping ("/mypage/address/list")
+    @GetMapping("/mypage/address/list")
     @ResponseBody
-    public Map<String, Object> listAddress(@RequestParam("pageNo") int pageNo) {
+    public Map<String, Object> listAddress(@AuthenticationPrincipal User user, @RequestParam("pageNo") int pageNo) {
         int showCnt = 12;
         int addressCnt = 0;
         int pageCnt = 0;
 
         List<Address> addressList = new ArrayList<>();
-        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("annonymousUser")) {
-            MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.
-                    getContext().getAuthentication();
-            User user = (User) authentication.getUser();
-            int userNo = user.getUserNo();
-            addressCnt = addressService.countAddressList(userNo);
+        MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication();
+        user = (User) authentication.getUser();
+        addressCnt = addressService.countAddressList(user.getUserNo());
 
-            if(addressCnt > 0) {
-                pageCnt = (addressCnt % showCnt == 0) ? (addressCnt / showCnt) : (addressCnt / showCnt + 1);
-                int start = 1 + (showCnt * (pageNo - 1));
-                int end = showCnt + (showCnt * (pageNo - 1));
+        if (addressCnt > 0) {
+            pageCnt = (addressCnt % showCnt == 0) ? (addressCnt / showCnt) : (addressCnt / showCnt + 1);
+            int start = 1 + (showCnt * (pageNo - 1));
+            int end = showCnt + (showCnt * (pageNo - 1));
 
-                Map<String, Object> paramMap = new HashMap<String, Object>();
-                paramMap.put("start", start);
-                paramMap.put("end", end);
+            Map<String, Object> paramMap = new HashMap<String, Object>();
+            paramMap.put("start", start);
+            paramMap.put("end", end);
 
-                addressList = addressService.getAddressList(userNo);
-            }
+            addressList = addressService.getAddressList(user.getUserNo());
         }
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("addressList", addressList);
@@ -58,12 +58,13 @@ public class AddressController {
         return map;
 
     }
+
     //create address ... insert
     @ResponseBody
     @PostMapping("/address/insert")
     public Map<String, Object> insertAddress(@RequestParam("aName") String aName,
-                                @RequestParam("address") String address,
-                                @RequestParam("zipcode") String zipcode
+                                             @RequestParam("address") String address,
+                                             @RequestParam("zipcode") String zipcode
     ) throws Exception {
         System.out.println("insert Address in");
         Address addressDTO = new Address();
@@ -76,7 +77,7 @@ public class AddressController {
         addressDTO.setUserNo(user.getUserNo());
         addressService.insertAddress(addressDTO);
 
-        Map <String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("result", "success");
         map.put("addrNo", addressDTO.getAddrNo());
 
@@ -103,7 +104,7 @@ public class AddressController {
                                              @RequestParam("zipcode") String zipcode) {
         Map<String, Object> map = new HashMap<String, Object>();
 
-        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
             Address address = new Address();
             address.setAddrNo(Integer.parseInt(addrNo));
             address.setAddr(addr);
@@ -125,7 +126,7 @@ public class AddressController {
     public Map<String, Object> delete(@RequestParam("addrNo") String addrNo) throws Exception {
         Map<String, Object> map = new HashMap<>();
 
-        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
             addressService.deleteAddress(Integer.parseInt(addrNo));
 
             map.put("result", "success");

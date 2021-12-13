@@ -122,29 +122,5 @@ public class UserController {
         return map;
     }
 
-//    //update user
-//    @RequestMapping(value = “/user/update.do”,
-//            method=RequestMethod.GET)
-//    public String updateUserForm(
-//            @ModelAttribute(“userCommand”) UserCommand
-//                    userCommand, HttpServletRequest request) {
-//    }
-//
-//    @RequestMapping(value = “/user/update.do”,
-//            method=RequestMethod.POST)
-//    public String updateUserForm(
-//            @Valid @ModelAttribute(“userCommand”) UserCommand
-//                    userCommand, BindingResult result, HttpServletRequest request) {
-//    }
-//
-//    //delete user
-//    @RequestMapping(value = “/user/delete.do”)
-//    public String deleteUser(int userNo) {
-//
-//    }
-//
-//    //view User
-//    @requestMapping(value = “/user/view.do”)
-//    public String getUser(int userNo) {
-//    }
+
 }
