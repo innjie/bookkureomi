@@ -36,7 +36,6 @@ public class AuctionController {
         int pageCnt = 0;
 
         List<Auction> auctionList = new ArrayList<>();
-        System.out.println(auctionList.size());
         if(auctionCnt > 0) {
             pageCnt = (auctionCnt % showCnt == 0) ? (auctionCnt / showCnt) : (auctionCnt / showCnt + 1);
             int start = 1 + (showCnt * (pageNo - 1));
