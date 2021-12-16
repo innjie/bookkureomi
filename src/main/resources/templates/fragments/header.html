@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
   <!--	xmlns:sec="http://www.thymeleaf.org/extras/spring-security4">-->
 
@@ -19,7 +19,7 @@
 				<div th:if="${#authorization.expr('isAuthenticated()')}">
 					<ul class="header-logon-menu-list mr-auto">
 						<li class="header-logon-menu-item"><a class="js-scroll-trigger" href="/book/user/mypage" th:text="${#authentication.name}"></a>&nbsp;님 </li>
-						<li class="header-logon-menu-item"><a class="js-scroll-trigger" href="/book/point/view" th:text="${#authentication.user.point}"></a>포인트</li>
+						<li class="header-logon-menu-item"><a class="js-scroll-trigger" href="/book/point/view" th:text="${#authentication.point}"></a>포인트</li>
 						<li class="header-logon-menu-item"><a class="js-scroll-trigger" href="/book/cart/view">카트</a></li>
 						<li class="header-logon-menu-item-button"><a class="js-scroll-trigger" onclick="document.getElementById('logout').submit();" > 로그아웃</a>
 						<!--  <li class="header-logon-menu-item-button"><a class="js-scroll-trigger" onclick="logout()" >로그아웃</a>-->

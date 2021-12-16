@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.inyoon.bookkureomi.user.Login;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -67,14 +69,14 @@ public class PointController {
 	@ApiOperation(value="포인트 확인", notes="포인트를 확인한다.")
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/point/detail")
-	public Map<String, Object> detailPoint() throws Exception {
+	public Map<String, Object> detailPoint(@AuthenticationPrincipal Login principal) throws Exception {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-			User user = (User) authentication.getUser();
+			User user = principal.getUser();
 			int userNo = user.getUserNo();
 			
 			int point = pointService.checkPoint(userNo);
@@ -91,7 +93,8 @@ public class PointController {
 	@GetMapping("/point/list")
 	public Map<String, Object> listPoint(
 			@RequestParam("pageNo") int pageNo,
-			@RequestParam("type") String type) {
+			@RequestParam("type") String type,
+			@AuthenticationPrincipal Login principal) {
 		
 		int showCnt = 10;	//보여주는 개수
 		int pointCnt = 0;	//리스트 개수
@@ -102,7 +105,7 @@ public class PointController {
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-			User user = (User) authentication.getUser();
+			User user = principal.getUser();
 			int userNo = user.getUserNo();			
 			
 			Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -134,14 +137,15 @@ public class PointController {
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/point/create")
 	public Map<String, Object> rechargePoint(
-			@RequestParam("rcPoint") String rcPoint) throws Exception {
+			@RequestParam("rcPoint") String rcPoint,
+			@AuthenticationPrincipal Login principal) throws Exception {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-			User user = (User) authentication.getUser();
+			User user = principal.getUser();
 			int userNo = user.getUserNo();
 		
 			Recharge recharge = new Recharge();

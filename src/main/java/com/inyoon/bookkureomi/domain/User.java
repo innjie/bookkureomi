@@ -1,6 +1,7 @@
 package com.inyoon.bookkureomi.domain;
 
 
+import com.inyoon.bookkureomi.user.Login;
 import lombok.Data;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
-public @Data class User implements UserDetails {
+public @Data class User{
 	private int userNo;
     private String id;
     private String name;
@@ -26,11 +27,5 @@ public @Data class User implements UserDetails {
     private int thirdGenre;
     
     private String userRole;
-    
-    private Collection<? extends GrantedAuthority> authorities;
-    private boolean isEnabled = true;
-    private String username;
-    private boolean isCredentialsNonExpired = true;
-    private boolean isAccountNonExpired  = true;
-    private boolean isAccountNonLocked  = true;
+
 }

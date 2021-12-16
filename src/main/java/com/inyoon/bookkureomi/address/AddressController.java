@@ -3,6 +3,7 @@ package com.inyoon.bookkureomi.address;
 import com.inyoon.bookkureomi.domain.Address;
 import com.inyoon.bookkureomi.domain.Sale;
 import com.inyoon.bookkureomi.domain.User;
+import com.inyoon.bookkureomi.user.Login;
 import com.inyoon.bookkureomi.user.MyAuthentication;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +31,13 @@ public class AddressController {
     //view address by page
     @GetMapping("/mypage/address/list")
     @ResponseBody
-    public Map<String, Object> listAddress(@AuthenticationPrincipal User user, @RequestParam("pageNo") int pageNo) {
+    public Map<String, Object> listAddress(@AuthenticationPrincipal Login principal, @RequestParam("pageNo") int pageNo) {
         int showCnt = 12;
         int addressCnt = 0;
         int pageCnt = 0;
 
         List<Address> addressList = new ArrayList<>();
-        MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication();
-        user = (User) authentication.getUser();
+        User user = (User) principal.getUser();
         addressCnt = addressService.countAddressList(user.getUserNo());
 
         if (addressCnt > 0) {
@@ -64,12 +64,13 @@ public class AddressController {
     @PostMapping("/address/insert")
     public Map<String, Object> insertAddress(@RequestParam("aName") String aName,
                                              @RequestParam("address") String address,
-                                             @RequestParam("zipcode") String zipcode
+                                             @RequestParam("zipcode") String zipcode,
+                                             @AuthenticationPrincipal Login principal
     ) throws Exception {
         System.out.println("insert Address in");
         Address addressDTO = new Address();
         MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getUser();
+        User user = (User) principal.getUser();
 
         addressDTO.setAddr(address);
         addressDTO.setZipcode(zipcode);

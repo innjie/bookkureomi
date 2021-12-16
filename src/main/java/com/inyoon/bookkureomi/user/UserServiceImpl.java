@@ -69,26 +69,26 @@ public class UserServiceImpl implements UserService {
         userMapper.deleteUser(userNo);
     }
     
-    
-    public String login(User user) {
-        User originUser = userMapper.getUserById(user.getId());
-        String inputPw = user.getPassword();
-        System.out.println("login Service");
-        System.out.println(originUser.getPassword());
-//        if(passwordEncoder.matches(originUser.getPw(), "{noop}" + user.getPw())) {
-//            System.out.println("match");
+//
+//    public String login(User user) {
+//        User originUser = userMapper.getUserById(user.getId());
+//        String inputPw = user.getPassword();
+//        System.out.println("login Service");
+//        System.out.println(originUser.getPassword());
+////        if(passwordEncoder.matches(originUser.getPw(), "{noop}" + user.getPw())) {
+////            System.out.println("match");
+////            return "matched";
+////        } else {
+////            System.out.println("not match");
+////            return "not matched";
+////        }
+//        if(inputPw.equals(originUser.getPassword())) {
 //            return "matched";
 //        } else {
-//            System.out.println("not match");
 //            return "not matched";
 //        }
-        if(inputPw.equals(originUser.getPassword())) {
-            return "matched";
-        } else {
-            return "not matched";
-        }
-    }
-    
+//    }
+//
     private String getEncodedPassword(String password) {
         return ("{noop}" + password);
     }
@@ -101,15 +101,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         User user = userMapper.getUserById(id);
+        Login principal = new Login();
+        principal.setUser(user);
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if(user != null) {
-           authorities.add(new SimpleGrantedAuthority(user.getUserRole()));
-           user.setAuthorities(user.getAuthorities());
-           user.setPoint(pointMapper.checkPoint(user.getUserNo()));
+        if(principal != null) {
+           authorities.add(new SimpleGrantedAuthority(principal.getUserRole()));
+            principal.setAuthorities(principal.getAuthorities());
+            principal.getUser().setPoint(pointMapper.checkPoint(principal.getUser().getUserNo()));
+
         }
         
-        return user;
+        return principal;
     }
 
 

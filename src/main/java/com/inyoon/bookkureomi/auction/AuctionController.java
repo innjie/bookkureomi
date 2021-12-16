@@ -4,8 +4,10 @@ import com.inyoon.bookkureomi.domain.Auction;
 import com.inyoon.bookkureomi.domain.Genre;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.genre.GenreService;
+import com.inyoon.bookkureomi.user.Login;
 import com.inyoon.bookkureomi.user.MyAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -149,7 +151,8 @@ public class AuctionController {
     @ResponseBody
     @GetMapping("/mypage/auction/list")
     public Map<String, Object> myAuctionList(
-            @RequestParam("pageNo") int pageNo) {
+            @RequestParam("pageNo") int pageNo,
+            @AuthenticationPrincipal Login principal) {
         int showCnt = 12;
         int auctionCnt = 0;
         int pageCnt = 0;
@@ -158,7 +161,7 @@ public class AuctionController {
         if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("annonymousUser")) {
             MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.
                     getContext().getAuthentication();
-            User user = (User) authentication.getUser();
+            User user = principal.getUser();
             int userNo = user.getUserNo();
             auctionCnt = auctionService.countMyAuctionList(userNo);
             if(auctionCnt > 0) {
