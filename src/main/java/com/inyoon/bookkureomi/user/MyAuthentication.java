@@ -9,18 +9,20 @@ import com.inyoon.bookkureomi.domain.User;
 
 public class MyAuthentication extends UsernamePasswordAuthenticationToken {
 
-	User user;
+	Login principal;
 	
-	public MyAuthentication(String id, String password, List<GrantedAuthority> grantedAuthorityList, User user) {
+	public MyAuthentication(String id, String password, List<GrantedAuthority> grantedAuthorityList, Login principal) {
 		super(id, password, grantedAuthorityList);
-		this.user = user;
+		this.principal = principal;
+
 	}
 	
-	public User getUser() {
-		return this.user;
+	public Login getUser() {
+		return this.principal;
 	}
 	
 	public void setPoint(int point) {
-		this.user.setPoint(point);
+		this.principal.getUser().setPoint(point);
 	}
+	public int getPoint() {return this.principal.getUser().getPoint();}
 }

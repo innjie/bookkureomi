@@ -9,7 +9,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.inyoon.bookkureomi.user.Login;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -138,14 +140,15 @@ public class SaleController{
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/sale/detail")
 	public Map<String, Object> detailSale(
-				@RequestParam("saleNo") int saleNo) throws Exception {
+				@RequestParam("saleNo") int saleNo,
+				@AuthenticationPrincipal Login principal) throws Exception {
 
 		int userNo = -1;
 		
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-			User user = (User) authentication.getUser();
+			User user = principal.getUser();
 			userNo = user.getUserNo();
 		}
 		
@@ -183,6 +186,7 @@ public class SaleController{
 			@RequestParam("author") String author,
 			@RequestParam("genreType") String genreType,
 			@RequestParam("file") List<MultipartFile> files,
+			@AuthenticationPrincipal Login principal,
 			HttpServletRequest req) throws Exception {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -190,7 +194,7 @@ public class SaleController{
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-			User user = (User) authentication.getUser();
+			User user = principal.getUser();
 		
 			Sale sale = new Sale();
 			Genre genre = genreService.getGenreByName(genreType);
@@ -313,7 +317,8 @@ public class SaleController{
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/mypage/sale/list")
 	public Map<String, Object> listMySale(
-			@RequestParam("pageNo") int pageNo) {
+			@RequestParam("pageNo") int pageNo,
+			@AuthenticationPrincipal Login principal) {
 		
 		int showCnt = 12;	//보여주는 개수
 		int saleCnt = 0;	//리스트 개수
@@ -324,7 +329,7 @@ public class SaleController{
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-			User user = (User) authentication.getUser();
+			User user = principal.getUser();
 			int userNo = user.getUserNo();
 		
 			saleCnt = saleService.countMySaleList(userNo);

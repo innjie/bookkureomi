@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.inyoon.bookkureomi.user.Login;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,14 +60,15 @@ public class OrderController {
 			@RequestParam("pAddress") String pAddress,
 			@RequestParam("rName") String rName,
 			@RequestParam("rPhone") String rPhone,
-			@RequestParam("rAddress") String rAddress) {
+			@RequestParam("rAddress") String rAddress,
+			@AuthenticationPrincipal Login principal) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-			User user = (User) authentication.getUser();
+			User user = (User) principal.getUser();
 			int userNo = user.getUserNo();
 		
 			boolean isCart;
@@ -223,7 +226,8 @@ public class OrderController {
 	@GetMapping("/order/list")
 	public Map<String, Object> listOrder(
 			@RequestParam("type") String type,
-			@RequestParam("pageNo") int pageNo) {
+			@RequestParam("pageNo") int pageNo,
+			@AuthenticationPrincipal Login principal) {
 	
 		int showCnt = 10;	//보여주는 개수
 		int orderCnt = 0;	//리스트 개수
@@ -234,7 +238,7 @@ public class OrderController {
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-			User user = (User) authentication.getUser();
+			User user = (User) principal.getUser();
 			int userNo = user.getUserNo();
 
 			Map<String, Object> paramMap = new HashMap<String, Object>();

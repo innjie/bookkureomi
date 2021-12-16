@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.inyoon.bookkureomi.user.Login;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,14 +43,14 @@ public class CartController {
 	@ApiOperation(value="카트 내용물 목록", notes="카트 내용물 전체 목록을 보여준다.")
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/cart/list")
-	public Map<String, Object> listCartItem() {		
+	public Map<String, Object> listCartItem(@AuthenticationPrincipal Login principal) {
 
 		List<Sale> itemList = new ArrayList<>();	
 
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-			User user = (User) authentication.getUser();
+			User user = principal.getUser();
 			int userNo = user.getUserNo();
 			
 			itemList = cartService.checkCart(userNo);
@@ -64,14 +66,15 @@ public class CartController {
 	@ResponseBody //@RestController 시 생략 가능
 	@PostMapping("/cart/create")
 	public Map<String, Object> createCartItem(
-			@RequestParam("saleNo") int saleNo) {
+			@RequestParam("saleNo") int saleNo,
+			@AuthenticationPrincipal Login principal) {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-			User user = (User) authentication.getUser();
+			User user = principal.getUser();
 			
 			Sale sale = new Sale();
 			sale.setSaleNo(saleNo);
@@ -100,14 +103,15 @@ public class CartController {
 	@ResponseBody //@RestController 시 생략 가능
 	@DeleteMapping("/cart/delete")
 	public Map<String, Object> deleteCartItem(
-			@RequestParam(value="saleNo", defaultValue = "-1", required = false) int saleNo) {
+			@RequestParam(value="saleNo", defaultValue = "-1", required = false) int saleNo,
+			@AuthenticationPrincipal Login principal) {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
 			//user
 			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-			User user = (User) authentication.getUser();
+			User user = principal.getUser();
 			int userNo = user.getUserNo();
 			
 			if(saleNo != -1) {

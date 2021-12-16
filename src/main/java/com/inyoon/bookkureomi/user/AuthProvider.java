@@ -33,19 +33,20 @@ public class AuthProvider implements AuthenticationProvider{
 	
 	public Authentication authenticate(String id, String password) throws AuthenticationException{
 		List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
+
+		Login principal = (Login) userService.loadUserByUsername(id);
+		User pUser = principal.getUser();
+		principal.setUsername(pUser.getName());
 		
-		User user = new User();
-		user = (User)userService.loadUserByUsername(id);
-		
-		if(user == null) {
+		if(principal == null) {
 			throw new UsernameNotFoundException("wrongid");
-		} else if(user != null && !user.getPassword().equals(password)) {
+		} else if(principal != null && !principal.getPassword().equals(password)) {
 			throw new BadCredentialsException("wrongpw");
 		}
 		
-		grantedAuthorityList.add(new SimpleGrantedAuthority(user.getUserRole()));
-		user.setPassword("");
-		return new MyAuthentication(id, password, grantedAuthorityList, user);
+		grantedAuthorityList.add(new SimpleGrantedAuthority(pUser.getUserRole()));
+
+		return new MyAuthentication(id, password, grantedAuthorityList, principal);
 	}
 
 	@Override
