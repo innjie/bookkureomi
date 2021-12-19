@@ -17,7 +17,7 @@
 
     <select id = "getUserById" parameterType="String" resultType="com.inyoon.bookkureomi.domain.User">
         SELECT
-            userNo, ID, password, firstGenre, secondGenre, thirdGenre, name, userRole
+            userNo, ID, password, firstGenre, secondGenre, thirdGenre, name, userRole, phone
         FROM
             Users
         WHERE

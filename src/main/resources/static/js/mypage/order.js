@@ -4,6 +4,9 @@ $(document).ready(function(){
 	if(($(location).attr('href').split('/book')[1]).includes('/order/view')){
 		listSaleOrder(nowPageNo);
 	}
+	
+	//주소 선택
+	selectAddressListener();
 });
 
 //주문 나열
@@ -197,6 +200,22 @@ function setDefaultOrder() {
 	$("#orderRName").val('');
 	$("#orderRPhone").val('');
 	$("#orderRAddress").val('');
+	
+	//주소 가져오기
+	$("#findAddress").html("<option value=\"\">-</option>");
+	$.ajax({
+		url: "/book/order/address/list", 
+		method: 'GET',
+	    dataType: "json",
+		data: {
+		}
+	}).done(function( data ) {
+		for(var i = 0; i < data.addressList.length; i++){
+			$("#findAddress").append("<option value=\""+data.addressList[i].addrNo+"\">"+data.addressList[i].aname+" : "+data.addressList[i].addr+"</option>");
+		}
+	}).fail( function( textStatus ) {
+      alert( "Request failed: " + textStatus );
+	});
 }
 
 //구매(주문)
@@ -325,4 +344,33 @@ function createCartItemOrder() {
           alert( "Request failed: " + textStatus );
     	});
     }
+}
+
+//주소 선택
+function selectAddressListener(){
+	$("#findAddress").change(function () {
+		if($("#findAddress").val() != ''){
+			//주소 세팅
+			$.ajax({
+				url: "/book/order/address/detail", 
+				method: 'GET',
+			    dataType: "json",
+				data: {
+					addrNo : $("#findAddress").val()
+				}
+			}).done(function( data ) {
+				$("#orderPAddress").val(data.address.zipcode);
+				$("#orderRAddress").val(data.address.addr);
+				$("#orderRName").val(data.name);
+				$("#orderRPhone").val(data.phone);
+			}).fail( function( textStatus ) {
+		      alert( "Request failed: " + textStatus );
+			});
+		} else{
+			$("#orderPAddress").val("");
+			$("#orderRAddress").val("");
+			$("#orderRName").val("");
+			$("#orderRPhone").val("");
+		}
+	});
 }
