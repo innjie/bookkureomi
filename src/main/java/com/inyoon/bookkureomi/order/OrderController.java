@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.inyoon.bookkureomi.address.AddressService;
 import com.inyoon.bookkureomi.delivery.DeliveryService;
+import com.inyoon.bookkureomi.domain.Address;
 import com.inyoon.bookkureomi.domain.Delivery;
 import com.inyoon.bookkureomi.domain.Order;
 import com.inyoon.bookkureomi.domain.OrderDetail;
@@ -43,6 +45,8 @@ public class OrderController {
 	private PointService pointService;
 	@Autowired
 	private DeliveryService deliveryService;
+	@Autowired
+    private AddressService addressService;
 	
 	
 	@ApiOperation(value="나의 주문 화면 이동", notes="나의 주문 화면으로 이동한다.")
@@ -297,4 +301,40 @@ public class OrderController {
 
         return map;
 	}
+	
+	@ApiOperation(value="주문 주소록 가져오기", notes="주문 주소록을 가져온다.")
+	@GetMapping("/order/address/list")
+    @ResponseBody
+    public Map<String, Object> listOrderAddress(
+    		@AuthenticationPrincipal Login principal) {
+
+        List<Address> addressList = new ArrayList<>();
+        User user = (User) principal.getUser();
+        
+        addressList = addressService.getAddressList(user.getUserNo());
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("addressList", addressList);
+       
+        return map;
+    }
+	
+	@ApiOperation(value="주문 주소 상세 가져오기", notes="선택 주소를 가져온다.")
+	@GetMapping("/order/address/detail")
+    @ResponseBody
+    public Map<String, Object> detailOrderAddress(
+    		@RequestParam("addrNo") int addrNo,
+    		@AuthenticationPrincipal Login principal) {
+
+        User user = (User) principal.getUser();
+        
+		Address address = addressService.getAddress(addrNo);
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("address", address);
+        map.put("name", user.getName());
+        map.put("phone", user.getPhone());
+       
+        return map;
+    }
 }
