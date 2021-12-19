@@ -5,6 +5,7 @@ $(document).ready(function () {
     }
 
 });
+
 //판매 중고 서적 나열
 function listAuction(pageNo) {
     nowPageNo = pageNo;
@@ -16,7 +17,7 @@ function listAuction(pageNo) {
             pageNo: pageNo
         }
     }).done(function (data) {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         $("#auctionCnt").text(data.auctionCnt);
         paging(data, 'listAuction');
 
@@ -46,10 +47,10 @@ function listAuction(pageNo) {
                 result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
                     + "<li class=\"table-list-content-list-style\"><strong>" + data.auctionList[i].title + "</strong></li>"
                     + "<li class=\"table-list-content-list-style\">" + endDate[0] + " / " + data.auctionList[i].publisher + "</li>"
-                    + "<li class=\"table-list-content-list-style\"> 입찰가 : \\" +  data.auctionList[i].bidPrice + "</li>"
+                    + "<li class=\"table-list-content-list-style\"> 입찰가 : \\" + data.auctionList[i].bidPrice + "</li>"
                     + "<li class=\"table-list-content-list-style\"> 즉시구매가 : \\" + data.auctionList[i].immediPrice + "</li>"
-                    + "<li class=\"table-list-content-list-style\">  상태 :"+ data.auctionList[i].state + "</li>"
-                    + "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale" + data.auctionList[i].auctionNo + "\" class=\"view-btn\" onClick=\"detailAuction(" + data.auctionList[i].auctionNo +")\" class=\"view-btn\" onClick=\"detailAuction("+ data.auctionList[i].auctionNo +")\">상세보기</button><li>"
+                    + "<li class=\"table-list-content-list-style\">  상태 :" + data.auctionList[i].state + "</li>"
+                    + "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale" + data.auctionList[i].auctionNo + "\" class=\"view-btn\" onClick=\"detailAuction(" + data.auctionList[i].auctionNo + ")\" class=\"view-btn\" onClick=\"detailAuction(" + data.auctionList[i].auctionNo + ")\">상세보기</button><li>"
                     + "</ul></li>";
 
                 result += "</ul></td>";
@@ -75,6 +76,7 @@ function listAuction(pageNo) {
             alert("Request failed: " + textStatus);
         });
 }
+
 //추가 폼 세팅
 function setAuctionDefault() {
     $("#insertTitle").val('');
@@ -91,11 +93,11 @@ function setAuctionDefault() {
 
 //중고 서적 판매
 function createAuctionForm() {
-    $("#pop-mask-sale-create").css("display","block");
-    $("body").css("overflow","hidden");
+    $("#pop-mask-sale-create").css("display", "block");
+    $("body").css("overflow", "hidden");
     $("#pop-sale-create").css({
-        "top": (window.screen.height / 2) - ($("#pop-sale-create").outerHeight() / 2)-50+"px",
-        "left": (window.screen.width / 2) - ($("#pop-sale-create").outerWidth() / 2)+"px"
+        "top": (window.screen.height / 2) - ($("#pop-sale-create").outerHeight() / 2) - 50 + "px",
+        "left": (window.screen.width / 2) - ($("#pop-sale-create").outerWidth() / 2) + "px"
     });
 
     setAuctionDefault();
@@ -123,14 +125,14 @@ function createAuction() {
     var header = $("meta[name='_csrf_header']").attr("content");
 
 
-    if(checkTitle(title)) return;
-    if(checkPublisher(publisher)) return;
-    if(checkBidPrice(bidPrice)) return;
-    if(checkImmediPrice(immediPrice)) return;
-    if(checkPrices(bidPrice, immediPrice)) return;
-    if(checkGenre(genreType)) return;
-    if(checkInfo(info)) return;
-    if(!checkEndDate(endDate)) return;
+    if (checkTitle(title)) return;
+    if (checkPublisher(publisher)) return;
+    if (checkBidPrice(bidPrice)) return;
+    if (checkImmediPrice(immediPrice)) return;
+    if (checkPrices(bidPrice, immediPrice)) return;
+    if (checkGenre(genreType)) return;
+    if (checkInfo(info)) return;
+    if (!checkEndDate(endDate)) return;
 
     if (confirm("경매를 등록하시겠습니까?")) {
         $.ajax({
@@ -168,6 +170,7 @@ function createAuction() {
 
 
 }
+
 //findAuction
 function findAuction(pageNo) {
     nowPageNo = pageNo;
@@ -178,17 +181,17 @@ function findAuction(pageNo) {
         method: 'GET',
         dataType: "json",
         data: {
-            title : title,
-            pageNo : pageNo
+            title: title,
+            pageNo: pageNo
         }
-    }).done(function(data) {
-        window.scrollTo(0,0);
+    }).done(function (data) {
+        window.scrollTo(0, 0);
         $("#auctionCnt").text(data.auctionCnt);
         paging(data, 'findAuction');
         $('#result')[0].innerHTML = '';
         var result;
 
-        if(data.auctionList.length > 0) {
+        if (data.auctionList.length > 0) {
             var result = "<table class=\"table-list\">"
                 + "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
 
@@ -210,14 +213,13 @@ function findAuction(pageNo) {
                 var endDate = data.auctionList[i].endDate.split("T");
 
 
-
                 result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
                     + "<li class=\"table-list-content-list-style\"><strong>" + data.auctionList[i].title + "</strong></li>"
                     + "<li class=\"table-list-content-list-style\">" + endDate[0] + " / " + data.auctionList[i].publisher + "</li>"
-                    + "<li class=\"table-list-content-list-style\"> 입찰가 : \\" +  data.auctionList[i].bidPrice + "</li>"
+                    + "<li class=\"table-list-content-list-style\"> 입찰가 : \\" + data.auctionList[i].bidPrice + "</li>"
                     + "<li class=\"table-list-content-list-style\"> 즉시구매가 : \\" + data.auctionList[i].immediPrice + "</li>"
-                    + "<li class=\"table-list-content-list-style\">  상태 :"+ data.auctionList[i].state + "</li>"
-                    + "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale" + data.auctionList[i].auctionNo + "\" class=\"view-btn\" onClick=\"detailAuction(" + data.auctionList[i].auctionNo +")\" class=\"view-btn\" onClick=\"detailAuction("+ data.auctionList[i].auctionNo +")\">상세보기</button><li>"
+                    + "<li class=\"table-list-content-list-style\">  상태 :" + data.auctionList[i].state + "</li>"
+                    + "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale" + data.auctionList[i].auctionNo + "\" class=\"view-btn\" onClick=\"detailAuction(" + data.auctionList[i].auctionNo + ")\" class=\"view-btn\" onClick=\"detailAuction(" + data.auctionList[i].auctionNo + ")\">상세보기</button><li>"
                     + "</ul></li>";
 
                 result += "</ul></td>";
@@ -244,13 +246,14 @@ function findAuction(pageNo) {
         });
 
 }
+
 //판매 중고서적 상세보기
 function detailAuction(auctionNo) {
-    $("#pop-mask-sale-detail").css("display","block");
-    $("body").css("overflow","hidden");
+    $("#pop-mask-sale-detail").css("display", "block");
+    $("body").css("overflow", "hidden");
     $("#pop-sale-detail").css({
-        "top": (window.screen.height / 2) - ($("#pop-sale-detail").outerHeight() / 2)-50+"px",
-        "left": (window.screen.width / 2) - ($("#pop-sale-detail").outerWidth() / 2)+"px"
+        "top": (window.screen.height / 2) - ($("#pop-sale-detail").outerHeight() / 2) - 50 + "px",
+        "left": (window.screen.width / 2) - ($("#pop-sale-detail").outerWidth() / 2) + "px"
     });
 
     $.ajax({
@@ -258,13 +261,13 @@ function detailAuction(auctionNo) {
         method: 'GET',
         dataType: "json",
         data: {
-            auctionNo : auctionNo
+            auctionNo: auctionNo
         }
-    }).done(function( data ) {
+    }).done(function (data) {
         $("#pop-sale-detail").css("display", "block");
 
         var offset = $("#pop-sale-detail").offset().top;
-        $("html").animate({scrollTop:offset},400);
+        $("html").animate({scrollTop: offset}, 400);
 
         $("#viewImage").attr("src", data.auction.image);
 
@@ -273,7 +276,7 @@ function detailAuction(auctionNo) {
         $("#viewPublisher").val(data.auction.publisher);
         var endArr = data.auction.endDate.split("T");
         var endDate = "";
-        for(var i in endArr) {
+        for (var i in endArr) {
             endDate = endArr[0];
         }
         $("#viewEndDate").val(endDate);
@@ -296,31 +299,50 @@ function detailAuction(auctionNo) {
         //     $('#deliveryInfo')[0].innerHTML = '';
         // }
 
+        if (!data.isSeller) {
+            $('#viewBidPrice').prop('readonly', true);
+            $('#viewInfo').prop('readonly', true);
+            // $('#imageBtn').css("display","none");
+        } else {
+            $('#viewBidPrice').prop('readonly', false);
+            $('#viewInfo').prop('readonly', false);
+            // $('#imageBtn').css("display","inline");
+        }
+
 
         //버튼 세팅
         $('#buttonResult')[0].innerHTML = '';
         var resultBtn = '';
 
+        if (data.auction.state != 'close') {
+            if (!data.isSeller) {
+                resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createBidForm()\">입찰하기</button>";
+
+            } else {
+                resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"updateAuction()\">수정하기</button>";
+            }
+        }
 
         resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeAuctionDetailPopup()\">닫기</button>";
 
         $('#buttonResult').append(resultBtn);
     })
-        .fail( function( textStatus ) {
-            alert( "Request failed: " + textStatus );
+        .fail(function (textStatus) {
+            alert("Request failed: " + textStatus);
         });
 }
+
 //상세 팝업 닫기
 function closeAuctionDetailPopup() {
     $("#pop-sale-detail").css("display", "none");
-    $("#pop-mask-sale-detail").css("display","none");
-    $("body").css("overflow","auto");
+    $("#pop-mask-sale-detail").css("display", "none");
+    $("body").css("overflow", "auto");
 }
 
 //추가 팝업 닫기
 function closeAuctionCreatePopup() {
     $("#pop-sale-create").css("display", "none");
-    $("#pop-mask-sale-create").css("display","none");
-    $("body").css("overflow","auto");
+    $("#pop-mask-sale-create").css("display", "none");
+    $("body").css("overflow", "auto");
 }
 
