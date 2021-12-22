@@ -203,7 +203,8 @@ public class AuctionController {
     //view auction
     @GetMapping("/auction/detail")
     @ResponseBody
-    public Map<String, Object> viewAuction(@RequestParam("auctionNo") int auctionNo) throws Exception {
+    public Map<String, Object> viewAuction(
+            @RequestParam("auctionNo") int auctionNo) throws Exception {
         Auction auction = new Auction();
         System.out.println("auction detail controller in");
         auction = auctionService.getAuction(auctionNo);
