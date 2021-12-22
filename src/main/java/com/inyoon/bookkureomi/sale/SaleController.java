@@ -140,18 +140,17 @@ public class SaleController{
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/sale/detail")
 	public Map<String, Object> detailSale(
-				@RequestParam("saleNo") int saleNo,
-				@AuthenticationPrincipal Login principal) throws Exception {
+				@RequestParam("saleNo") int saleNo) throws Exception {
 
 		int userNo = -1;
 		
-		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
-			//user
-			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
-			User user = principal.getUser();
-			userNo = user.getUserNo();
-		}
-		
+//		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+//			//user
+//			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication();
+//			User user = principal.getUser();
+//			userNo = user.getUserNo();
+//		}
+//
 		Sale sale = new Sale();
 		sale = saleService.getSale(saleNo);
 				
