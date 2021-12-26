@@ -26,7 +26,7 @@ function login() {
 			window.location = "/";
 		} else if(data.response.message == 'wrongid'){
 			$("#errMsg").text("잘못된 아이디입니다.");
-			$("#id").val('');
+			//$("#id").val('');
 			$("#password").val('');
 		} else if(data.response.message == 'wrongpw'){
 			$("#errMsg").text("잘못된 비밀번호입니다.");

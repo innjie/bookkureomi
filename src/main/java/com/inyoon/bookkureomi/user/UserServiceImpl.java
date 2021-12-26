@@ -102,14 +102,13 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         User user = userMapper.getUserById(id);
         Login principal = new Login();
-        principal.setUser(user);
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-        if(principal != null) {
-           authorities.add(new SimpleGrantedAuthority(principal.getUserRole()));
+        if(user != null) {
+        	principal.setUser(user);
+        	
+            List<GrantedAuthority> authorities = new ArrayList<>();
+        	authorities.add(new SimpleGrantedAuthority(principal.getUserRole()));
             principal.setAuthorities(principal.getAuthorities());
             principal.getUser().setPoint(pointMapper.checkPoint(principal.getUser().getUserNo()));
-
         }
         
         return principal;
