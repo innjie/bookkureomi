@@ -211,6 +211,8 @@ public class AuctionController {
         auction.setGenreType(genreService.getGenre(auction.getGenreNo()).getGenreType());
 
         Map<String, Object> map = new HashMap<String, Object>();
+        int userNo = 0;
+        map.put("isSeller", userNo == auction.getUser().getUserNo());
         map.put("auction", auction);
         return map;
     }
