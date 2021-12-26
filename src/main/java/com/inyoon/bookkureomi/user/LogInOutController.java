@@ -2,6 +2,7 @@ package com.inyoon.bookkureomi.user;
 
 import com.inyoon.bookkureomi.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,20 @@ public class LogInOutController {
     public String loginForm(@ModelAttribute("login") Login login, HttpServletRequest request) {
         System.out.println("loginForm Controller");
         return "user/login";
+    }
+    
+    @GetMapping("/user/login/check")
+    @ResponseBody
+    public Map<String, Object> loginCheck() {
+    	Map<String, Object> map = new HashMap<String, Object>();
+        
+    	if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+    		map.put("login", "login");
+		} else {
+			map.put("login", "nologin");
+		}        
+
+        return map;
     }
 
     //login

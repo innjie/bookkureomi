@@ -3,6 +3,7 @@ package com.inyoon.bookkureomi.user;
 import com.inyoon.bookkureomi.domain.Genre;
 import com.inyoon.bookkureomi.genre.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,9 @@ public class UserController {
     private GenreService genreService;
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
 
     @GetMapping("/")
@@ -81,7 +85,7 @@ public class UserController {
         System.out.println(id);
         User user = new User();
         user.setId(id);
-        user.setPassword(pw);
+        user.setPassword(passwordEncoder.encode(pw));
         user.setName(name);
         user.setPhone(phone);
         user.setGenreArray(genreArray);
