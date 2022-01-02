@@ -15,6 +15,12 @@
 
 <body>
 <section layout:fragment="content">
+	<script type="text/javascript" th:inline="javascript" th:if="${#request.getParameter('flag') == '1'}"> 
+		/*<![CDATA[*/ 
+			alert("로그인 후 이용가능합니다.");
+			location.href="/book/user/login";
+		/*]]>*/ 
+	</script>
     <div class="login-div">
 		<div class="login-div2">
 			<div class="login-margin-field login-div3">
