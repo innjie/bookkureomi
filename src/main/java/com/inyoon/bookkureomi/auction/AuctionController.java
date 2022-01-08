@@ -106,6 +106,7 @@ public class AuctionController {
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("result", "success");
+        map.put("pageNo", 1);
         map.put("auctionNo", auction.getAuctionNo());
 
         return map;
