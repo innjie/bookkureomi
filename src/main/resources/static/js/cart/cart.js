@@ -170,7 +170,8 @@ function createCartItem(saleNo){
     		}
     	})
         .fail( function( textStatus ) {
-            alert( "Request failed: " + textStatus );
+            //alert( "Request failed: " + textStatus );
+            location.href="/book/user/login?flag=1";
         });
     }
 }

@@ -209,32 +209,58 @@ function setDefaultOrder() {
 	    dataType: "json",
 		data: {
 		}
-	}).done(function( data ) {
+	}).done(function( data, textStatus ) {
 		for(var i = 0; i < data.addressList.length; i++){
 			$("#findAddress").append("<option value=\""+data.addressList[i].addrNo+"\">"+data.addressList[i].aname+" : "+data.addressList[i].addr+"</option>");
 		}
 	}).fail( function( textStatus ) {
-      alert( "Request failed: " + textStatus );
+		//console.log(textStatus);
+		location.href="/book/user/login?flag=1";
+		//alert( "Request failed: " + textStatus );
 	});
 }
 
 //구매(주문)
 function createSaleOrderForm(){
-	$("#pop-mask-order-create").css("display","block");
-	$("#pop-mask-order-create").css("background-color","rgba( 0, 0, 0, 0 )");
-	$("#pop-order-create").css({
-        "top": (window.screen.height / 2) - ($("#pop-order-create").outerHeight() / 2)-50+"px",
-        "left": (window.screen.width / 2) - ($("#pop-order-create").outerWidth() / 2)+"px"     
-     }); 
+	$("#orderPAddress").val('');
+	$("#orderRName").val('');
+	$("#orderRPhone").val('');
+	$("#orderRAddress").val('');
 	
-	setDefaultOrder();
-	$("#pop-order-create").css("display", "block");
-	
-	$("#orderTitle").val($("#viewTitle").val());
-	$("#orderPrice").val($("#viewSalePrice").val());
-	
-	var offset = $("#pop-order-create").offset().top;
-	$("html").animate({scrollTop:offset},400);
+	//주소 가져오기
+	$("#findAddress").html("<option value=\"\">-</option>");
+	$.ajax({
+		url: "/book/order/address/list", 
+		method: 'GET',
+	    dataType: "json",
+		data: {
+		}
+	}).done(function( data, textStatus ) {
+		for(var i = 0; i < data.addressList.length; i++){
+			$("#findAddress").append("<option value=\""+data.addressList[i].addrNo+"\">"+data.addressList[i].aname+" : "+data.addressList[i].addr+"</option>");
+		}
+		
+		$("#pop-mask-order-create").css("display","block");
+		$("#pop-mask-order-create").css("background-color","rgba( 0, 0, 0, 0 )");
+		$("#pop-order-create").css({
+	        "top": (window.screen.height / 2) - ($("#pop-order-create").outerHeight() / 2)-50+"px",
+	        "left": (window.screen.width / 2) - ($("#pop-order-create").outerWidth() / 2)+"px"     
+	     }); 
+		
+		$("#pop-order-create").css("display", "block");
+		
+		$("#orderTitle").val($("#viewTitle").val());
+		$("#orderPrice").val($("#viewSalePrice").val());
+		
+		var offset = $("#pop-order-create").offset().top;
+		$("html").animate({scrollTop:offset},400);
+		
+	}).fail( function( textStatus ) {
+		//console.log(textStatus);
+		location.href="/book/user/login?flag=1";
+		//alert( "Request failed: " + textStatus );
+	});
+
 }
 function createSaleOrder() {
 	var saleNo = $("#viewSaleNo").val();
@@ -358,7 +384,7 @@ function selectAddressListener(){
 				data: {
 					addrNo : $("#findAddress").val()
 				}
-			}).done(function( data ) {
+			}).done(function( data ) {console.log(data);
 				$("#orderPAddress").val(data.address.zipcode);
 				$("#orderRAddress").val(data.address.addr);
 				$("#orderRName").val(data.name);

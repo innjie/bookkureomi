@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.inyoon.bookkureomi.user.Login;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -140,17 +141,18 @@ public class SaleController{
 	@ResponseBody //@RestController 시 생략 가능
 	@GetMapping("/sale/detail")
 	public Map<String, Object> detailSale(
-				@RequestParam("saleNo") int saleNo) throws Exception {
+				@RequestParam("saleNo") int saleNo
+				/*, @AuthenticationPrincipal(expression="#this=='anonymousUser'?null:principal") Login principal*/) throws Exception {
 
 		int userNo = -1;
-		
-//		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
-//			//user
-//			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication();
-//			User user = principal.getUser();
-//			userNo = user.getUserNo();
-//		}
-//
+				
+		if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+			//user
+			MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication();
+			Login user = authentication.getUser();
+			userNo = user.getUserNo();
+		}
+
 		Sale sale = new Sale();
 		sale = saleService.getSale(saleNo);
 				
@@ -170,6 +172,7 @@ public class SaleController{
 		
         return map;
 	}
+	
 	
 	
 	@ApiOperation(value="판매 책 등록 ", notes="중고 책을 판매한다.")
