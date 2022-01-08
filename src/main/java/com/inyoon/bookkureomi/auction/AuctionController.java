@@ -206,7 +206,7 @@ public class AuctionController {
     public Map<String, Object> viewAuction(
             @RequestParam("auctionNo") int auctionNo) throws Exception {
         Auction auction = new Auction();
-        System.out.println("auction detail controller in");
+
         auction = auctionService.getAuction(auctionNo);
         auction.setGenreType(genreService.getGenre(auction.getGenreNo()).getGenreType());
 
