@@ -155,12 +155,12 @@ function createAuction() {
             }
         }).done(function (data) {
             if (data.result == 'success') {
-                window.alert("중고 책을 등록하였습니다.");
+                window.alert("중고 경매 책을 등록하였습니다.");
 
                 $("#pop-sale-insert").css("display", "none");
-
-                listAuction();
-                detailAuction(data.AuctionNo);
+                closeAuctionCreatePopup();
+                listAuction(1);
+                detailAuction(data.auctionNo);
             }
         })
             .fail(function (textStatus) {

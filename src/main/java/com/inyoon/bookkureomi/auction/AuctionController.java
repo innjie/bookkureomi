@@ -106,6 +106,7 @@ public class AuctionController {
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("result", "success");
+        map.put("pageNo", 1);
         map.put("auctionNo", auction.getAuctionNo());
 
         return map;
@@ -206,7 +207,7 @@ public class AuctionController {
     public Map<String, Object> viewAuction(
             @RequestParam("auctionNo") int auctionNo) throws Exception {
         Auction auction = new Auction();
-        System.out.println("auction detail controller in");
+
         auction = auctionService.getAuction(auctionNo);
         auction.setGenreType(genreService.getGenre(auction.getGenreNo()).getGenreType());
 
