@@ -264,6 +264,7 @@ function detailAuction(auctionNo) {
             auctionNo: auctionNo
         }
     }).done(function (data) {
+        alert(data.isSeller);
         $("#pop-sale-detail").css("display", "block");
 
         var offset = $("#pop-sale-detail").offset().top;
@@ -315,6 +316,7 @@ function detailAuction(auctionNo) {
         var resultBtn = '';
 
         if (data.auction.state != 'close') {
+
             if (!data.isSeller) {
                 resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createBidForm()\">입찰하기</button>";
 

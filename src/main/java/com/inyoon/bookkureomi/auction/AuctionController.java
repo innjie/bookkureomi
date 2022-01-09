@@ -69,12 +69,13 @@ public class AuctionController {
             @RequestParam("info") String info,
             @RequestParam("image") String image,
             @RequestParam("genreType") String genreType,
-            @RequestParam("userNo") int userNo
+            @AuthenticationPrincipal Login principal
+
     ) throws Exception {
         System.out.println("insert controller in");
         Auction auction = new Auction();
-        User user = new User();
-        user.setUserNo(userNo);
+        User user = principal.getUser();
+        user.setUserNo(user.getUserNo());
         Genre genre = genreService.getGenreByName(genreType);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -83,7 +84,7 @@ public class AuctionController {
 
         Date today = new Date();
         String todayString = dateFormat.format(today);
-        System.out.println("today : " + today);
+
         System.out.println(todayString);
         java.sql.Date regidate = java.sql.Date.valueOf(todayString);
         System.out.println(regidate);
@@ -104,6 +105,7 @@ public class AuctionController {
 
         auctionService.insertAuction(auction);
 
+        System.out.println(user.getUserNo());
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("result", "success");
         map.put("pageNo", 1);
@@ -208,11 +210,20 @@ public class AuctionController {
             @RequestParam("auctionNo") int auctionNo) throws Exception {
         Auction auction = new Auction();
 
+        int userNo = -1;
         auction = auctionService.getAuction(auctionNo);
         auction.setGenreType(genreService.getGenre(auction.getGenreNo()).getGenreType());
 
+        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+            //user
+            MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication();
+            Login user = authentication.getUser();
+            userNo = user.getUserNo();
+        }
+
+        System.out.println("userNo : " + userNo);
+        System.out.println("auction user NO : " + auction.getUser().getUserNo());
         Map<String, Object> map = new HashMap<String, Object>();
-        int userNo = 0;
         map.put("isSeller", userNo == auction.getUser().getUserNo());
         map.put("auction", auction);
         return map;
