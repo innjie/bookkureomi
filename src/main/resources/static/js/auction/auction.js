@@ -264,7 +264,6 @@ function detailAuction(auctionNo) {
             auctionNo: auctionNo
         }
     }).done(function (data) {
-        alert(data.isSeller);
         $("#pop-sale-detail").css("display", "block");
 
         var offset = $("#pop-sale-detail").offset().top;

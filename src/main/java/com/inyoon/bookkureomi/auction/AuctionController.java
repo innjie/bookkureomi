@@ -221,11 +221,20 @@ public class AuctionController {
             userNo = user.getUserNo();
         }
 
+        boolean isSeller = true;
+        if(userNo == -1) {
+            isSeller = false;
+        } else if(auction.getUser().getUserNo() != userNo) {
+            isSeller = false;
+        }
+
+        System.out.println("isSeller: " + isSeller);
         System.out.println("userNo : " + userNo);
         System.out.println("auction user NO : " + auction.getUser().getUserNo());
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("isSeller", userNo == auction.getUser().getUserNo());
+        map.put("isSeller", isSeller);
         map.put("auction", auction);
+
         return map;
     }
 
