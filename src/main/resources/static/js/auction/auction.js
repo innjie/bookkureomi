@@ -285,20 +285,6 @@ function detailAuction(auctionNo) {
         $("#viewGenreType").val(data.auction.genreType);
         $("#viewInfo").val(data.auction.info);
 
-        //배송 세팅
-        // if(data.delivery != null){
-        //     deliveryInfoUpdate(data.delivery.company, data.delivery.waybill);
-        // } else if(data.auction.state == 'close'){ //판매자 추가
-        //     $('#deliveryInfo')[0].innerHTML = '';
-        //     var infoDelivery = '';
-        //
-        //     infoDelivery = "<button type=\"button\" class=\"pop-btn\" onClick=\"deliveryInfo()\">배송입력</button>";
-        //
-        //     $('#deliveryInfo').append(infoDelivery);
-        // } else {
-        //     $('#deliveryInfo')[0].innerHTML = '';
-        // }
-
         if (!data.isSeller) {
             $('#viewBidPrice').prop('readonly', true);
             $('#viewInfo').prop('readonly', true);
@@ -309,15 +295,14 @@ function detailAuction(auctionNo) {
             // $('#imageBtn').css("display","inline");
         }
 
-
         //버튼 세팅
         $('#buttonResult')[0].innerHTML = '';
         var resultBtn = '';
 
         if (data.auction.state != 'close') {
-
             if (!data.isSeller) {
                 resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createBidForm()\">입찰하기</button>";
+                resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createBidForm()\">구매하기</button>";
 
             } else {
                 resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"updateAuction()\">수정하기</button>";
