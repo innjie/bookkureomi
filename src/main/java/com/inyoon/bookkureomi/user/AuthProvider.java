@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 
 import com.inyoon.bookkureomi.domain.User;
 
+import javax.servlet.http.HttpSession;
+
 @Component
 public class AuthProvider implements AuthenticationProvider{
 	
