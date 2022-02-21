@@ -302,7 +302,7 @@ function detailAuction(auctionNo) {
         if (data.auction.state != 'close') {
             if (!data.isSeller) {
                 resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createBidForm()\">입찰하기</button>";
-                resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createBidForm()\">구매하기</button>";
+                resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createImmediateForm()\">구매하기</button>";
 
             } else {
                 resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"updateAuction()\">수정하기</button>";

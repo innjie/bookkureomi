@@ -5,19 +5,19 @@ $(document).ready(function () {
     }
 
 });
-function createOrderAuctionForm() {
-    $("#pop-mask-order-create").css("display","block");
-    $("#pop-mask-order-create").css("background-color","rgba( 0, 0, 0, 0 )");
-    $("#pop-order-create").css({
-        "top": (window.screen.height / 2) - ($("#pop-order-create").outerHeight() / 2)-50+"px",
-        "left": (window.screen.width / 2) - ($("#pop-order-create").outerWidth() / 2)+"px"
+function createImmediateForm() {
+    $("#pop-mask-immediate-create").css("display","block");
+    $("#pop-mask-immediate-create").css("background-color","rgba( 0, 0, 0, 0 )");
+    $("#pop-immediate-create").css({
+        "top": (window.screen.height / 2) - ($("#pop-immediate-create").outerHeight() / 2)-50+"px",
+        "left": (window.screen.width / 2) - ($("#pop-immediate-create").outerWidth() / 2)+"px"
     });
 
     setDefaultBid();
-    $("#pop-order-create").css("display", "block");
+    $("#pop-immediate-create").css("display", "block");
 
-    $("#orderTitle").val($("#viewTitle").val());
-    $("#orderPrice").val($("#viewImmediPrice").val());
+    $("#immediateTitle").val($("#viewTitle").val());
+    $("#immediatePrice").val($("#viewImmediPrice").val());
 
     var offset = $("#pop-order-create").offset().top;
     $("html").animate({scrollTop:offset},400);
@@ -39,6 +39,31 @@ function createBidForm() {
     var offset = $("#pop-order-create").offset().top;
     $("html").animate({scrollTop:offset},400);
 
+}
+function setDefaultImmediate() {
+    $("#immediatePAddress").val('');
+    $("#immediateRName").val('');
+    $("#immediateRPhone").val('');
+    $("#immediateRAddress").val('');
+
+    //주소 가져오기
+    $("#findAddress").html("<option value=\"\">-</option>");
+    $.ajax({
+        url: "/book/order/address/list",
+        method: 'GET',
+        dataType: "json",
+        data: {
+        }
+    }).done(function( data ) {
+        if(data.addressList != null) {
+            for(var i = 0; i < data.addressList.length; i++){
+                $("#findAddress").append("<option value=\""+data.addressList[i].addrNo+"\">"+data.addressList[i].aname+" : "+data.addressList[i].addr+"</option>");
+            }
+        }
+
+    }).fail( function( textStatus ) {
+        alert( "등록된 주소가 없습니다." );
+    });
 }
 function setDefaultBid() {
     $("#orderPAddress").val('');
