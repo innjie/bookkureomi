@@ -13,7 +13,7 @@ function createImmediateForm() {
         "left": (window.screen.width / 2) - ($("#pop-immediate-create").outerWidth() / 2)+"px"
     });
 
-    setDefaultBid();
+    setDefaultImmediate();
     $("#pop-immediate-create").css("display", "block");
 
     $("#immediateTitle").val($("#viewTitle").val());
