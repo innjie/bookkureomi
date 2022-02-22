@@ -193,7 +193,15 @@ function closeOrderPopup() {
 		isCart = false;
 	}
 }
-
+function closeImmediatePopup() {
+	$("#pop-immediate-create").css("display", "none");
+	$("#pop-mask-immediate-create").css("display","none");
+	$("#pop-mask-immediate-create").css("background-color","rgba( 0, 0, 0, 0.8 )");
+	if(isCart){
+		$("body").css("overflow","auto");
+		isCart = false;
+	}
+}
 //주문 추가 폼 세팅
 function setDefaultOrder() {
 	$("#orderPAddress").val('');
