@@ -90,6 +90,46 @@ function setDefaultBid() {
         alert( "등록된 주소가 없습니다." );
     });
 }
+function orderAuction() {
+    var auctionNo = $("#viewAuctionNo").val();
+    var pAddress = $("#immediatePAddress").val();
+    var rName = $("#immediateRName").val();
+    var rPhone = $("#immediateRPhone").val();
+    var rAddress = $("#immediateRAddress").val();
+
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    if(confirm("입찰하시겠습니까?")) {
+        $.ajax({
+            url: "/book/immediate/insert",
+            method: 'POST',
+            dataType: "json",
+            data: {
+                auctionNo : auctionNo,
+                pAddress : pAddress,
+                rName : rName,
+                rPhone : rPhone,
+                rAddress : rAddress
+            },
+            beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            }
+        }).done(function( data ) {
+            if(data.result == 'success'){
+                setPoint(data.totalPoint);
+
+                window.alert("※주문성공※\n중고 책을 구입하였습니다.");
+
+                window.location = "/book/order/view";
+            } else if(data.result == 'fail'){
+                window.alert(data.reason);
+            }
+        }).fail( function( textStatus ) {
+            alert( "Request failed: " + textStatus );
+        });
+    }
+}
 function insertBid() {
     var auctionNo = $("#viewAuctionNo").val();
     var pAddress = $("#orderPAddress").val();
