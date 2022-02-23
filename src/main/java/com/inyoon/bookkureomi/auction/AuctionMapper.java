@@ -13,7 +13,7 @@ public interface AuctionMapper {
     public List<Auction> getAuctionListByUserNo(int userNo);
     public Auction getAuction(int auctionNo);
     public void insertAuction(Auction auction);
-    public void updateAuction(int auctionNo, Auction auction);
+    public void updateAuction(Auction auction);
     public void deleteAuction(int auctionNo);
     public List<Auction> findAuction(String title);
 

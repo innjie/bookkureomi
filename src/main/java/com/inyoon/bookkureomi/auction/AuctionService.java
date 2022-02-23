@@ -25,8 +25,8 @@ public class AuctionService {
     public void insertAuction(Auction auction) {
         auctionMapper.insertAuction(auction);
     }
-    public void updateAuction(int auctionNo, Auction auction) {
-        auctionMapper.updateAuction(auctionNo, auction);
+    public void updateAuction(Auction auction) {
+        auctionMapper.updateAuction(auction);
     }
     public void deleteAuction(int auctionNo) {
         auctionMapper.deleteAuction(auctionNo);
