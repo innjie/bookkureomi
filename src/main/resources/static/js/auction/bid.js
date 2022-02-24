@@ -131,7 +131,7 @@ function orderAuction() {
         });
     }
 }
-function insertBid() {
+function bidAuction() {
     var auctionNo = $("#viewAuctionNo").val();
     var pAddress = $("#orderPAddress").val();
     var rName = $("#orderRName").val();

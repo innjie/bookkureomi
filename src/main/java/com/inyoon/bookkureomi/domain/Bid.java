@@ -11,8 +11,8 @@ class Bid {
     private int bidPrice;
     private Date bidTime;
     private int bidUserNo;
-    private String userAddress;
-    private String receiveAddress;
-    private String receiver;
-    private String receiverPhone;
+    private String pAddress;
+    private String rAddress;
+    private String rName;
+    private String rPhone;
 }
