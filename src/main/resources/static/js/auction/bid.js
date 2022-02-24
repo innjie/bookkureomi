@@ -100,7 +100,7 @@ function orderAuction() {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
 
-    if(confirm("입찰하시겠습니까?")) {
+    if(confirm("구매하시겠습니까?")) {
         $.ajax({
             url: "/book/immediate/insert",
             method: 'POST',
