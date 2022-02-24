@@ -4,6 +4,7 @@ import com.inyoon.bookkureomi.address.AddressService;
 import com.inyoon.bookkureomi.delivery.DeliveryService;
 import com.inyoon.bookkureomi.domain.Auction;
 import com.inyoon.bookkureomi.domain.Bid;
+import com.inyoon.bookkureomi.domain.Recharge;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.order.OrderService;
 import com.inyoon.bookkureomi.point.PointService;
@@ -35,7 +36,10 @@ public class BidController {
     private DeliveryService deliveryService;
     @Autowired
     private AddressService addressService;
-//    //view my Bid List
+    @Autowired
+    private BidService bidService;
+
+    //    //view my Bid List
 //    @RequestMapping("/bid/myList.do")
 //    public String myBidList(ModelMap model, HttpServletRequest request) throws Exception {
 //    }
@@ -64,38 +68,65 @@ public class BidController {
 //    }
 //
     //Bid ... insertBid
-    @RequestMapping(value = "/bid/insert",  method = RequestMethod.POST)
-    public Map<String, Object> insertbid(@RequestParam("auctionNo") int auctionNo,
+    @RequestMapping(value = "/bid/insert", method = RequestMethod.POST)
+    public Map<String, Object> insertBid(@RequestParam("auctionNo") int auctionNo,
                                          @RequestParam("pAddress") String pAddress,
                                          @RequestParam("rName") String rName,
                                          @RequestParam("rPhone") String rPhone,
                                          @RequestParam("rAddress") String rAddress,
+                                         @RequestParam("bidPrice") int bidPrice,
                                          @AuthenticationPrincipal Login principal) throws Exception {
-        Map <String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
 
         if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anounymous")) {
-            MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication();
+
             User user = (User) principal.getUser();
             int userNo = user.getUserNo();
 
-            boolean isCart;
 
-            int orderNo = orderService.getOrderNo();
             int odNo = orderService.getODNo();
+            int bidNo = bidService.getBidNo();
 
-            int nowPoint = pointService.checkPoint(user.getUserNo());	//현재 포인트 확인
-            int totalPrice = 0;
+            int nowPoint = pointService.checkPoint(user.getUserNo());    //현재 포인트 확인
 
             //get auction
             Auction auction = auctionService.getAuction(auctionNo);
+            auction.setBidPrice(bidPrice);
 
+            if (nowPoint < bidPrice) {
+                map.put("result", "fail");
+                map.put("reason", "※주문실패※\n주문 금액보다 충전된 포인트가 적습니다.");
+
+            } else {
+                Bid bid = new Bid();
+                bid.setBidNo(bidNo);
+                bid.setAuctionNo(auctionNo);
+                bid.setBidUserNo(user.getUserNo());
+                bid.setBidPrice(bidPrice);
+                bid.setPAddress(pAddress);
+                bid.setRAddress(rAddress);
+                bid.setRName(rName);
+                bid.setRPhone(rPhone);
+
+                //point - buy
+                Recharge recharge = new Recharge();
+                recharge.setRechargeNo(pointService.getRechargeNo(userNo));
+                recharge.setTotalPoint(nowPoint - bidPrice);
+                recharge.setRcPoint(-1 * bidPrice);
+                recharge.setUser(user);
+
+                bidService.insertBid(bid);
+                map.put("result", "success");
+                map.put("bid", bid);
+                map.put("totalPoint", recharge.getTotalPoint());
+            }
+        } else {
+            map.put("result", "fail");
+            map.put("reason", "로그인 후 이용이 가능합니다.");
         }
-
-
-
-
         return map;
-   }
+    }
+
 //
 //
 //

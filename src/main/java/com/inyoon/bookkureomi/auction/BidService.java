@@ -29,4 +29,5 @@ public class BidService {
         bidMapper.insertBid(bid);
     }
 
+    public int getBidNo() { return bidMapper.getBidNo();}
 }
