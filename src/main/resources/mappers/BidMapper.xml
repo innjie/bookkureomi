@@ -17,6 +17,7 @@
             bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone
         FROM Bid
         WHERE auctionNo = #{auctionNo}
+        ORDER BY bidPrice
     </select>
     <select id="getBidListByUserNo" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Bid">
         SELECT

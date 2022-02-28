@@ -19,6 +19,9 @@ public class AuctionService {
     public List<Auction> getAuctionListByUserNo(int userNo) {
         return auctionMapper.getAuctionListByUserNo(userNo);
     }
+    public List<Auction> getAuctionListSchduled() {
+        return auctionMapper.getAuctionListSchduled();
+    }
     public Auction getAuction(int auctionNo) {
         return auctionMapper.getAuction(auctionNo);
     }
