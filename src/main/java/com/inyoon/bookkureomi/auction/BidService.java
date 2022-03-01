@@ -22,8 +22,8 @@ public class BidService {
     public Bid getBid(int bidNo) {
         return bidMapper.getBid(bidNo);
     }
-    public void getSuccessBidList(int userNo) {
-        bidMapper.getSuccessBidList(userNo);
+    public Bid getSuccessBid(int auctionNo) {
+        return bidMapper.getSuccessBid(auctionNo);
     }
     public void insertBid(Bid bid) {
         bidMapper.insertBid(bid);

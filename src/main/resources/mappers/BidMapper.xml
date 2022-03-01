@@ -31,6 +31,12 @@
         FROM Bid
         WHERE bidNo = #{bidNo}
     </select>
+    <select id="getSuccessBid" resultType="com.inyoon.bookkureomi.domain.Bid">
+        SELECT
+            bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone
+        FROM Bid
+        WHERE bidNo = #{bidNo} and MAX(bidPrice)
+    </select>
     <insert id="insertBid" parameterType="com.inyoon.bookkureomi.domain.Bid">
         INSERT INTO Bid (bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone)
         VALUES (#{bidNo}, #{auctionNo}, #{userNo}, #{bidPrice}, #{bidDate}, #{userAddress}, #{receiveAddress}, #{receiver}, #{receiverPhone})
