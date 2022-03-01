@@ -12,7 +12,7 @@ public interface BidMapper {
     public List<Bid> getBidListByUserNo(int userNo);
     public Bid getBid(int bidNo);
     public void insertBid(Bid bid);
-    //public void getSuccessBidList(int userNo);
+    public Bid getSuccessBid(int auctionNo);
 
     public int getBidNo();
 }
