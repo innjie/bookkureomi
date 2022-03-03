@@ -52,7 +52,26 @@ public class TaskService {
             orderDetail.setOrder(order);
             orderDetail.setAuction(auctionService.getAuction(bid.getAuctionNo()));
             //service process
+            //포인트 - 구매자
+            Recharge recharge = new Recharge();
+            recharge.setRechargeNo(pointService.getRechargeNo(userNo));
+            recharge.setTotalPoint(nowPoint - bidPrice);
+            recharge.setRcType("using");
+            recharge.setRcPoint(-1 * bidPrice);
+            recharge.setUser(user);
 
+            //포인트 - 판매자
+            User seller = new User();
+            int sellerNo = auction.getUser().getUserNo();
+            seller.setUserNo(sellerNo);
+            Recharge sellerRecharge = new Recharge();
+            int sellerPoint = pointService.checkPoint(sellerNo);
+            sellerRecharge.setTotalPoint(sellerPoint + (int)(0.9 * bidPrice));
+            sellerRecharge.setRechargeNo(pointService.getRechargeNo(sellerNo));
+            sellerRecharge.setRcType("recharging");
+            sellerRecharge.setRcMethod("selling");
+            sellerRecharge.setRcPoint((int)(0.9 * bidPrice));
+            sellerRecharge.setUser(seller);
             //point
 
             //auction update(state : Open -> close
