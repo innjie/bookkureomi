@@ -22,5 +22,5 @@ public interface AuctionMapper {
 
     public int countFindAuctionList(String title);
 
-    List<Auction> getAuctionListSchduled();
+    Auction getAuctionListSchduled();
 }
