@@ -162,7 +162,7 @@ function bidAuction() {
             if(data.result == 'success'){
                 setPoint(data.totalPoint);
 
-                window.alert("※주문성공※\n중고 책을 구입하였습니다.");
+                window.alert("※주문성공※\n중고 책을 입찰하였습니다.");
 
                 window.location = "/book/order/view";
             } else if(data.result == 'fail'){
