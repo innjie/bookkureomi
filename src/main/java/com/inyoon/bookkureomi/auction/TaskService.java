@@ -57,6 +57,8 @@ public class TaskService {
         //service process
 
         int userNo = user.getUserNo();
+
+        //point
         int nowPoint = pointService.checkPoint(userNo);    //현재 포인트 확인
         //포인트 - 구매자
         Recharge recharge = new Recharge();
@@ -78,7 +80,7 @@ public class TaskService {
         sellerRecharge.setRcMethod("selling");
         sellerRecharge.setRcPoint((int) (0.9 * bidPrice));
         sellerRecharge.setUser(seller);
-        //point
+
 
         //auction update(state : Open -> close
         auction.setState("close");
