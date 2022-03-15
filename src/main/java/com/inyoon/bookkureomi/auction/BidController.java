@@ -116,6 +116,9 @@ public class BidController {
                 recharge.setUser(user);
 
                 bidService.insertBid(bid);
+                //bidprice update
+                auction.setBidPrice(bidPrice);
+                auctionService.updateAuction(auction);
                 map.put("result", "success");
                 map.put("bid", bid);
                 map.put("totalPoint", recharge.getTotalPoint());
