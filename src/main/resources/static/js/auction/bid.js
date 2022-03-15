@@ -34,7 +34,7 @@ function createBidForm() {
     $("#pop-order-create").css("display", "block");
 
     $("#orderTitle").val($("#viewTitle").val());
-    $("#orderBidPrice").val($("#viewBidPrice").val());
+    $("#orderCurrBidPrice").val($("#viewBidPrice").val());
 
     var offset = $("#pop-order-create").offset().top;
     $("html").animate({scrollTop:offset},400);
@@ -138,9 +138,14 @@ function bidAuction() {
     var rPhone = $("#orderRPhone").val();
     var rAddress = $("#orderRAddress").val();
     var bidPrice = $("#orderBidPrice").val();
-
+    var currBidPrice = $("#orderCurrBidPrice").val();
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
+
+    if(currBidPrice >= bidPrice) {
+        alert("현재 입찰된 가격보다 높아야 합니다.");
+        return;
+    }
 
     if(confirm("입찰하시겠습니까?")) {
         $.ajax({
