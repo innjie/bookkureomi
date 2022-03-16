@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,9 +52,11 @@ public class TaskService {
         //service process
 
         //bid -> orderdetail
+        List<OrderDetail> orderDetailList = new ArrayList<>();
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setOrder(order);
         orderDetail.setAuction(auctionService.getAuction(bid.getAuctionNo()));
+        orderDetailList.add(orderDetail);
         //service process
 
         int userNo = user.getUserNo();
@@ -81,6 +84,10 @@ public class TaskService {
         sellerRecharge.setRcPoint((int) (0.9 * bidPrice));
         sellerRecharge.setUser(seller);
 
+
+        List<Recharge> rechargeSellingList = new ArrayList<>();
+        rechargeSellingList.add(recharge);
+        orderService.orderSale(orderDetailList, recharge, rechargeSellingList, false);	//order 추가
 
         //auction update(state : Open -> close
         auction.setState("close");
