@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 @Controller
 @RequestMapping("/book")
@@ -31,6 +33,7 @@ public class ImmediBuyController {
     private DeliveryService deliveryService;
     @Autowired
     private AddressService addressService;
+
     //    //view ImmediBuy List(my)
 //    @RequestMapping(“/immediBuy/list.do”)
 //    public String myImmediBuyList(ModelMap model,
@@ -83,10 +86,12 @@ public class ImmediBuyController {
                 order.setUser(user);
                 order.setInfo("");
 
+                List<OrderDetail> orderDetailList = new ArrayList<>();
                 OrderDetail orderDetail = new OrderDetail();
                 orderDetail.setAuction(auction);
                 orderDetail.setOrder(order);
                 orderDetail.setOdNo(odNo);
+                orderDetailList.add(orderDetail);
 
                 //포인트 - 구매자
                 Recharge recharge = new Recharge();
@@ -115,6 +120,9 @@ public class ImmediBuyController {
                 map.put("order", order);
                 map.put("totalPoint", recharge.getTotalPoint());
 
+                List<Recharge> rechargeSellingList = new ArrayList<>();
+                rechargeSellingList.add(recharge);
+                orderService.orderSale(orderDetailList, recharge, rechargeSellingList, false);	//order 추가
                 //auction closed
                 auction.setState("close");
                 auctionService.updateAuction(auction);
