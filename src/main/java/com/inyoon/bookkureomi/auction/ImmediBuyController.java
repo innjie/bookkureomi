@@ -115,7 +115,7 @@ public class ImmediBuyController {
                 sellerRecharge.setUser(seller);
 
                 //order
-                orderService.orderAuction(order);
+                orderService.orderAuction(orderDetail, sellerRecharge, recharge, order);
                 map.put("result", "success");
                 map.put("order", order);
                 map.put("totalPoint", recharge.getTotalPoint());

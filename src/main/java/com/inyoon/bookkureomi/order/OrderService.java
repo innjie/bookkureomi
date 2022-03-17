@@ -90,8 +90,10 @@ public class OrderService {
 
 	
 	
-	public void orderAuction(Order order){
+	public void orderAuction(OrderDetail orderDetail, Recharge seller, Recharge buyer, Order order){
 		orderMapper.orderAuction(order);
+		pointMapper.rechargePoint(seller);
+		pointMapper.usePoint(buyer);
 	}
 	public void orderDetailAuction(OrderDetail orderDetail){
 		orderMapper.orderDetailAuction(orderDetail);
