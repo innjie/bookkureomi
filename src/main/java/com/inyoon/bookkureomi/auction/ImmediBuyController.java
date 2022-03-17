@@ -122,7 +122,6 @@ public class ImmediBuyController {
 
                 List<Recharge> rechargeSellingList = new ArrayList<>();
                 rechargeSellingList.add(recharge);
-                orderService.orderSale(orderDetailList, recharge, rechargeSellingList, false);	//order 추가
                 //auction closed
                 auction.setState("close");
                 auctionService.updateAuction(auction);

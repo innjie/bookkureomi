@@ -116,7 +116,6 @@ function orderAuction() {
                 xhr.setRequestHeader(header, token);
             }
         }).done(function( data ) {
-            alert('here')
             if(data.result == 'success'){
                 setPoint(data.totalPoint);
 
