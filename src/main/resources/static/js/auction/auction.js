@@ -157,10 +157,11 @@ function createAuction() {
             if (data.result == 'success') {
                 window.alert("중고 경매 책을 등록하였습니다.");
 
-                $("#pop-sale-insert").css("display", "none");
                 closeAuctionCreatePopup();
                 listAuction(1);
-                detailAuction(data.auctionNo);
+            } else {
+                window.location = "/book/user/login";
+                window.alert(data.reason);
             }
         })
             .fail(function (textStatus) {

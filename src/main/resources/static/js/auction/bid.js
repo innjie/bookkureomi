@@ -121,7 +121,7 @@ function orderAuction() {
 
                 window.alert("※주문성공※\n중고 책을 구입하였습니다.");
 
-                window.location = "/book/order/view";
+                window.location = "/book/auction/page";
             } else if(data.result == 'fail'){
                 window.alert(data.reason);
             }
