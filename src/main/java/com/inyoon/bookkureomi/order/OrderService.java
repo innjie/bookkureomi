@@ -91,7 +91,6 @@ public class OrderService {
 	
 	
 	public void orderAuction(OrderDetail orderDetail, Recharge seller, Recharge buyer, Order order){
-		orderMapper.orderAuction(order);
 		pointMapper.rechargePoint(seller);
 		pointMapper.usePoint(buyer);
 	}
