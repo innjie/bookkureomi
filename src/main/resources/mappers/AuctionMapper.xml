@@ -45,7 +45,8 @@
             endDate = #{endDate},
             state = #{state},
             price = #{immediPrice},
-            genreNo = #{genreNo}
+            genreNo = #{genreNo},
+            bidPrice = #{bidPrice}
         WHERE auctionNo = #{auctionNo}
     </update>
     <delete id="deleteAuction" parameterType="integer">
