@@ -68,6 +68,7 @@ public class BidController {
 //    }
 //
     //Bid ... insertBid
+    @ResponseBody
     @RequestMapping(value = "/bid/insert", method = RequestMethod.POST)
     public Map<String, Object> insertBid(@RequestParam("auctionNo") int auctionNo,
                                          @RequestParam("pAddress") String pAddress,
