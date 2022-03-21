@@ -90,6 +90,31 @@ function setDefaultBid() {
         alert( "등록된 주소가 없습니다." );
     });
 }
+function closeAuction() {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    if(confirm("종료하시겠습니까?")) {
+        $.ajax({
+            url: "/book/auction/close",
+            method: 'POST',
+            beforesend : function(xhr) {
+                xhr.setRequestHeader(header, token);
+            }
+        }).done(function(data) {
+            if(data.result == 'success'){
+                setPoint(data.totalPoint);
+
+                window.alert("경매가 종료되었습니다.");
+
+                window.location = "/book/auction/page";
+            } else if(data.result == 'fail'){
+                window.alert(data.reason);
+            }
+        }).fail(function(textStatus) {
+            alert( "Request failed: " + textStatus );
+        });
+    }
+}
 function orderAuction() {
     var auctionNo = $("#viewAuctionNo").val();
     var pAddress = $("#immediatePAddress").val();
