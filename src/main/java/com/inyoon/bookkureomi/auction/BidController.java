@@ -2,15 +2,13 @@ package com.inyoon.bookkureomi.auction;
 
 import com.inyoon.bookkureomi.address.AddressService;
 import com.inyoon.bookkureomi.delivery.DeliveryService;
-import com.inyoon.bookkureomi.domain.Auction;
-import com.inyoon.bookkureomi.domain.Bid;
-import com.inyoon.bookkureomi.domain.Recharge;
-import com.inyoon.bookkureomi.domain.User;
+import com.inyoon.bookkureomi.domain.*;
 import com.inyoon.bookkureomi.order.OrderService;
 import com.inyoon.bookkureomi.point.PointService;
 import com.inyoon.bookkureomi.sale.SaleService;
 import com.inyoon.bookkureomi.user.Login;
 import com.inyoon.bookkureomi.user.MyAuthentication;
+import com.inyoon.bookkureomi.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -38,6 +38,8 @@ public class BidController {
     private AddressService addressService;
     @Autowired
     private BidService bidService;
+    @Autowired
+    UserService userService;
 
     //    //view my Bid List
 //    @RequestMapping("/bid/myList.do")
@@ -130,8 +132,86 @@ public class BidController {
         }
         return map;
     }
+    @ResponseBody
+    @PostMapping("/auction/close")
+    public Map<String, Object> closeAuction(
+            @RequestParam("auctionNo") int auctionNo,
+            @AuthenticationPrincipal Login principal) {
+        Map<String, Object> map = new HashMap<>();
 
-//
+        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anounymous")) {
+            //get auction list (status = open, endDate < Sysdate)
+            Auction auction = auctionService.getAuctionListSchduled();
+
+            //bid done
+            //get bidlist by auctionno
+            Bid bid = (Bid) bidService.getSuccessBid(auction.getAuctionNo());
+            //get just one --> make new?
+
+            int bidPrice = bid.getBidPrice();
+            //bid -> order
+            Order order = new Order();
+            order.setOrderNo(orderService.getOrderNo());
+            User user = userService.getUser(bid.getBidUserNo());
+            order.setUser(user);
+            order.setPAddress(bid.getPAddress());
+            order.setRAddress(bid.getRAddress());
+            order.setRName(bid.getRName());
+            order.setRPhone(bid.getRPhone());
+            order.setTotal(bid.getBidPrice());
+            order.setInfo("");
+            //service process
+
+            //bid -> orderdetail
+            List<OrderDetail> orderDetailList = new ArrayList<>();
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setOrder(order);
+            orderDetail.setAuction(auctionService.getAuction(bid.getAuctionNo()));
+            orderDetailList.add(orderDetail);
+            //service process
+
+            int userNo = user.getUserNo();
+
+            //point
+            int nowPoint = pointService.checkPoint(userNo);    //현재 포인트 확인
+            //포인트 - 구매자
+            Recharge recharge = new Recharge();
+            recharge.setRechargeNo(pointService.getRechargeNo(userNo));
+            recharge.setTotalPoint(nowPoint - bidPrice);
+            recharge.setRcType("using");
+            recharge.setRcPoint(-1 * bidPrice);
+            recharge.setUser(user);
+
+            //포인트 - 판매자
+            User seller = new User();
+            int sellerNo = auction.getUser().getUserNo();
+            seller.setUserNo(sellerNo);
+            Recharge sellerRecharge = new Recharge();
+            int sellerPoint = pointService.checkPoint(sellerNo);
+            sellerRecharge.setTotalPoint(sellerPoint + (int) (0.9 * bidPrice));
+            sellerRecharge.setRechargeNo(pointService.getRechargeNo(sellerNo));
+            sellerRecharge.setRcType("recharging");
+            sellerRecharge.setRcMethod("selling");
+            sellerRecharge.setRcPoint((int) (0.9 * bidPrice));
+            sellerRecharge.setUser(seller);
+
+
+            List<Recharge> rechargeSellingList = new ArrayList<>();
+            rechargeSellingList.add(recharge);
+            orderService.orderSale(orderDetailList, recharge, rechargeSellingList, false);	//order 추가
+
+            //auction update(state : Open -> close
+            auction.setState("close");
+            auctionService.updateAuction(auction);
+
+            map.put("result", "success");
+        } else {
+            map.put("result", "fail");
+            map.put("reason", "로그인 후 이용이 가능합니다.");
+        }
+        return map;
+    }
+
 //
 //
 //    //bid Success list

@@ -1,8 +1,6 @@
 package com.inyoon.bookkureomi.auction;
 
-import com.inyoon.bookkureomi.domain.Auction;
-import com.inyoon.bookkureomi.domain.Genre;
-import com.inyoon.bookkureomi.domain.User;
+import com.inyoon.bookkureomi.domain.*;
 import com.inyoon.bookkureomi.genre.GenreService;
 import com.inyoon.bookkureomi.user.Login;
 import com.inyoon.bookkureomi.user.MyAuthentication;
@@ -204,39 +202,6 @@ public class AuctionController {
 //    }
 //
     //view auction
-    @GetMapping("/auction/detail")
-    @ResponseBody
-    public Map<String, Object> viewAuction(
-            @RequestParam("auctionNo") int auctionNo) throws Exception {
-        Auction auction = new Auction();
-
-        int userNo = -1;
-        auction = auctionService.getAuction(auctionNo);
-        auction.setGenreType(genreService.getGenre(auction.getGenreNo()).getGenreType());
-
-        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
-            //user
-            MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication();
-            Login user = authentication.getUser();
-            userNo = user.getUserNo();
-        }
-
-        boolean isSeller = true;
-        if(userNo == -1) {
-            isSeller = false;
-        } else if(auction.getUser().getUserNo() != userNo) {
-            isSeller = false;
-        }
-
-        System.out.println("isSeller: " + isSeller);
-        System.out.println("userNo : " + userNo);
-        System.out.println("auction user NO : " + auction.getUser().getUserNo());
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("isSeller", isSeller);
-        map.put("auction", auction);
-
-        return map;
-    }
 
 
 //
@@ -251,9 +216,5 @@ public class AuctionController {
 //    public String updateAuction(@Valid @ModelAttribute("auctionCommand") AuctionCommand
 //                                        auctionCommand, BindingResult result) throws Exception {
 //    }
-//
-//    //delete auction
-//    @RequestMapping(“/auction/delete.do”)
-//    public String deleteAuction(@RequestParam(“auctionNo”) int auctionNo) {
-//    }
+
 }

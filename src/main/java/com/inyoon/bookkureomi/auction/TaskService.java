@@ -26,11 +26,8 @@ public class TaskService {
 
     @Scheduled(cron = "* * * * * *")
     public void auctionSchedule() {
-        //auction update
-
         //get auction list (status = open, endDate < Sysdate)
         Auction auction = auctionService.getAuctionListSchduled();
-
 
         //bid done
         //get bidlist by auctionno

@@ -307,6 +307,7 @@ function detailAuction(auctionNo) {
 
             } else {
                 resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"updateAuction()\">수정하기</button>";
+                resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeAuction()\">마감하기</button>";
             }
         }
 

@@ -134,10 +134,4 @@ public class ImmediBuyController {
     }
 
 
-//    //immediBuy
-//    @RequestMapping(value = "/immediBuy/insert.do",  method = RequestMethod.POST)
-//    public ModelAndView imPur(@RequestParam("auctionNo") int auctionNo, @Valid
-//    @ModelAttribute("immediBuyCommand") ImmediBuyCommand immediBuyCommand, BindingResult bindingResult, HttpServletRequest request) throws Exception {
-//    }
-
 }
