@@ -126,5 +126,9 @@ public class UserController {
         return map;
     }
 
-
+    //mypage
+    @GetMapping("/mypage/page")
+    public String mypagePage() {
+        return "mypage/page";
+    }
 }
