@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <!--    thymeleaf layout dialect가 contents페이지의 head태그를 layout의 head태그에 자동으로 추가해준다. -->
+    <!--    필요 css, script 추가영역 -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
+<section layout:fragment="content">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <div class="container-section">
+        <font size="20">개인 정보</font><br>
+        <div><span>아이디</span></div>
+        <input type="text" class="update-input" name="id" id="id" readonly="true"/>
 
+        <div><span>비밀번호</span></div>
+        <input type="password" class="update-input" name="pw" id="pw"/>
+        <div class="join-text">
+            <span id="passwordLen" class="join-err">Passwords are up to 8 characters long.</span>
+        </div>
+        <div><span>비밀번호 확인</span></div>
+        <input type="password" class="update-input" name="confirmPw" id="confirmPw"/>
+        <div class="update-text">
+            <span id = "notSameError" class="update-err">mismatch to password</span>
+        </div>
+
+        <div><span>전화번호</span></div>
+        <div class="update-phone">
+            <input type="text" class="update-phone-row" name="phone1" id="phone1"/>-
+            <input type="text" class="update-phone-row" name="phone2" id="phone2"/>-
+            <input type="text" class="update-phone-row" name="phone3" id="phone3"/>
+        </div>
+        <div class="update-text">
+            <span id = "phoneFormatError" class="join-err">you input wrong number</span>
+        </div>
+
+        <div class="join-text"><span>선호 장르</span> </div>
+        <div id="result"></div>
+        <div class="join-text">
+            <span id = "overChecked" class="join-err">You must choose 3 categories. </span>
+        </div>
+
+
+    </div>
+</section>
 </body>
 </html>

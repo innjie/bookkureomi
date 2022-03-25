@@ -3,6 +3,7 @@ package com.inyoon.bookkureomi.user;
 import com.inyoon.bookkureomi.domain.Genre;
 import com.inyoon.bookkureomi.genre.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -128,7 +129,11 @@ public class UserController {
 
     //mypage
     @GetMapping("/mypage/page")
-    public String mypagePage() {
-        return "mypage/page";
+    public Map<String, Object> mypagePage(@AuthenticationPrincipal Login principal) {
+        User user = userService.getUser(principal.getUserNo());
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", user);
+        return map;
     }
 }
