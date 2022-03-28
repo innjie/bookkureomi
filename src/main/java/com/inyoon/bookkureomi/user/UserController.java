@@ -133,11 +133,14 @@ public class UserController {
         return "mypage/page";
     }
     //mypage get UserInfo
-    @GetMapping("/book/mypage/info")
+    @GetMapping("/mypage/info")
     @ResponseBody
     public Map<String, Object> getUserInfo(@AuthenticationPrincipal Login principal) {
         Map<String, Object> map = new HashMap<>();
         User user = userService.getUser(principal.getUserNo());
+
+        map.put("user", user);
+        map.put("result", "success");
 
         return map;
     }
