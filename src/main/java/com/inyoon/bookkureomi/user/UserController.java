@@ -83,7 +83,6 @@ public class UserController {
             @RequestParam("phone") String phone,
             @RequestParam("genreArray[]") List<String> genreArray
                          ) throws Exception {
-        System.out.println(id);
         User user = new User();
         user.setId(id);
         user.setPassword(passwordEncoder.encode(pw));
@@ -142,6 +141,47 @@ public class UserController {
         map.put("user", user);
         map.put("result", "success");
 
+        return map;
+    }
+
+    //update
+    @PostMapping("/user/update")
+    public Map<String, Object> updateUser(@AuthenticationPrincipal Login principal,
+                                          @RequestParam("pw") String pw,
+                                          @RequestParam("phone") String phone,
+                                          @RequestParam("genreArray[]") List<String> genreArray) {
+        Map<String, Object> map = new HashMap<>();
+        User user = userService.getUser(principal.getUserNo());
+        user.setPassword(pw);
+        user.setPhone(phone);
+        user.setGenreArray(genreArray);
+
+        Iterator<String> it =  genreArray.iterator();
+
+        for(int i = 0; i < GENRESIZE; i++) {
+            Genre genre = new Genre();
+            if(it.hasNext()) {
+                switch (i) {
+                    case 0:
+                        genre = genreService.getGenreByName(it.next().toString());
+                        System.out.println(genre.getGenreNo());
+                        user.setFirstGenre(genre.getGenreNo());
+                        break;
+                    case 1:
+                        genre = genreService.getGenreByName(it.next().toString());
+                        System.out.println(genre.getGenreNo());
+                        user.setSecondGenre(genre.getGenreNo());
+                        break;
+                    case 2:
+                        genre = genreService.getGenreByName(it.next().toString());
+                        System.out.println(genre.getGenreNo());
+                        user.setThirdGenre(genre.getGenreNo());
+                        break;
+                }
+            }
+        }
+
+        userService.updateUser(user);
         return map;
     }
 }
