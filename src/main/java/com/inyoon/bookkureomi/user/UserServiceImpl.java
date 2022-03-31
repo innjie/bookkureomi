@@ -62,8 +62,8 @@ public class UserServiceImpl implements UserService {
         pointMapper.rechargePoint(recharge);
         
     }
-    public void updateUser(int userNo, User user) {
-        userMapper.updateUser(userNo, user);
+    public void updateUser(User user) {
+        userMapper.updateUser(user);
     }
     public void deleteUser(int userNo) {
         userMapper.deleteUser(userNo);
