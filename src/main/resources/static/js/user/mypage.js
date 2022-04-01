@@ -1,3 +1,7 @@
+var pwCheck = false;
+var cpwCheck = false;
+var nameCheck = false;
+var phoneCheck = false;
 $(document).ready(function() {
     getUserInfo();
 });
@@ -25,11 +29,6 @@ function updateInfo() {
     $('input:checkbox[name=genre]:checked').each(function() {
         genreArray.push(this.value);
     });
-
-    if(!overlapIdCheck()) {
-        $("#id").focus();
-        return false;
-    }
     if(!pwCheck) {
         $("#pw").focus();
         return false;
@@ -75,13 +74,4 @@ function updateInfo() {
     }).fail(function(textStatus) {
         alert("페이지 오류: " + textStatus);
     });
-}
-function checkGenre(genreArray) {
-    if(genreArray.length != 3) {
-        $("#overChecked").css("display","inline");
-        return false;
-    } else {
-        $("#overChecked").css("display","none");
-        return true;
-    }
 }
