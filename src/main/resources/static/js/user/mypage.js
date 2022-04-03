@@ -4,6 +4,7 @@ var nameCheck = false;
 var phoneCheck = false;
 $(document).ready(function() {
     getUserInfo();
+    checkValue();
 });
 function getUserInfo() {
     $.ajax({

@@ -107,3 +107,89 @@ function overlapId() {
         }
     })
 }
+function checkValue(){
+    $("#id").on("propertychange change keyup paste input", function(){
+        $("#overlapCheck").css("display","inline");
+        $("#overlapCheck").text("아이디 중복 확인이 필요합니다.");
+        $("#isOverlapCheck").val('notChecked');
+    });
+
+    $("#id").blur( function(){
+        if($("#id").val().length == 0 || $("#id").val() == "" || $("#id").val() == null) {
+            $("#overlapCheck").css("display","inline");
+            $("#overlapCheck").text("Please input ID ");
+        }
+    });
+
+    $("#pw").blur( function(){
+        var reg=/^.{8,}$/;
+
+        if(reg.test($("#pw").val())){
+            $("#passwordLen").css("display","none");
+            pwCheck = true;
+        }else{
+            $("#passwordLen").css("display","inline");
+            pwCheck = false;
+        }
+    });
+
+    $("#confirmPw").blur( function(){
+        if($("#pw").val() == $("#confirmPw").val()) {
+            $("#notSameError").css("display","none");
+            cpwCheck = true;
+        } else {
+            $("#notSameError").css("display","inline");
+            cpwCheck = false;
+        }
+    });
+
+    $("#name").blur( function(){
+        if($("#name").val().length == 0 || $("#name").val() == "" || $("#name").val() == null) {
+            $("#checkNameNull").css("display","inline");
+            nameCheck = false;
+        } else {
+            $("#checkNameNull").css("display","none");
+            nameCheck = true;
+        }
+    });
+
+    $("#phone1").blur( function(){
+        var reg1 = /^[0-9]{3}$/;
+        var reg2 = /^[0-9]{3,4}$/;
+        var reg3 = /^[0-9]{4}$/;
+
+        if(!reg1.test($("#phone1").val()) || !reg2.test($("#phone2").val()) || !reg3.test($("#phone3").val())) {
+            $("#phoneFormatError").css("display","inline");
+            phoneCheck = false;
+        } else  {
+            $("#phoneFormatError").css("display","none");
+            phoneCheck = true;
+        }
+    });
+    $("#phone2").blur( function(){
+        var reg1 = /^[0-9]{3}$/;
+        var reg2 = /^[0-9]{3,4}$/;
+        var reg3 = /^[0-9]{4}$/;
+
+        if(!reg1.test($("#phone1").val()) || !reg2.test($("#phone2").val()) || !reg3.test($("#phone3").val())) {
+            $("#phoneFormatError").css("display","inline");
+            phoneCheck = false;
+        } else  {
+            $("#phoneFormatError").css("display","none");
+            phoneCheck = true;
+        }
+    });
+    $("#phone3").blur( function(){
+        var reg1 = /^[0-9]{3}$/;
+        var reg2 = /^[0-9]{3,4}$/;
+        var reg3 = /^[0-9]{4}$/;
+
+        if(!reg1.test($("#phone1").val()) || !reg2.test($("#phone2").val()) || !reg3.test($("#phone3").val())) {
+            $("#phoneFormatError").css("display","inline");
+            phoneCheck = false;
+        } else  {
+            $("#phoneFormatError").css("display","none");
+            phoneCheck = true;
+        }
+    });
+}
