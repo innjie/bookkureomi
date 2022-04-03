@@ -9,7 +9,8 @@
     <!--    필요 css, script 추가영역 -->
     <script type="text/javascript" th:src="@{/js/user/genre.js}" src="../../../static/js/user/genre.js"></script>
     <script type="text/javascript" th:src="@{/js/user/mypage.js}" src="../../../static/js/user/mypage.js"></script>
-    <script type="text/javascript" th:src="@{/js/user/validation.js}" src="../../../static/js/user/validation.js"></script>
+    <script type="text/javascript" th:src="@{/js/user/validation.js}"
+            src="../../../static/js/user/validation.js"></script>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
@@ -29,23 +30,25 @@
         <div><span>비밀번호 확인</span></div>
         <input type="password" class="update-input" name="confirmPw" id="confirmPw"/>
         <div class="update-text">
-            <span id = "notSameError" class="update-err">mismatch to password</span>
+            <span id="notSameError" class="update-err">mismatch to password</span>
         </div>
 
-        <div><span>전화번호</span></div>
+        <div class="update-text"><span>전화번호</span></div>
         <div class="update-phone">
-            <input type="text" class="update-phone-row" name="phone" id="phone"/>
+            <input type="text" class="join-phone-row" name="phone1" id="phone1"/>-
+            <input type="text" class="join-phone-row" name="phone2" id="phone2"/>-
+            <input type="text" class="join-phone-row" name="phone3" id="phone3"/>
         </div>
         <div class="update-text">
-            <span id = "phoneFormatError" class="join-err">you input wrong number</span>
+            <span id="phoneFormatError" class="update-err">you input wrong number</span>
         </div>
 
-        <div class="join-text"><span>선호 장르</span> </div>
+        <div class="join-text"><span>선호 장르</span></div>
         <div id="result"></div>
         <div class="join-text">
-            <span id = "overChecked" class="join-err">You must choose 3 categories. </span>
+            <span id="overChecked" class="join-err">You must choose 3 categories. </span>
         </div>
-        <button type="button" onClick="updateInfo()" class="login-margin-field login-btn" >수정하기</button>
+        <button type="button" onClick="updateInfo()" class="login-margin-field login-btn">수정하기</button>
     </div>
 </section>
 </body>
