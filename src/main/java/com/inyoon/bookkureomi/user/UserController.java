@@ -146,13 +146,15 @@ public class UserController {
 
     //update
     @PostMapping("/user/update")
-    public Map<String, Object> updateUser(@AuthenticationPrincipal Login principal,
+    @ResponseBody
+    public Map<String, Object> update(@AuthenticationPrincipal Login principal,
                                           @RequestParam("pw") String pw,
                                           @RequestParam("phone") String phone,
                                           @RequestParam("genreArray[]") List<String> genreArray) {
+        System.out.println("update controller");
         Map<String, Object> map = new HashMap<>();
         User user = userService.getUser(principal.getUserNo());
-        user.setPassword(pw);
+        user.setPassword(passwordEncoder.encode(pw));
         user.setPhone(phone);
         user.setGenreArray(genreArray);
 
@@ -182,6 +184,7 @@ public class UserController {
         }
 
         userService.updateUser(user);
+        map.put("result", "success");
         return map;
     }
 }

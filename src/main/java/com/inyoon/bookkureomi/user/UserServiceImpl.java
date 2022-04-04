@@ -68,27 +68,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(int userNo) {
         userMapper.deleteUser(userNo);
     }
-    
-//
-//    public String login(User user) {
-//        User originUser = userMapper.getUserById(user.getId());
-//        String inputPw = user.getPassword();
-//        System.out.println("login Service");
-//        System.out.println(originUser.getPassword());
-////        if(passwordEncoder.matches(originUser.getPw(), "{noop}" + user.getPw())) {
-////            System.out.println("match");
-////            return "matched";
-////        } else {
-////            System.out.println("not match");
-////            return "not matched";
-////        }
-//        if(inputPw.equals(originUser.getPassword())) {
-//            return "matched";
-//        } else {
-//            return "not matched";
-//        }
-//    }
-//
+
     private String getEncodedPassword(String password) {
         return ("{noop}" + password);
     }

@@ -20,9 +20,7 @@ function getUserInfo() {
     });
 }
 function updateInfo() {
-    var id = $("#id").val();
     var pw = $("#pw").val();
-    var name = $("#name").val();
     var confirmPw = $("#confirmPw").val();
     var phone = $("#phone1").val()+$("#phone2").val()+$("#phone3").val();
     var genreArray = new Array();
@@ -36,10 +34,6 @@ function updateInfo() {
     }
     if(!cpwCheck) {
         $("#confirmPw").focus();
-        return false;
-    }
-    if(!nameCheck) {
-        $("#name").focus();
         return false;
     }
     if(!phoneCheck) {
@@ -57,9 +51,7 @@ function updateInfo() {
         type: 'POST',
         dataType: "json",
         data: {
-            id:id,
             pw:pw,
-            name:name,
             phone:phone,
             genreArray:genreArray
         },
@@ -69,8 +61,8 @@ function updateInfo() {
         }
     }).done(function(data) {
         if(data.result == 'success') {
-            window.alert("정보 수정 완료");
-            window.location = "/book/mypage/page";
+            window.alert("정보 수정이 완료되었습니다.\n 다시 로그인해주세요.");
+            window.location = "/book/user/login";
         }
     }).fail(function(textStatus) {
         alert("페이지 오류: " + textStatus);

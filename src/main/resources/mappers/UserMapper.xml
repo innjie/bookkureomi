@@ -32,10 +32,10 @@
     <update id="updateUser" parameterType="com.inyoon.bookkureomi.domain.User">
         UPDATE Users
         SET
-            password = #{password}
-            first = #{firstGenre}
-            second = #{secondGenre}
-            third = #{thirdGenre}
+            password = #{password},
+            firstGenre = #{firstGenre},
+            secondGenre = #{secondGenre},
+            thirdGenre = #{thirdGenre},
             phone = #{phone}
         WHERE
             userNo = #{userNo}
