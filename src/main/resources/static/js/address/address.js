@@ -117,9 +117,7 @@ function createAddress() {
                 window.alert("새 주소를 등록했습니다.");
 
                 closeAddressCreatePopup();
-
-                listAddress();
-                //detailAddress(data.addrNo);
+                window.location="/book/mypage/address/page";
             }
         })
             .fail(function (textStatus) {
