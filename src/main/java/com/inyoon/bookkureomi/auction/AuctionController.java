@@ -188,6 +188,18 @@ public class AuctionController {
         return map;
     }
 
+    @ResponseBody
+    @GetMapping("/auction/detail")
+    public Map<String, Object> getAuction(@RequestParam int auctionNo) {
+        Map<String, Object> map = new HashMap<>();
+
+        Auction auction = auctionService.getAuction(auctionNo);
+        map.put("auction", auction);
+        map.put("result", "success");
+
+        return map;
+    }
+
 //
 //    //find auctionList
 //    @RequestMapping("/auction/find.do")
