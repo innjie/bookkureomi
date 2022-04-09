@@ -80,7 +80,6 @@ public class AddressController {
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("result", "success");
-        map.put("addrNo", addressDTO.getAddrNo());
 
         return map;
 
