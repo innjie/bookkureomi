@@ -301,12 +301,12 @@ function detailAuction(auctionNo) {
         var resultBtn = '';
 
         if (data.auction.state != 'close') {
+            alert(data.isSeller);
             if (!data.isSeller) {
                 resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createBidForm()\">입찰하기</button>";
                 resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createImmediateForm()\">구매하기</button>";
 
             } else {
-                resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"updateAuction()\">수정하기</button>";
                 resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeAuction()\">마감하기</button>";
             }
         }
