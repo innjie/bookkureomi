@@ -190,11 +190,21 @@ public class AuctionController {
 
     @ResponseBody
     @GetMapping("/auction/detail")
-    public Map<String, Object> getAuction(@RequestParam int auctionNo) {
+    public Map<String, Object> getAuction(@AuthenticationPrincipal Login principal,
+                                          @RequestParam int auctionNo) {
         Map<String, Object> map = new HashMap<>();
+
+        int userNo = 0;
+        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+            //user
+            MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication();
+            Login user = authentication.getUser();
+            userNo = user.getUserNo();
+        }
 
         Auction auction = auctionService.getAuction(auctionNo);
         map.put("auction", auction);
+        map.put("isSeller", userNo == auction.getUser().getUserNo());
         map.put("result", "success");
 
         return map;
