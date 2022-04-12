@@ -16,11 +16,9 @@ public interface AuctionMapper {
     public void updateAuction(Auction auction);
     public void deleteAuction(int auctionNo);
     public List<Auction> findAuction(String title);
-
     public int countAuctionList();
     public int countMyAuctionList(int userNo);
-
     public int countFindAuctionList(String title);
-
-    Auction getAuctionListSchduled();
+    public Auction getAuctionListSchduled();
+    public void closeAuction(int auctionNo);
 }

@@ -41,4 +41,6 @@ public class AuctionService {
     public int countMyAuctionList(int userNo) { return auctionMapper.countMyAuctionList(userNo);}
 
     public int countFindAuctionList(String title) { return auctionMapper.countFindAuctionList(title); }
+
+    public void closeAuction(int auctionNo) { auctionMapper.closeAuction(auctionNo);}
 }

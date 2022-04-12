@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -209,34 +210,4 @@ public class AuctionController {
 
         return map;
     }
-
-//
-//    //find auctionList
-//    @RequestMapping("/auction/find.do")
-//    public String findAuction(@RequestParam("text") String text, @RequestParam("type") String
-//            type, ModelMap model) throws Exception {
-//    }
-//
-//    //find auctionList by page
-//    @RequestMapping("/auction/findPage.do")
-//    public ModelAndView findAuctionInPage(@RequestParam("page") String page,
-//                                          @ModelAttribute("auctionList") PagedListHolder<Auction> auctionList, BindingResult result) throws Exception {
-//    }
-//
-    //view auction
-
-
-//
-//    //update auction ... form
-//    @RequestMapping(value="/auction/update.do", method=RequestMethod.GET)
-//    public String updateAuctionForm(@ModelAttribute("auctionCommand") AuctionCommand
-//                                            auctionCommand, HttpServletRequest request) {
-//    }
-//
-//    //update auction ... update
-//    @RequestMapping(value="/auction/update.do", method= RequestMethod.POST)
-//    public String updateAuction(@Valid @ModelAttribute("auctionCommand") AuctionCommand
-//                                        auctionCommand, BindingResult result) throws Exception {
-//    }
-
 }

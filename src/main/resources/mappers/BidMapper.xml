@@ -33,7 +33,7 @@
         SELECT
             bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone
         FROM Bid
-        WHERE bidNo = #{bidNo} and MAX(bidPrice)
+        WHERE auctionNo = 200 and bidPrice = (select Max(bidPrice) from bid where AUCTIONNO = #{auctionNo});
     </select>
     <insert id="insertBid" parameterType="com.inyoon.bookkureomi.domain.Bid">
         INSERT INTO Bid (bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone)
