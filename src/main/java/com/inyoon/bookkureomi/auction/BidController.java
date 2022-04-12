@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -132,8 +133,10 @@ public class BidController {
         }
         return map;
     }
+
     @ResponseBody
     @PostMapping("/auction/close")
+    @Transactional
     public Map<String, Object> closeAuction(
             @RequestParam("auctionNo") int auctionNo,
             @AuthenticationPrincipal Login principal) {
@@ -141,7 +144,7 @@ public class BidController {
 
         if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anounymous")) {
             //get auction list (status = open, endDate < Sysdate)
-            Auction auction = auctionService.getAuctionListSchduled();
+            Auction auction = auctionService.getAuction(auctionNo);
 
             //bid done
             //get bidlist by auctionno
@@ -201,8 +204,7 @@ public class BidController {
             orderService.orderSale(orderDetailList, recharge, rechargeSellingList, false);	//order 추가
 
             //auction update(state : Open -> close
-            auction.setState("close");
-            auctionService.updateAuction(auction);
+            auctionService.closeAuction(auctionNo);
 
             map.put("result", "success");
         } else {

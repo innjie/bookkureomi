@@ -91,13 +91,18 @@ function setDefaultBid() {
     });
 }
 function closeAuction() {
+    var auctionNo = $("#viewAuctionNo").val();
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
     if(confirm("종료하시겠습니까?")) {
         $.ajax({
             url: "/book/auction/close",
-            method: 'POST',
-            beforesend : function(xhr) {
+            method: "POST",
+            dataType: "json",
+            data: {
+                auctionNo: auctionNo
+            },
+            beforeSend : function(xhr) {
                 xhr.setRequestHeader(header, token);
             }
         }).done(function(data) {

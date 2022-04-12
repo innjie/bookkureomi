@@ -75,4 +75,9 @@
     <select id = "countFindAuctionList" parameterType = "String" resultType="integer">
         SELECT count(*) FROM Auction WHERE title LIKE '%' || #{title} || '%'
     </select>
+    <update id = "closeAuction" parameterType="integer">
+        UPDATE Auction
+        SET state = "close"
+        WHERE auctionNo = #{auctionNo}
+    </update>
 </mapper>
