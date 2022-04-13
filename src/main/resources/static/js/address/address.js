@@ -208,6 +208,8 @@ function updateAddress() {
         }).done(function(data) {
             if(data.result == 'success') {
                 window.alert("주소 수정 완료");
+                window.location="/book/mypage/address/page";
+
             } else {
                 window.location = "/book/user/login";
                 window.alert(data.reason);
