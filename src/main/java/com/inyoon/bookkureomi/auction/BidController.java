@@ -213,24 +213,4 @@ public class BidController {
         }
         return map;
     }
-
-//
-//
-//    //bid Success list
-//    @RequestMapping(“bid/mySuccessList”)
-//    public String successBidList(ModelMap model, HttpServletRequest request) throws Exception {
-//    }
-//
-//    //view myBidList in page
-//    @RequestMapping("/bid/mySuccessListPage.do")
-//    public String successBidListPage(@RequestParam("page") String page, @ModelAttribute("bidList")
-//            PagedListHolder<Bid> bidList, BindingResult result) throws Exception {
-//    }
-//
-//    //view bid
-//    @RequestMapping("/bid/view.do")
-//    public String viewBid(@RequestParam("bidNo") int bidNo, ModelMap model,
-//                          HttpServletRequest request) throws Exception {
-//    }
-
 }
