@@ -71,7 +71,6 @@ public class AuctionController {
             @AuthenticationPrincipal Login principal
 
     ) throws Exception {
-        System.out.println("insert controller in");
         Auction auction = new Auction();
         User user = principal.getUser();
         user.setUserNo(user.getUserNo());
@@ -84,10 +83,7 @@ public class AuctionController {
         Date today = new Date();
         String todayString = dateFormat.format(today);
 
-        System.out.println(todayString);
         java.sql.Date regidate = java.sql.Date.valueOf(todayString);
-        System.out.println(regidate);
-
 
         auction.setAuctionNo(auctionService.getAuctionNo());
         auction.setImage(image);
@@ -104,7 +100,6 @@ public class AuctionController {
 
         auctionService.insertAuction(auction);
 
-        System.out.println(user.getUserNo());
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("result", "success");
         map.put("pageNo", 1);
