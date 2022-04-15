@@ -10,23 +10,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/dist/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/common/paging.js}" src="../../static/js/common/paging.js"></script>
-    <script type="text/javascript" th:src="@{/js/mypage/auction.js}" src="../../static/js/mypage/auction.js"></script>
+    <script type="text/javascript" th:src="@{/js/auction/auction.js}" src="../../static/js/mypage/auction.js"></script>
     <script type="text/javascript" th:src="@{/js/mypage/order.js}" src="../../static/js/mypage/order.js"></script>
-    <script type="text/javascript" th:src="@{/js/delivery/delivery.js}"
-            src="../../static/js/delivery/delivery.js"></script>
+    <script type="text/javascript" th:src="@{/js/delivery/delivery.js}" src="../../static/js/delivery/delivery.js"></script>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <section layout:fragment="content">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <div class="container-section">
-        <div class="div-list-head">
-            <div class="insert-style">
-                <button type="button" class="insert-btn" onClick="createMyAuctionForm()">판매하기</button>
-            </div>
-        </div>
-
-        <div>총&nbsp;<span id="auctionCnt"></span>건</div>
+        <div>총 <span id="auctionCnt"></span>건</div>
         <div class="div-list-result" id="result"></div>
         <div class="paging" id="paging"></div>
 
