@@ -77,7 +77,7 @@
     </select>
     <update id = "closeAuction" parameterType="integer">
         UPDATE Auction
-        SET state = "close"
+        SET state = 'close'
         WHERE auctionNo = #{auctionNo}
     </update>
 </mapper>

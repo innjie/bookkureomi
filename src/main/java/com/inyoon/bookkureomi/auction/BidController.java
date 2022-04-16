@@ -199,9 +199,7 @@ public class BidController {
             sellerRecharge.setUser(seller);
 
 
-            List<Recharge> rechargeSellingList = new ArrayList<>();
-            rechargeSellingList.add(recharge);
-            orderService.orderSale(orderDetailList, recharge, rechargeSellingList, false);	//order 추가
+            orderService.orderAuction(orderDetail, sellerRecharge, recharge);	//order 추가
 
             //auction update(state : Open -> close
             auctionService.closeAuction(auctionNo);
