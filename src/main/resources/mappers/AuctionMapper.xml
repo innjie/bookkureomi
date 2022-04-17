@@ -65,7 +65,7 @@
         SELECT
             count(*)
         FROM Auction
-        WHERE endDate > sysdate
+        WHERE endDate > sysdate and state = 'open'
     </select>
 
     <select id="countMyAuctionList" parameterType = "integer" resultType="integer">
