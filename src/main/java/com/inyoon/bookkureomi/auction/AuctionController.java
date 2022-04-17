@@ -154,6 +154,7 @@ public class AuctionController {
         int auctionCnt = 0;
         int pageCnt = 0;
 
+        System.out.println("mypage Auction");
         List<Auction> auctionList = new ArrayList<>();
         if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("annonymousUser")) {
             MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.
