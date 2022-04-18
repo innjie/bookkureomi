@@ -73,6 +73,76 @@ function listAuction(pageNo) {
             alert("Request failed: " + textStatus);
         });
 }
+//판매 중고서적 상세보기
+function detailAuction(auctionNo) {
+    $("#pop-mask-sale-detail").css("display", "block");
+    $("body").css("overflow", "hidden");
+    $("#pop-sale-detail").css({
+        "top": (window.screen.height / 2) - ($("#pop-sale-detail").outerHeight() / 2) - 50 + "px",
+        "left": (window.screen.width / 2) - ($("#pop-sale-detail").outerWidth() / 2) + "px"
+    });
+
+    $.ajax({
+        url: "/book/auction/detail",
+        method: 'GET',
+        dataType: "json",
+        data: {
+            auctionNo: auctionNo
+        }
+    }).done(function (data) {
+        $("#pop-sale-detail").css("display", "block");
+
+        var offset = $("#pop-sale-detail").offset().top;
+        $("html").animate({scrollTop: offset}, 400);
+
+        $("#viewImage").attr("src", data.auction.image);
+
+        $("#viewAuctionNo").val(data.auction.auctionNo);
+        $("#viewTitle").val(data.auction.title);
+        $("#viewPublisher").val(data.auction.publisher);
+        var endArr = data.auction.endDate.split("T");
+        var endDate = "";
+        for (var i in endArr) {
+            endDate = endArr[0];
+        }
+        $("#viewEndDate").val(endDate);
+        $("#viewBidPrice").val(data.auction.bidPrice);
+        $("#viewImmediPrice").val(data.auction.immediPrice);
+        $("#viewGenreType").val(data.auction.genreType);
+        $("#viewInfo").val(data.auction.info);
+
+        if (!data.isSeller) {
+            $('#viewBidPrice').prop('readonly', true);
+            $('#viewInfo').prop('readonly', true);
+            // $('#imageBtn').css("display","none");
+        } else {
+            $('#viewBidPrice').prop('readonly', false);
+            $('#viewInfo').prop('readonly', false);
+            // $('#imageBtn').css("display","inline");
+        }
+
+        //버튼 세팅
+        $('#buttonResult')[0].innerHTML = '';
+        var resultBtn = '';
+
+        if (data.auction.state != 'close') {
+            if (!data.isSeller) {
+                resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createBidForm()\">입찰하기</button>";
+                resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"createImmediateForm()\">구매하기</button>";
+
+            } else {
+                resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeAuction()\">마감하기</button>";
+            }
+        }
+        resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"bidListByAuctionNo(" + data.auction.auctionNo + ")\">입찰 내역 보기</button>";
+        resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeAuctionDetailPopup()\">닫기</button>";
+
+        $('#buttonResult').append(resultBtn);
+    })
+        .fail(function (textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+}
 //추가 폼 세팅
 function setAuctionDefault() {
     $("#insertTitle").val('');
@@ -231,3 +301,17 @@ function findAuction() {
         });
 
 }
+//상세 팝업 닫기
+function closeAuctionDetailPopup() {
+    $("#pop-sale-detail").css("display", "none");
+    $("#pop-mask-sale-detail").css("display", "none");
+    $("body").css("overflow", "auto");
+}
+
+//추가 팝업 닫기
+function closeAuctionCreatePopup() {
+    $("#pop-sale-create").css("display", "none");
+    $("#pop-mask-sale-create").css("display", "none");
+    $("body").css("overflow", "auto");
+}
+
