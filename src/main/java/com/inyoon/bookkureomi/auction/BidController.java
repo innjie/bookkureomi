@@ -211,4 +211,27 @@ public class BidController {
         }
         return map;
     }
+    @ResponseBody
+    @GetMapping("/bid/list")
+    public Map<String, Object> bidListByAuctionNo(@RequestParam int auctionNo) {
+        Map<String, Object> map = new HashMap<>();
+
+        int userNo = 0;
+        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+            //user
+            MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication();
+            Login user = authentication.getUser();
+            userNo = user.getUserNo();
+        }
+        try {
+            List<Bid> bidList = bidService.getBidListByAuctionNo(auctionNo);
+            System.out.println(bidList.size());
+            map.put("bidList", bidList);
+            map.put("result", "success");
+        } catch (Exception e) {
+            map.put("result", "fail");
+        }
+
+        return map;
+    }
 }
