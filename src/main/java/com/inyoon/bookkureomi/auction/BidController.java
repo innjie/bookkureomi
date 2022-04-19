@@ -42,37 +42,22 @@ public class BidController {
     @Autowired
     UserService userService;
 
-    //    //view my Bid List
-//    @RequestMapping("/bid/myList.do")
-//    public String myBidList(ModelMap model, HttpServletRequest request) throws Exception {
-//    }
-//    //view myBidList in page
-//    @RequestMapping("/bid/myListPage.do")
-//    public String myBidListPage(@RequestParam("page") String page, @ModelAttribute("bidList")
-//            PagedListHolder<Bid> bidList, BindingResult result) throws Exception {
-//    }
-//
-//    //view product bid list
-//    @RequestMapping("/bid/productList.do")
-//    public String productBidList(ModelMap model, HttpServletRequest request) throws Exception {
-//    }
-//
-//    //view product bid list in page
-//    @RequestMapping("/bid/productListPage.do")
-//    public String productBidListPage (@RequestParam("page") String page, @ModelAttribute("bidList")
-//            PagedListHolder<Bid> bidList, BindingResult result) throws Exception {
-//    }
-//
-//    //insert Bid form
-//    @RequestMapping(value = "/bid/insert.do",  method = RequestMethod.GET)
-//    public String insertBidForm(@ModelAttribute("bidCommand") BidCommand bidCommand,
-//                                ModelMap model) throws Exception {
-//
-//    }
-//
-    //Bid ... insertBid
     @ResponseBody
-    @RequestMapping(value = "/bid/insert", method = RequestMethod.POST)
+    @GetMapping("/bid/detail")
+    public Map<String, Object> getBidUser(@RequestParam("userNo") int userNo) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            User user = userService.getUser(userNo);
+            map.put("user", user);
+        } catch(Exception e) {
+            map.put("result", "fail");
+            map.put("error", "오류가 발생했습니다.");
+        }
+        return map;
+    }
+    //insertBid
+    @ResponseBody
+    @PostMapping(value = "/bid/insert")
     public Map<String, Object> insertBid(@RequestParam("auctionNo") int auctionNo,
                                          @RequestParam("pAddress") String pAddress,
                                          @RequestParam("rName") String rName,

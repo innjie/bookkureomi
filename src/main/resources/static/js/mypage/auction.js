@@ -334,13 +334,28 @@ function bidListByAuctionNo(auctionNo) {
             auctionNo: auctionNo
         }
     }).done(function (data) {
+        $("#detailInfo").hide();
         $("#pop-sale-detail").css("display", "block");
 
         var offset = $("#pop-sale-detail").offset().top;
         $("html").animate({scrollTop: offset}, 400);
 
-        //loop, set result
 
+        //loop, set result
+        if(data.bidList.length > 0) { //bid exist
+            var result = "<table>";
+            for(var i = 0; i < data.bidList.length; i++) {
+                var bid = data.bidList[i];
+                result += "<tr>";
+                result += "<td>" + bid.bidPrice + "</td>";
+                result += "<td onclick='viewBidUser(" + bid.bidUserNo + ")'>상세보기</td>";
+                result += "</tr>";
+            }
+            result += "</table>";
+        } else {
+            result += "<p class=\"find-nothing\">결과가 없습니다.</p>";
+        }
+        $("#bidResult").append(result);
         //버튼 세팅
         $('#buttonResult')[0].innerHTML = '';
         var resultBtn = '';
@@ -352,4 +367,10 @@ function bidListByAuctionNo(auctionNo) {
         .fail(function (textStatus) {
             alert("Request failed: " + textStatus);
         });
+}
+function viewBidUser(userNo) {
+    //get user by bidno
+    $.ajax({
+        url: "/book/bid/"
+    })
 }

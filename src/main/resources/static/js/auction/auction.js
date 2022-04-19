@@ -318,17 +318,3 @@ function detailAuction(auctionNo) {
             alert("Request failed: " + textStatus);
         });
 }
-//상세 팝업 닫기
-function closeAuctionDetailPopup() {
-    $("#pop-sale-detail").css("display", "none");
-    $("#pop-mask-sale-detail").css("display", "none");
-    $("body").css("overflow", "auto");
-}
-
-//추가 팝업 닫기
-function closeAuctionCreatePopup() {
-    $("#pop-sale-create").css("display", "none");
-    $("#pop-mask-sale-create").css("display", "none");
-    $("body").css("overflow", "auto");
-}
-
