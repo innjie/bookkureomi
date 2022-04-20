@@ -371,6 +371,8 @@ function bidListByAuctionNo(auctionNo) {
 function viewBidUser(userNo) {
     //get user by bidno
     $.ajax({
-        url: "/book/bid/"
+        url: "/book/bid/userInfo"
+    }).done(function (data) {
+
     })
 }
