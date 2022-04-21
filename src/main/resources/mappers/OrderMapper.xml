@@ -37,22 +37,12 @@
 		    ) Z WHERE ROWNUM <![CDATA[ <= ]]> #{end} 
 		) WHERE RNUM >= #{start} 
     </select>
-    
- 	<!-- 해당 유저번호의 경매 주문 목록 확인 -->
- <!--     <select id="getAuctionOrderList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
-        SELECT distinct
-			orderNo, orderDate, info, total	
-		FROM 
-			Orders, OrderDetail 
-		where
-			userNo = #{userNo}
-			AND Orders.orderNo = OrderDetail.orderNo
-			AND OrderDetail.auctionNo is not null
-		ORDER BY
-			Orders.orderNo desc
+
+	<select id="getOrder" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Order">
+		SELECT orderNo, total, info, pAddress, orderDate, rAddress, rName, rPhone
+		FROM ORDERS
+		WHERE orderNo = #{orderNo}
 	</select>
-   -->
-		 
 	<!-- 해당 일반 거래 주문번호의 상세 주문 정보 확인 (주문자 입장에서 주문 확인)-->
     <select id="getSaleOrder" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.OrderDetail">
         SELECT 
@@ -97,7 +87,7 @@
     
   	<!-- 해당 판매번호로 상세 주문 정보 확인 (판매자 입장에서 주문 확인) -->
     <select id="getOrderBySale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.OrderDetail">
-        SELECT 
+        SELECT
 			OrderDetail.odNo,
 			Orders.orderNo AS "order.orderNo", Orders.pAddress AS "order.pAddress", 
 			Orders.orderDate AS "order.orderDate", Orders.rPhone AS "order.rPhone",
@@ -113,6 +103,12 @@
 			AND OrderDetail.saleNo = Sale.saleNo
 			AND OrderDetail.orderNo = Orders.orderNo
     </select>
+
+	<select id="getOrderByAuctionNo" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.OrderDetail">
+		SELECT orderNo
+		FROM OrderDetail
+		WHERE auctionNo = #{auctionNo}
+	</select>
     
   	<!-- order 추가 -->
     <insert id="orderSale" parameterType="com.inyoon.bookkureomi.domain.Order">

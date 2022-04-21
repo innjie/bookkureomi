@@ -25,6 +25,8 @@ public interface OrderMapper {
 	public List<OrderDetail> getSaleOrder(int orderNo);
 	public List<OrderDetail> getAuctionOrder(int orderNo);
 	public OrderDetail getOrderBySale (int saleNo);
-	
+	public OrderDetail getOrderByAuctionNo(int auctionNo);
 	public int countOrderList(Map<String, Object> paramMap);
+
+	public Order getOrder(int orderNo);
 }

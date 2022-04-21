@@ -76,6 +76,9 @@ function listAuction(pageNo) {
 
 //판매 중고서적 상세보기
 function detailAuction(auctionNo) {
+    $("#detailInfo").show();
+    $("#bidResult").hide();
+    $("#bidUserInfo").hide();
     $("#pop-mask-sale-detail").css("display", "block");
     $("body").css("overflow", "hidden");
     $("#pop-sale-detail").css({
@@ -319,6 +322,7 @@ function closeAuctionCreatePopup() {
 }
 
 function bidListByAuctionNo(auctionNo) {
+    $("#bidResult").show();
     $("#pop-mask-sale-detail").css("display", "block");
     $("body").css("overflow", "hidden");
     $("#pop-sale-detail").css({
@@ -335,11 +339,11 @@ function bidListByAuctionNo(auctionNo) {
         }
     }).done(function (data) {
         $("#detailInfo").hide();
+        $("#bidResult")[0].innerHTML = '';
         $("#pop-sale-detail").css("display", "block");
 
         var offset = $("#pop-sale-detail").offset().top;
         $("html").animate({scrollTop: offset}, 400);
-
 
         //loop, set result
         if(data.bidList.length > 0) { //bid exist
@@ -348,7 +352,7 @@ function bidListByAuctionNo(auctionNo) {
                 var bid = data.bidList[i];
                 result += "<tr>";
                 result += "<td>" + bid.bidPrice + "</td>";
-                result += "<td onclick='viewBidUser(" + bid.bidUserNo + ")'>상세보기</td>";
+                result += "<td onclick='viewBidUser(" + bid.bidNo + ")'>상세보기</td>";
                 result += "</tr>";
             }
             result += "</table>";
@@ -359,7 +363,6 @@ function bidListByAuctionNo(auctionNo) {
         //버튼 세팅
         $('#buttonResult')[0].innerHTML = '';
         var resultBtn = '';
-
         resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeAuctionDetailPopup()\">닫기</button>";
 
         $('#buttonResult').append(resultBtn);
@@ -368,11 +371,30 @@ function bidListByAuctionNo(auctionNo) {
             alert("Request failed: " + textStatus);
         });
 }
-function viewBidUser(userNo) {
+function viewBidUser(bidNo) {
     //get user by bidno
     $.ajax({
-        url: "/book/bid/userInfo"
+        url: "/book/bid/userInfo",
+        method: 'GET',
+        dataType: "json",
+        data: {
+            bidNo : bidNo
+        }
     }).done(function (data) {
+        $("#bidUserInfo")[0].innerHTML = '';
 
+        var result = "";
+
+        $("#bidUserInfo").append(result);
+        $("#bidResult").hide();
+
+        $("#buttonResult")[0].innerHTML = '';
+        var resultButton = '';
+        resultButton += "<button type='button' class='pop-btn' onClick='closeBidUserView()'>닫기</button>";
+        $("#buttonResult").append(resultButton);
     })
+}
+function closeBidUserView() {
+    $("#bidUserInfo").hide();
+    $("#bidResult").show();
 }
