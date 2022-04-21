@@ -216,4 +216,18 @@ public class BidController {
 
         return map;
     }
+    @ResponseBody
+    @GetMapping("/bid/userInfo")
+    public Map<String, Object> getBidUserInfo(@RequestParam int userNo) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            User user = userService.getUser(userNo);
+            map.put("user", user);
+            map.put("result", "success");
+        }catch(Exception e) {
+            map.put("result", "fail");
+            map.put("error", "정보 불러오기에 실패했습니다.");
+        }
+        return map;
+    }
 }
