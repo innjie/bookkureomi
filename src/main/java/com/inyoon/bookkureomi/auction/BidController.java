@@ -218,11 +218,11 @@ public class BidController {
     }
     @ResponseBody
     @GetMapping("/bid/userInfo")
-    public Map<String, Object> getBidUserInfo(@RequestParam int userNo) {
+    public Map<String, Object> getBidUserInfo(@RequestParam int bidNo) {
         Map<String, Object> map = new HashMap<>();
         try {
-            User user = userService.getUser(userNo);
-            map.put("user", user);
+            Bid bid = bidService.getBid(bidNo);
+            map.put("bid", bid);
             map.put("result", "success");
         }catch(Exception e) {
             map.put("result", "fail");

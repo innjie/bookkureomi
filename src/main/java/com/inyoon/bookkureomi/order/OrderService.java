@@ -50,6 +50,7 @@ public class OrderService {
     public OrderDetail getOrderBySale(int saleNo) {
         return orderMapper.getOrderBySale(saleNo);
     }
+    public OrderDetail getOrderByAuctionNo(int auctionNo) {return orderMapper.getOrderByAuctionNo(auctionNo);}
 
     //주문(구입)
     @Transactional
@@ -101,17 +102,6 @@ public class OrderService {
     public void orderDetailAuction(OrderDetail orderDetail) {
         orderMapper.orderDetailAuction(orderDetail);
     }
-	
-	
-	/*	
-	//orderService.orderSale에 포함
-	public void orderSale(Order order){
-		orderMapper.orderSale(order);
-	}
-	//orderService.orderSale에 포함
-	public void orderDetailSale(OrderDetail orderDetail){
-		orderMapper.orderDetailSale(orderDetail);
-		orderMapper.updateSaleStateClose(orderDetail.getSale().getSaleNo());
-	}
-*/
+    public Order getOrder(int orderNo) { return orderMapper.getOrder(orderNo);}
+
 }
