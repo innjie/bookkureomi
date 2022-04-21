@@ -375,6 +375,7 @@ function viewBidUser(bidNo) {
     //get user by bidno
     $.ajax({
         url: "/book/bid/userInfo",
+        contentType: 'application/json',
         method: 'GET',
         dataType: "json",
         data: {
@@ -382,19 +383,42 @@ function viewBidUser(bidNo) {
         }
     }).done(function (data) {
         $("#bidUserInfo")[0].innerHTML = '';
+        var bid = data.bid;
+        var result = "<ul>";
+        result += "<li>입찰일시 : " + bid.bidDate + "</li>";
+        result += "<li>주소 : " + bid.raddress + "</li>";
+        result += "<li>받는 사람 : " + bid.rname + "</li>";
+        result += "<li>연락처 : " + bid.rphone + "</li>";
+        result += "<li>총 금액 : " + bid.bidPrice + "</li>";
+        result += "</ul>";
 
-        var result = "";
 
         $("#bidUserInfo").append(result);
+        $("#bidUserInfo").show();
         $("#bidResult").hide();
 
         $("#buttonResult")[0].innerHTML = '';
         var resultButton = '';
-        resultButton += "<button type='button' class='pop-btn' onClick='closeBidUserView()'>닫기</button>";
+        resultButton += "<button type='button' class='pop-btn' onClick='closeBidUserView(" + bid.auctionNo + ")'>닫기</button>";
         $("#buttonResult").append(resultButton);
     })
 }
-function closeBidUserView() {
+function closeBidUserView(auctionNo) {
     $("#bidUserInfo").hide();
     $("#bidResult").show();
+    $("#buttonResult")[0].innerHTML = '';
+    var resultButton = '';
+    resultButton += "<button type='button' class='pop-btn' onClick='closeBidList(" + auctionNo + ")'>뒤로가기</button>";
+    $("#buttonResult").append(resultButton);
+}
+function closeBidList(auctionNo) {
+    $("#bidResult").hide();
+    $("#detailInfo").show();
+
+    //button setting
+    $("#buttonResult")[0].innerHTML = '';
+    var resultButton = '';
+    resultButton += "<button type=\"button\" class=\"pop-btn\" onClick=\"bidListByAuctionNo(" + auctionNo + ")\">입찰 내역 보기</button>";
+    resultButton += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeAuctionDetailPopup()\">닫기</button>";
+    $("#buttonResult").append(resultButton);
 }

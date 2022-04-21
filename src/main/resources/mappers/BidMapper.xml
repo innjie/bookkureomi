@@ -25,7 +25,7 @@
     </select>
     <select id="getBid" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Bid">
         SELECT
-            bidNo, auctionNo, userNo, bidPrice, bidDate, pAddress, rAddress, rName, rPhone
+            bidNo, auctionNo, userNo as "bidUserNo", bidPrice, bidDate, pAddress, rAddress, rName, rPhone
         FROM Bid
         WHERE bidNo = #{bidNo}
     </select>

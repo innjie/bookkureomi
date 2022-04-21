@@ -222,6 +222,7 @@ public class BidController {
         Map<String, Object> map = new HashMap<>();
         try {
             Bid bid = bidService.getBid(bidNo);
+            System.out.println(bid);
             map.put("bid", bid);
             map.put("result", "success");
         }catch(Exception e) {

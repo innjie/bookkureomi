@@ -9,7 +9,7 @@ class Bid {
     private int bidNo;
     private int auctionNo;
     private int bidPrice;
-    private Date bidTime;
+    private Date bidDate;
     private int bidUserNo;
     private String pAddress;
     private String rAddress;
