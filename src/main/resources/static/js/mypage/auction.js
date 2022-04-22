@@ -384,6 +384,8 @@ function viewBidUser(bidNo) {
     }).done(function (data) {
         $("#bidUserInfo")[0].innerHTML = '';
         var bid = data.bid;
+        bid.bidDate = bid.bidDate.split("T")[0];
+
         var result = "<ul>";
         result += "<li>입찰일시 : " + bid.bidDate + "</li>";
         result += "<li>주소 : " + bid.raddress + "</li>";
