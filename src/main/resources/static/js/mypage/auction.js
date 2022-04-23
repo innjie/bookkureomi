@@ -357,7 +357,7 @@ function bidListByAuctionNo(auctionNo) {
             }
             result += "</table>";
         } else {
-            result += "<p class=\"find-nothing\">결과가 없습니다.</p>";
+            result = "<p class=\"find-nothing\">결과가 없습니다.</p>";
         }
         $("#bidResult").append(result);
         //버튼 세팅

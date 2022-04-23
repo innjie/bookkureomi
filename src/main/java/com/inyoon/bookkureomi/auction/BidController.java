@@ -135,7 +135,7 @@ public class BidController {
             //get bidlist by auctionno
             Bid bid = (Bid) bidService.getSuccessBid(auction.getAuctionNo());
             //get just one --> make new?
-            if(bid == null) {
+            if(bid != null) {
                 int bidPrice = bid.getBidPrice();
                 //bid -> order
                 Order order = new Order();

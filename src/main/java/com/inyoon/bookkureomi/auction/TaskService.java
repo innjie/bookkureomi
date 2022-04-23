@@ -33,64 +33,56 @@ public class TaskService {
         //get bidlist by auctionno
         Bid bid = (Bid) bidService.getSuccessBid(auction.getAuctionNo());
         //get just one --> make new?
+        if(bid != null) {
+            int bidPrice = bid.getBidPrice();
+            //bid -> order
+            Order order = new Order();
+            order.setOrderNo(orderService.getOrderNo());
+            User user = userService.getUser(bid.getBidUserNo());
+            order.setUser(user);
+            order.setPAddress(bid.getPAddress());
+            order.setRAddress(bid.getRAddress());
+            order.setRName(bid.getRName());
+            order.setRPhone(bid.getRPhone());
+            order.setTotal(bid.getBidPrice());
+            order.setInfo("");
+            //service process
 
-        int bidPrice = bid.getBidPrice();
-        //bid -> order
-        Order order = new Order();
-        order.setOrderNo(orderService.getOrderNo());
-        User user = userService.getUser(bid.getBidUserNo());
-        order.setUser(user);
-        order.setPAddress(bid.getPAddress());
-        order.setRAddress(bid.getRAddress());
-        order.setRName(bid.getRName());
-        order.setRPhone(bid.getRPhone());
-        order.setTotal(bid.getBidPrice());
-        order.setInfo("");
-        //service process
+            //bid -> orderdetail
+            List<OrderDetail> orderDetailList = new ArrayList<>();
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setOrder(order);
+            orderDetail.setAuction(auctionService.getAuction(bid.getAuctionNo()));
+            orderDetailList.add(orderDetail);
+            //service process
 
-        //bid -> orderdetail
-        List<OrderDetail> orderDetailList = new ArrayList<>();
-        OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setOrder(order);
-        orderDetail.setAuction(auctionService.getAuction(bid.getAuctionNo()));
-        orderDetailList.add(orderDetail);
-        //service process
+            int userNo = user.getUserNo();
 
-        int userNo = user.getUserNo();
+            //point
+            int nowPoint = pointService.checkPoint(userNo);    //현재 포인트 확인
+            //포인트 - 구매자
+            Recharge recharge = new Recharge();
+            recharge.setRechargeNo(pointService.getRechargeNo(userNo));
+            recharge.setTotalPoint(nowPoint - bidPrice);
+            recharge.setRcType("using");
+            recharge.setRcPoint(-1 * bidPrice);
+            recharge.setUser(user);
 
-        //point
-        int nowPoint = pointService.checkPoint(userNo);    //현재 포인트 확인
-        //포인트 - 구매자
-        Recharge recharge = new Recharge();
-        recharge.setRechargeNo(pointService.getRechargeNo(userNo));
-        recharge.setTotalPoint(nowPoint - bidPrice);
-        recharge.setRcType("using");
-        recharge.setRcPoint(-1 * bidPrice);
-        recharge.setUser(user);
-
-        //포인트 - 판매자
-        User seller = new User();
-        int sellerNo = auction.getUser().getUserNo();
-        seller.setUserNo(sellerNo);
-        Recharge sellerRecharge = new Recharge();
-        int sellerPoint = pointService.checkPoint(sellerNo);
-        sellerRecharge.setTotalPoint(sellerPoint + (int) (0.9 * bidPrice));
-        sellerRecharge.setRechargeNo(pointService.getRechargeNo(sellerNo));
-        sellerRecharge.setRcType("recharging");
-        sellerRecharge.setRcMethod("selling");
-        sellerRecharge.setRcPoint((int) (0.9 * bidPrice));
-        sellerRecharge.setUser(seller);
-
-
-        List<Recharge> rechargeSellingList = new ArrayList<>();
-        rechargeSellingList.add(recharge);
-        orderService.orderSale(orderDetailList, recharge, rechargeSellingList, false);	//order 추가
-
+            //포인트 - 판매자
+            User seller = new User();
+            int sellerNo = auction.getUser().getUserNo();
+            seller.setUserNo(sellerNo);
+            Recharge sellerRecharge = new Recharge();
+            int sellerPoint = pointService.checkPoint(sellerNo);
+            sellerRecharge.setTotalPoint(sellerPoint + (int) (0.9 * bidPrice));
+            sellerRecharge.setRechargeNo(pointService.getRechargeNo(sellerNo));
+            sellerRecharge.setRcType("recharging");
+            sellerRecharge.setRcMethod("selling");
+            sellerRecharge.setRcPoint((int) (0.9 * bidPrice));
+            sellerRecharge.setUser(seller);
+            orderService.orderAuction(orderDetail, sellerRecharge, recharge);	//order 추가
+        }
         //auction update(state : Open -> close
-        auction.setState("close");
-        auctionService.updateAuction(auction);
-
-
-        //end
+        auctionService.closeAuction(auction.getAuctionNo());
     }
 }
