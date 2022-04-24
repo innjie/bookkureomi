@@ -139,7 +139,7 @@ function createAuction() {
     var immediPrice = $("#insertImmediPrice").val();
     var endDate = $("#insertEndDate").val();
     var userNo = 1;
-    var genreType = $("#insertGenreType").val();
+    var genreType = $('input:checkbox[name=genre]:checked').val();
     var image = '/images/sale/0.png'; //폼처리?
     var info = $("#insertInfo").val();
 
