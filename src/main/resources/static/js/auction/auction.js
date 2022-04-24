@@ -100,14 +100,36 @@ function createAuctionForm() {
         "left": (window.screen.width / 2) - ($("#pop-sale-create").outerWidth() / 2) + "px"
     });
 
-    setAuctionDefault();
-    closeAuctionDetailPopup();
-    closeOrderPopup();
-    setDefaultOrder();
-    $("#pop-sale-create").css("display", "block");
+    $.ajax({
+        url: "/book/genre/list",
+        method: 'GET',
+        dataType: "json",
+        data: {
+        }
+    }).done(function(data) {
+        var result = "";
+        var genre;
+        for(var i = 0; i < data.genreList.length; i++) {
+            genre = "<input type = 'checkbox' name='genre' value='"
+                + data.genreList[i].genreType + "'>"
+                + data.genreList[i].genreType ;
+            result += genre;
+            if((i % 5) == 4) {
+                result += "<br/>";
+            }
+        }
+        $('#genreList')[0].innerHTML = '';
+        $("#genreList").append(result);
+        setAuctionDefault();
+        closeAuctionDetailPopup();
+        closeOrderPopup();
+        setDefaultOrder();
+        $("#pop-sale-create").css("display", "block");
 
-    var offset = $("#pop-sale-create").offset().top;
-    $("html").animate({scrollTop: offset}, 400);
+        var offset = $("#pop-sale-create").offset().top;
+        $("html").animate({scrollTop: offset}, 400);
+    });
+
 }
 
 function createAuction() {
@@ -117,7 +139,7 @@ function createAuction() {
     var immediPrice = $("#insertImmediPrice").val();
     var endDate = $("#insertEndDate").val();
     var userNo = 1;
-    var genreType = $("#insertGenreType").val();
+    var genreType = $('input:checkbox[name=genre]:checked').val();
     var image = '/images/sale/0.png'; //폼처리?
     var info = $("#insertInfo").val();
 
