@@ -134,8 +134,6 @@ function closeAuction() {
             }
         }).done(function (data) {
             if (data.result == 'success') {
-                setPoint(data.totalPoint);
-
                 window.alert("경매가 종료되었습니다.");
 
                 window.location = "/book/auction/page";
