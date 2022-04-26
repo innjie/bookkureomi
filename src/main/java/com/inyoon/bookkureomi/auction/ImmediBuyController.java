@@ -115,7 +115,7 @@ public class ImmediBuyController {
                 sellerRecharge.setUser(seller);
 
                 //order
-                orderService.orderAuction(orderDetail, recharge, sellerRecharge);
+                orderService.orderAuction(orderDetail, sellerRecharge, recharge);
                 map.put("result", "success");
                 map.put("order", order);
                 map.put("totalPoint", recharge.getTotalPoint());
@@ -124,7 +124,7 @@ public class ImmediBuyController {
                 rechargeSellingList.add(recharge);
                 //auction closed
                 auction.setState("close");
-                auctionService.updateAuction(auction);
+                auctionService.closeAuction(auction.getAuctionNo());
             }
         } else {
             map.put("result", "fail");

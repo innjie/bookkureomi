@@ -85,6 +85,7 @@ public class OrderService {
     }
 
 
+    @Transactional
     public void orderAuction(OrderDetail orderDetail, Recharge seller, Recharge buyer) {
         orderMapper.orderAuction(orderDetail.getOrder());
         orderMapper.orderDetailAuction(orderDetail);    //orderDetail에 추가
