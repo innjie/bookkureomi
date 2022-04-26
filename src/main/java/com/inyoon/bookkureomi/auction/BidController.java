@@ -147,7 +147,7 @@ public class BidController {
                 order.setRName(bid.getRName());
                 order.setRPhone(bid.getRPhone());
                 order.setTotal(bid.getBidPrice());
-                order.setInfo("");
+                order.setInfo(auction.getTitle());
                 //service process
 
                 //bid -> orderdetail

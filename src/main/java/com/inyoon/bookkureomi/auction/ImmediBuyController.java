@@ -84,7 +84,7 @@ public class ImmediBuyController {
                 order.setRAddress(rAddress);
                 order.setTotal(immediPrice);
                 order.setUser(user);
-                order.setInfo("");
+                order.setInfo(auction.getTitle());
 
                 List<OrderDetail> orderDetailList = new ArrayList<>();
                 OrderDetail orderDetail = new OrderDetail();
