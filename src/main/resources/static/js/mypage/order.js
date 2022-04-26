@@ -47,7 +47,6 @@ function listOrder(pageNo) {
 			for(var i=0; i<data.orderList.length; i++){
 				result += "<tr>"
 						+ "<td class=\"table-text\">" + ((orderCnt--) - (pageNo-1)*10) + "</td>";
-						//+ "<td class=\"table-text\">" + ((-1 * (i+1)) + data.orderList.length + 1)  + "</td>";
 				
 				result += "<td class=\"table-text\"><a onclick=\"saleOrder("+data.orderList[i].orderNo+");\">" + data.orderList[i].orderNo  + "</a></td>"
 						+ "<td class=\"table-text\">" + data.orderList[i].info + "</td>"
