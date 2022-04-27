@@ -41,8 +41,14 @@ function listOrder(pageNo) {
 		
 		if(data.orderList.length > 0) {
 			result =  "<table class=\"table-list\">"
-					+ "<colgroup><col width=\"10%\" /><col width=\"20%\" /><col width=\"30%\" /><col width=\"20%\" /><col width=\"20%\" /></colgroup>"
-					+ "<thead><tr><th class=\"table-header\">No.</th><th class=\"table-header\">주문 번호</th><th class=\"table-header\">주문정보</th><th class=\"table-header\">가격</th><th class=\"table-header\">주문 일자</th></tr></thead><tbody>";
+					+ "<colgroup><col width=\"10%\" /><col width=\"20%\" /><col width=\"20%\" /><col width=\"20%\" /><col width=\"20%\" /><col width=\"10%\" /></colgroup>"
+					+ "<thead><tr><th class=\"table-header\">No.</th>"
+					+ "<th class=\"table-header\">주문 번호</th>"
+					+ "<th class=\"table-header\">주문정보</th>"
+					+ "<th class=\"table-header\">가격</th>"
+					+ "<th class=\"table-header\">주문 일자</th"
+					+ "<th class='table-header'>리뷰 쓰기</th>"
+					+ "</tr></thead><tbody>";
 			
 			for(var i=0; i<data.orderList.length; i++){
 				result += "<tr>"
@@ -52,7 +58,8 @@ function listOrder(pageNo) {
 						+ "<td class=\"table-text\">" + data.orderList[i].info + "</td>"
 						+ "<td class=\"table-text\">" + data.orderList[i].total + "</td>";
 
-				result += "<td class=\"table-text\">" + data.orderList[i].orderDate + "</td></tr>";
+				result += "<td class=\"table-text\">" + data.orderList[i].orderDate + "</td>";
+				result += "<td class='table-text'><input type='button' class='insert-btn' onclick='insertReveiew(" + data.orderList[i].orderNo + ")' value='리뷰쓰기'></td></tr>"
 			}		
 			result += "</tbody></table>";
 			
