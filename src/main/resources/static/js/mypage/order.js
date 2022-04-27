@@ -53,9 +53,14 @@ function listOrder(pageNo) {
 			for(var i=0; i<data.orderList.length; i++){
 				result += "<tr>"
 						+ "<td class=\"table-text\">" + ((orderCnt--) - (pageNo-1)*10) + "</td>";
-				
-				result += "<td class=\"table-text\"><a onclick=\"saleOrder("+data.orderList[i].orderNo+");\">" + data.orderList[i].orderNo  + "</a></td>"
-						+ "<td class=\"table-text\">" + data.orderList[i].info + "</td>"
+
+				if(type == 'sale') {
+					result += "<td class=\"table-text\"><a onclick=\"saleOrder("+data.orderList[i].orderNo+");\">" + data.orderList[i].orderNo  + "</a></td>"
+				} else {
+
+					result += "<td class=\"table-text\"><a onclick=\"auctionOrder("+data.orderList[i].orderNo+");\">" + data.orderList[i].orderNo  + "</a></td>"
+				}
+				result += "<td class=\"table-text\">" + data.orderList[i].info + "</td>"
 						+ "<td class=\"table-text\">" + data.orderList[i].total + "</td>";
 
 				result += "<td class=\"table-text\">" + data.orderList[i].orderDate + "</td>";
@@ -73,6 +78,7 @@ function listOrder(pageNo) {
         alert( "Request failed: " + textStatus );
     });
 }
+
 
 
 //주문 상세보기
@@ -141,13 +147,13 @@ function detailOrder(orderNo, type) {
 			result += "<ul class=\"pop-style2\">"
 					+ "<li class=\"pop-style2-list\">"
 					+ "<ul class=\"pop-style3\">"
-					+ "<li>제목<input type=\"text\" id=\"viewTitle"+ data.orderDetailList[i].auction.auctionNo +"\" value=\""+ data.orderDetailList[i].auction.title +"\" readonly /></li>"
-					+ "<li>가격<input type=\"number\" id=\"viewPrice"+ data.orderDetailList[i].auction.auctionNo +"\" value=\""+ data.orderDetailList[i].auction.bidPrice +"\" readonly /></li>"
+					+ "<li>제목<input type=\"text\" id=\"viewTitle"+ data.orderDetailList[0].auction.auctionNo +"\" value=\""+ data.orderDetailList[0].auction.title +"\" readonly /></li>"
+					+ "<li>가격<input type=\"number\" id=\"viewPrice"+ data.orderDetailList[0].auction.auctionNo +"\" value=\""+ data.orderDetailList[0].auction.bidPrice +"\" readonly /></li>"
 					+ "</ul></li>"
 					+ "<li class=\"pop-style2-list\">"
 					+ "<ul class=\"pop-style3\">"
-					+ "<li>택배사<input type=\"text\" id=\"viewCompany"+ data.orderDetailList[i].auction.auctionNo +"\" readonly /></li>"
-					+ "<li>송장번호<input type=\"text\" id=\"viewWaybill"+ data.orderDetailList[i].auction.auctionNo +"\" readonly /></li>"
+					+ "<li>택배사<input type=\"text\" id=\"viewCompany"+ data.orderDetailList[0].auction.auctionNo +"\" readonly /></li>"
+					+ "<li>송장번호<input type=\"text\" id=\"viewWaybill"+ data.orderDetailList[0].auction.auctionNo +"\" readonly /></li>"
 					+ "</ul></li></ul>";
 		}
 		
