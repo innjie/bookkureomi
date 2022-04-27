@@ -294,7 +294,7 @@ public class OrderController {
 		for(int i = 0; i < orderDetailList.size(); i++) {
 			deliveryList.add(deliveryService.getDelivery(orderDetailList.get(i).getOdNo()));
 		}
-				
+		System.out.println(orderDetailList.get(0).getAuction());
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("orderDetailList", orderDetailList);
 		map.put("deliveryList", deliveryList);
