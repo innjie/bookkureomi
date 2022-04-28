@@ -46,7 +46,7 @@ function listOrder(pageNo) {
 					+ "<th class=\"table-header\">주문 번호</th>"
 					+ "<th class=\"table-header\">주문정보</th>"
 					+ "<th class=\"table-header\">가격</th>"
-					+ "<th class=\"table-header\">주문 일자</th"
+					+ "<th class=\"table-header\">주문 일자</th>"
 					+ "<th class='table-header'>리뷰 쓰기</th>"
 					+ "</tr></thead><tbody>";
 			
@@ -209,10 +209,6 @@ function closeImmediatePopup() {
 	$("#pop-immediate-create").css("display", "none");
 	$("#pop-mask-immediate-create").css("display","none");
 	$("#pop-mask-immediate-create").css("background-color","rgba( 0, 0, 0, 0.8 )");
-	if(isCart){
-		$("body").css("overflow","auto");
-		isCart = false;
-	}
 }
 //주문 추가 폼 세팅
 function setDefaultOrder() {
