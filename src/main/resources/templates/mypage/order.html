@@ -107,17 +107,18 @@
                                         점수 <input type="number" id="insertScore"/>
                                     </li>
                                     <li>
-                                        리뷰 내용 <input type="text" id="insertContent"
+                                        리뷰 내용 <br>
+                                        <textarea id="insertContent" rows="20" cols="80" style="resize: none"></textarea>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
                     </li>
+                    <div class="pop-btn-style">
+                        <button type="button" class="pop-btn" onClick="insertReviewProcess()">등록하기</button>
+                        <button type="button" class="pop-btn" onClick="closeReviewForm()">닫기</button>
+                    </div>
                 </ul>
-                <div class="pop-btn-style">
-                    <button type="button" class="pop-btn" onClick="insertReviewProcess()">판매하기</button>
-                    <button type="button" class="pop-btn" onClick="closeReviewForm()">닫기</button>
-                </div>
             </div>
         </div>
     </div>
