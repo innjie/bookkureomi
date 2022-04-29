@@ -29,23 +29,7 @@ public class ImmediBuyController {
     private AuctionService auctionService;
     @Autowired
     private PointService pointService;
-    @Autowired
-    private DeliveryService deliveryService;
-    @Autowired
-    private AddressService addressService;
 
-    //    //view ImmediBuy List(my)
-//    @RequestMapping(“/immediBuy/list.do”)
-//    public String myImmediBuyList(ModelMap model,
-//                                  HttpServletRequest request) throws Exception {
-//    }
-//
-//    @RequestMapping(“/immediBuy/listPage.do”)
-//    public String myImmediBuyListPage(
-//            @RequestParam("page") String page,
-//            @ModelAttribute("immdeBuy") PagedListHolder<ImmediBuy>
-//                    immediBuy, BindingResult result) throws Exception {
-//    }
     @ResponseBody
     @PostMapping("/immediate/insert")
     public Map<String, Object> ImmediateOrder(
