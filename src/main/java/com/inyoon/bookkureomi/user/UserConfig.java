@@ -69,6 +69,7 @@ public class UserConfig extends WebSecurityConfigurerAdapter {
 			        .antMatchers("/book/point/**").authenticated()
 			        .antMatchers("/book/order/**").authenticated()
                     .antMatchers("/book/bid/**").authenticated()
+                    .antMatchers("/book/review/**").authenticated()
 	                .antMatchers("/**").permitAll()
 
                 //security_login
