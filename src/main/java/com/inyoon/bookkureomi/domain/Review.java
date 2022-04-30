@@ -8,4 +8,5 @@ public @Data class Review {
     private int userNo;
     private String content;
     private int score;
+    private int isDelete;
 }
