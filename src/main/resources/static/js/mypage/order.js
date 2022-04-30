@@ -64,7 +64,7 @@ function listOrder(pageNo) {
 						+ "<td class=\"table-text\">" + data.orderList[i].total + "</td>";
 
 				result += "<td class=\"table-text\">" + data.orderList[i].orderDate + "</td>";
-				result += "<td class='table-text'><input type='button' class='insert-btn' onclick='insertReveiew(" + data.orderList[i].orderNo + ")' value='리뷰쓰기'></td></tr>"
+				result += "<td class='table-text'><input type='button' class='insert-btn' onclick='insertReview(" + data.orderList[i].orderNo + ")' value='리뷰쓰기'></td></tr>"
 			}		
 			result += "</tbody></table>";
 			
