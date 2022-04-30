@@ -71,6 +71,20 @@ public class ReviewController {
 
         return map;
     }
+    @ResponseBody
+    @GetMapping("/review/detail")
+    public Map<String, Object> reviewDetail(@RequestParam("orderNo") int orderNo,
+                                            @AuthenticationPrincipal Login login) {
+        Map<String, Object> map = new HashMap<>();
+        int userNo = login.getUserNo();
+        Review review = Review.builder()
+                .orderNo(orderNo)
+                .userNo(userNo)
+                .build();
+
+        review = reviewService.getReview(review);
+        return map;
+    }
 //
 //    //delete review
 //    @RequestMapping(“/review/delete.do”)

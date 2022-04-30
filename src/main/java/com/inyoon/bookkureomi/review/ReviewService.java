@@ -24,5 +24,5 @@ public class ReviewService {
     public void removeReview(int reviewNo) {
         reviewMapper.deleteReview(reviewNo);
     }
-
+    public Review getReview(Review review) {return reviewMapper.getReview(review);}
 }
