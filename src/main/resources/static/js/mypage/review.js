@@ -1,14 +1,29 @@
 function insertReveiew() {
     closeOrderDetailPopup();
 
-    $("#pop-mask-review-create").css("display","block");
-    $("#pop-mask-review-create").css("overflow","auto");
-    $("body").css("overflow","hidden");
-    $("#pop-review-create").css({
-        "top": (window.screen.height / 2) - ($("#pop-order-detail").outerHeight() / 2)-50+"px",
-        "left": (window.screen.width / 2) - ($("#pop-order-detail").outerWidth() / 2)+"px"
-    });
-    createReviewForm();
+
+    // already exist
+    $.ajax({
+        url: "/book/review/detail",
+        method: "GET",
+        dataType: "json",
+        data: {
+            orderNo : orderNo
+        }
+    }).done (function(data, textStatus) {
+        if(data.review != null) {
+            alert("이미 등록되었습니다.");
+        } else {
+            $("#pop-mask-review-create").css("display","block");
+            $("#pop-mask-review-create").css("overflow","auto");
+            $("body").css("overflow","hidden");
+            $("#pop-review-create").css({
+                "top": (window.screen.height / 2) - ($("#pop-order-detail").outerHeight() / 2)-50+"px",
+                "left": (window.screen.width / 2) - ($("#pop-order-detail").outerWidth() / 2)+"px"
+            });
+            createReviewForm();
+        }
+    })
 }
 function insertReviewProcess() {
     var orderNo = $("#insertOrderNo").val();
@@ -25,6 +40,7 @@ function insertReviewProcess() {
         alert("내용은 250자 이내여야 합니다.");
         return;
     }
+
     // ajax insert - post
     $.ajax({
         url: "/book/review/insert",
