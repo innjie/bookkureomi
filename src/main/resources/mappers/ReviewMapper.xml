@@ -16,6 +16,11 @@
         WHERE orderNo =
               (SELECT orderNo FROM Orders o, Auction a WHERE o.auctionNo = a.auctionNo)
     </select>
+    <select id="getReview" resultType="com.inyoon.bookkureomi.domain.Review">
+        SELECT orderNo, userNo, content, score, isDelete
+        FROM Review
+        WHERE orderNo = #{orderNo} AND userNo = #{userNo}
+    </select>
     <insert id="insertReview" parameterType="com.inyoon.bookkureomi.domain.Review">
         INSERT INTO Review (orderNo, userNo, content, score)
         VALUES (#{orderNo}, #{userNo}, #{content}, #{score})
