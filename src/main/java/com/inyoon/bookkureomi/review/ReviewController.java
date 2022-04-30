@@ -19,11 +19,9 @@ import java.util.Map;
 public class ReviewController {
     @Autowired
     ReviewService reviewService;
-//    //my reviewList
-//    @RequestMapping(“/review/myList.do”)
-//    public String myReviewList(@RequestParam(“userNo”) int userNo, ModelMap model,
-//                               HttpServletRequest request) throws Exception {
-//    }
+
+    @GetMapping("/review/page")
+    public String reviewPage() { return "mypage/review"; }
 //
 //    @RequestMapping(“/review/myListPage.do”)
 //    public String myReviewListPage(
