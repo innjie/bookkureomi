@@ -21,7 +21,8 @@
         VALUES (#{orderNo}, #{userNo}, #{content}, #{score})
     </insert>
     <delete id="deleteReview" parameterType="integer">
-        DELETE FROM Review
-        WHERE orderNo = #{orderNo}
+        UPDATE Review
+        SET isDelete = '1'
+        WHERE orderNo = #{orderNo} AND userNo = #{userNo}
     </delete>
 </mapper>
