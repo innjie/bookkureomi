@@ -1,6 +1,5 @@
-function insertReveiew() {
+function insertReview(orderNo) {
     closeOrderDetailPopup();
-
 
     // already exist
     $.ajax({

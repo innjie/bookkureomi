@@ -4,6 +4,7 @@ import com.inyoon.bookkureomi.domain.Review;
 import com.inyoon.bookkureomi.user.Login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -13,15 +14,14 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
-
+@Controller
+@RequestMapping("/book")
 public class ReviewController {
     @Autowired
     ReviewService reviewService;
-//    //my reviewList
-//    @RequestMapping(“/review/myList.do”)
-//    public String myReviewList(@RequestParam(“userNo”) int userNo, ModelMap model,
-//                               HttpServletRequest request) throws Exception {
-//    }
+
+    @GetMapping("/review/page")
+    public String reviewPage() { return "mypage/review"; }
 //
 //    @RequestMapping(“/review/myListPage.do”)
 //    public String myReviewListPage(
