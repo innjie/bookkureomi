@@ -83,6 +83,7 @@ public class ReviewController {
                 .build();
 
         review = reviewService.getReview(review);
+        map.put("review", review);
         return map;
     }
 //

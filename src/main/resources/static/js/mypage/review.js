@@ -20,15 +20,20 @@ function insertReview(orderNo) {
                 "top": (window.screen.height / 2) - ($("#pop-order-detail").outerHeight() / 2)-50+"px",
                 "left": (window.screen.width / 2) - ($("#pop-order-detail").outerWidth() / 2)+"px"
             });
+            $("#insertOrderNo").val(orderNo);
             createReviewForm();
         }
     })
 }
 function insertReviewProcess() {
     var orderNo = $("#insertOrderNo").val();
-    var score = $("#insertScore").val();
+    var score = parseInt($("#insertScore").val());
     var content = $("#insertContent").val();
 
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    alert(content);
     // check score
     if(!checkScore(score)) {
         alert("점수는 0~10 사이여야 합니다");
@@ -49,11 +54,14 @@ function insertReviewProcess() {
             orderNo : orderNo,
             score : score,
             content : content
+        },
+        beforeSend : function(xhr) {
+            xhr.setRequestHeader(header, token);
         }
     }).done(function(data, textStatus) {
         if(data.result == "success") {
             alert("리뷰 등록에 성공하였습니다.");
-            window.location.href = "/book/review/list";
+            window.location.href = "/book/review/page";
         } else if (data.result == "fail") {
             alert(data.message);
             return;
