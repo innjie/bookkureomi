@@ -2,6 +2,7 @@ package com.inyoon.bookkureomi.review;
 
 import com.inyoon.bookkureomi.domain.Review;
 import com.inyoon.bookkureomi.user.Login;
+import org.codehaus.groovy.runtime.metaclass.ConcurrentReaderHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 @Controller
 @RequestMapping("/book")
@@ -22,13 +25,32 @@ public class ReviewController {
 
     @GetMapping("/review/page")
     public String reviewPage() { return "mypage/review"; }
-//
-//    @RequestMapping(“/review/myListPage.do”)
-//    public String myReviewListPage(
-//            @RequestParam("page") String page,
-//            @ModelAttribute("reivew") PagedListHolder<Review>
-//                    review, BindingResult result) throws Exception {
-//    }
+
+    @GetMapping("/review/list")
+    public Map<String, Object> reviewList(@AuthenticationPrincipal Login login,
+                                          @RequestParam("pageNo") int pageNo) {
+        int showCnt = 10;	//보여주는 개수
+        int reviewCnt = 0;	//리스트 개수
+        int pageCnt = 0;
+
+        Map<String, Object> map = new HashMap<>();
+        int userNo = login.getUserNo();
+        List<Review> reviewList = new ArrayList<>();
+        reviewCnt = reviewService.getReviewCount(userNo);
+        if(reviewCnt > 0) {
+            pageCnt = (reviewCnt % showCnt == 0) ? (reviewCnt / showCnt) : (reviewCnt / showCnt + 1);		//페이지 개수
+            int start = 1+(showCnt*(pageNo-1));
+            int end = showCnt+(showCnt*(pageNo-1));
+
+            Map<String, Object> paramMap = new HashMap<String, Object>();
+            paramMap.put("userNo", userNo);
+            paramMap.put("start", start);
+            paramMap.put("end", end);
+            reviewList = reviewService.getReviewList(paramMap);
+        }
+
+        return map;
+    }
 //
 //    //received review list
 //    @RequestMapping(“/review/receiveList.do”)
