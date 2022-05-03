@@ -5,10 +5,16 @@
 
 <mapper namespace="com.inyoon.bookkureomi.review.ReviewMapper">
     <select id="getReviewList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Review">
-        SELECT orderNo, content, score
+        SELECT *
+        FROM (
+        SELECT ROWNUM AS RNUM, Z.*
+        FROM (
+        SELECT distinct reviewNo, userNo, content, score
         FROM Review
-        WHERE orderNo =
-              (SELECT orderNo FROM Orders WHERE userNo = #{userNo})
+        where userNo = #{userNo}
+        ORDER BY reviewNo desc
+        ) Z WHERE ROWNUM <![CDATA[ <= ]]> #{end}
+        ) WHERE RNUM >= #{start}
     </select>
     <select id="receivedReviewList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Review">
         SELECT orderNo, content, score
@@ -20,6 +26,11 @@
         SELECT orderNo, userNo, content, score, isDelete
         FROM Review
         WHERE orderNo = #{orderNo} AND userNo = #{userNo}
+    </select>
+    <select id="getReviewCount" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT Review.reviewNo)
+        FROM Review
+        WHERE userNo = #{userNo} AND isDelete = 0
     </select>
     <insert id="insertReview" parameterType="com.inyoon.bookkureomi.domain.Review">
         INSERT INTO Review (orderNo, userNo, content, score)

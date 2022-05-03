@@ -1,3 +1,65 @@
+$(document).ready(function(){
+    if(($(location).attr('href').split('/book')[1]).includes('/review/page')){
+        listReview();
+    }
+});
+function listReview() {
+    nowPageNo = pageNo;
+
+    $.ajax({
+        url: "/book/review/list",
+        method: 'GET',
+        dataType: "json",
+        data: {
+            pageNo: pageNo
+        }
+    }).done(function( data ) {
+        window.scrollTo(0,0);
+        $("#orderCnt").text(data.orderCnt);
+        paging(data, 'listOrder');
+        var orderCnt = data.orderCnt
+
+        $('#result')[0].innerHTML = '';
+
+        if(data.orderList.length > 0) {
+            result =  "<table class=\"table-list\">"
+                + "<colgroup><col width=\"10%\" /><col width=\"20%\" /><col width=\"20%\" /><col width=\"20%\" /><col width=\"20%\" /><col width=\"10%\" /></colgroup>"
+                + "<thead><tr><th class=\"table-header\">No.</th>"
+                + "<th class=\"table-header\">주문 번호</th>"
+                + "<th class=\"table-header\">주문정보</th>"
+                + "<th class=\"table-header\">가격</th>"
+                + "<th class=\"table-header\">주문 일자</th>"
+                + "<th class='table-header'>리뷰 쓰기</th>"
+                + "</tr></thead><tbody>";
+
+            for(var i=0; i<data.orderList.length; i++){
+                result += "<tr>"
+                    + "<td class=\"table-text\">" + ((orderCnt--) - (pageNo-1)*10) + "</td>";
+
+                if(type == 'sale') {
+                    result += "<td class=\"table-text\"><a onclick=\"saleOrder("+data.orderList[i].orderNo+");\">" + data.orderList[i].orderNo  + "</a></td>"
+                } else {
+
+                    result += "<td class=\"table-text\"><a onclick=\"auctionOrder("+data.orderList[i].orderNo+");\">" + data.orderList[i].orderNo  + "</a></td>"
+                }
+                result += "<td class=\"table-text\">" + data.orderList[i].info + "</td>"
+                    + "<td class=\"table-text\">" + data.orderList[i].total + "</td>";
+
+                result += "<td class=\"table-text\">" + data.orderList[i].orderDate + "</td>";
+                result += "<td class='table-text'><input type='button' class='insert-btn' onclick='insertReview(" + data.orderList[i].orderNo + ")' value='리뷰쓰기'></td></tr>"
+            }
+            result += "</tbody></table>";
+
+        } else {
+            result = "<p class=\"find-nothing\">주문 내역이 없습니다.</p>";
+        }
+
+        $('#result').append(result);
+    })
+        .fail( function( textStatus ) {
+            alert( "Request failed: " + textStatus );
+        });
+}
 function insertReview(orderNo) {
     closeOrderDetailPopup();
 
