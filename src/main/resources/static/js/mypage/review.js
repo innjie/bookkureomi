@@ -21,7 +21,7 @@ function listReview(pageNo) {
         var reviewCnt = data.reviewCnt;
 
         var result = "";
-        $('#result')[0].innerHTML = '';
+        $('#result')[0].innerHTML = "";
 
         if (data.reviewList.length > 0) {
             result = "<table class=\"table-list\">"
@@ -36,7 +36,7 @@ function listReview(pageNo) {
                 result += "<tr>"
                     + "<td class='table-text'>" + ((reviewCnt--) - (pageNo - 1) * 10) + "</td>";
                 result += "<td class='table-text'>" + data.reviewList[i].orderNo + "</td>";
-                result += "<td class='table-text'>" + data.reviewList[i].content + "</td>"
+                result += "<td class='table-text'>" + data.reviewList[i].reviewText + "</td>"
                 result += "<td class='table-text'><input type='button' class='insert-btn' onclick='reviewDetail(" + data.reviewList[i].orderNo + ")' value='상세보기'></td></tr>"
             }
             result += "</tbody></table>";
@@ -53,7 +53,16 @@ function listReview(pageNo) {
 }
 
 function reviewDetail(orderNo) {
-    alert(orderNo);
+    $.ajax({
+        url: "/book/review/detail",
+        method: "GET",
+        dataType: "json",
+        data: {
+            orderNo : orderNo
+        }
+    }).done(function(data) {
+
+    })
 }
 
 function insertReview(orderNo) {

@@ -9,7 +9,7 @@
         FROM (
             SELECT ROWNUM AS RNUM, Z.*
             FROM (
-                SELECT Review.orderNo, Review.userNo, Review.reviewtext, Review.score
+                SELECT orderNo, userNo, reviewtext, score
                 FROM Review
                 where userNo = #{userNo} AND isDelete = 0
                 ORDER BY orderNo desc
