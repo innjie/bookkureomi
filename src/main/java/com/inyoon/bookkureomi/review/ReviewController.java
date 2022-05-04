@@ -42,12 +42,16 @@ public class ReviewController {
             int start = 1+(showCnt*(pageNo-1));
             int end = showCnt+(showCnt*(pageNo-1));
 
+            System.out.println("start: " + start + ", end: " + end);
             Map<String, Object> paramMap = new HashMap<String, Object>();
             paramMap.put("userNo", userNo);
             paramMap.put("start", start);
             paramMap.put("end", end);
             reviewList = reviewService.getReviewList(paramMap);
         }
+        map.put("reviewList", reviewList);
+        map.put("reviewCnt", reviewCnt);
+        map.put("pageCnt", pageCnt);
 
         return map;
     }
@@ -71,14 +75,14 @@ public class ReviewController {
     public Map<String, Object> insertReview(@AuthenticationPrincipal Login authentication,
                                             @RequestParam("orderNo") int orderNo,
                                             @RequestParam("score") int score,
-                                            @RequestParam("content") String content) {
+                                            @RequestParam("reviewText") String reviewText) {
         Map<String, Object> map = new HashMap<>();
 
         int userNo = authentication.getUserNo();
         Review review = Review.builder()
                 .orderNo(orderNo)
                 .score(score)
-                .content(content)
+                .reviewText(reviewText)
                 .userNo(userNo)
                 .build();
 

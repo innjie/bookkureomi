@@ -4,36 +4,36 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.inyoon.bookkureomi.review.ReviewMapper">
-    <select id="getReviewList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Review">
+    <select id="getReviewList" resultType="com.inyoon.bookkureomi.domain.Review">
         SELECT *
         FROM (
-        SELECT ROWNUM AS RNUM, Z.*
-        FROM (
-        SELECT distinct reviewNo, userNo, content, score
-        FROM Review
-        where userNo = #{userNo}
-        ORDER BY reviewNo desc
-        ) Z WHERE ROWNUM <![CDATA[ <= ]]> #{end}
+            SELECT ROWNUM AS RNUM, Z.*
+            FROM (
+                SELECT Review.orderNo, Review.userNo, Review.reviewtext, Review.score
+                FROM Review
+                where userNo = #{userNo} AND isDelete = 0
+                ORDER BY orderNo desc
+            ) Z WHERE ROWNUM <![CDATA[ <= ]]> #{end}
         ) WHERE RNUM >= #{start}
     </select>
     <select id="receivedReviewList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Review">
-        SELECT orderNo, content, score
+        SELECT orderNo, reviewtext, score
         FROM Review
         WHERE orderNo =
               (SELECT orderNo FROM Orders o, Auction a WHERE o.auctionNo = a.auctionNo)
     </select>
     <select id="getReview" resultType="com.inyoon.bookkureomi.domain.Review">
-        SELECT orderNo, userNo, content, score, isDelete
+        SELECT orderNo, userNo, reviewText, score, isDelete
         FROM Review
         WHERE orderNo = #{orderNo} AND userNo = #{userNo}
     </select>
     <select id="getReviewCount" resultType="java.lang.Integer">
-        SELECT COUNT(DISTINCT Review.reviewNo)
+        SELECT COUNT(DISTINCT Review.orderNo)
         FROM Review
         WHERE userNo = #{userNo} AND isDelete = 0
     </select>
     <insert id="insertReview" parameterType="com.inyoon.bookkureomi.domain.Review">
-        INSERT INTO Review (orderNo, userNo, content, score)
+        INSERT INTO Review (orderNo, userNo, reviewtext, score)
         VALUES (#{orderNo}, #{userNo}, #{content}, #{score})
     </insert>
     <delete id="deleteReview" parameterType="integer">
