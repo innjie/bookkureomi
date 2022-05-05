@@ -27,6 +27,7 @@ public class ReviewController {
     public String reviewPage() { return "mypage/review"; }
 
     @GetMapping("/review/list")
+    @ResponseBody
     public Map<String, Object> reviewList(@AuthenticationPrincipal Login login,
                                           @RequestParam("pageNo") int pageNo) {
         int showCnt = 10;	//보여주는 개수
