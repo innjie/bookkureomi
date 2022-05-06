@@ -53,6 +53,8 @@ function listReview(pageNo) {
 }
 
 function reviewDetail(orderNo) {
+    createReviewDetailForm();
+
     $.ajax({
         url: "/book/review/detail",
         method: "GET",
@@ -61,7 +63,10 @@ function reviewDetail(orderNo) {
             orderNo : orderNo
         }
     }).done(function(data) {
-
+        alert(data.review.reviewText)
+        $("#viewOrderNo").val(data.review.orderNo);
+        $("#viewScore").val(data.review.score);
+        $("#viewReviewText").val(data.review.reviewText);
     })
 }
 
@@ -152,8 +157,6 @@ function closeReviewForm() {
 }
 
 function createReviewForm() {
-    /*  closeOrderPopup();
-      setDefaultOrder();*/
     $("#pop-review-create").css("display", "block");
 
     $("#pop-mask-review-create").css("display", "block");
@@ -168,7 +171,30 @@ function createReviewForm() {
     var offset = $("#pop-review-create").offset().top;
     $("html").animate({scrollTop: offset}, 400);
 }
+function closeReviewDetail() {
+    $("#pop-review-detail").css("display", "none");
+    $("#pop-mask-review-detail").css("display", "none");
+    $("#pop-mask-review-detail").css("overflow", "hidden");
+    $("body").css("overflow", "auto");
 
+    $(".pop").css("height", "800px");
+    $("#pop-style1-create").css("height", "500px");
+}
+function createReviewDetailForm() {
+    $("#pop-review-detail").css("display", "block");
+
+    $("#pop-mask-review-detail").css("display", "block");
+    $("#pop-mask-review-detail").css("background-color", "rgba( 0, 0, 0, 0 )");
+    $("#pop-review-detail").css({
+        "top": (window.screen.height / 2) - ($("#pop-review-detail").outerHeight() / 2) - 50 + "px",
+        "left": (window.screen.width / 2) - ($("#pop-review-detail").outerWidth() / 2) + "px"
+    });
+
+    $("#pop-review-detail").css("display", "block");
+
+    var offset = $("#pop-review-detail").offset().top;
+    $("html").animate({scrollTop: offset}, 400);
+}
 function checkScore(score) {
     if (score < 0 || score > 10) {
         return false;
