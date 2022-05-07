@@ -63,7 +63,6 @@ function reviewDetail(orderNo) {
             orderNo : orderNo
         }
     }).done(function(data) {
-        alert(data.review.reviewText)
         $("#viewOrderNo").val(data.review.orderNo);
         $("#viewScore").val(data.review.score);
         $("#viewReviewText").val(data.review.reviewText);
@@ -97,7 +96,24 @@ function insertReview(orderNo) {
         }
     })
 }
-
+function deleteReview() {
+    var orderNo = $("#viewOrderNo");
+    $.ajax({
+        url : "/book/review/delete",
+        method : "PUT",
+        dataType: "json",
+        data: {
+            orderNo : orderNo
+        }
+    }).done(function(data) {
+      if(data.result == 'success') {
+          alert("삭제되었습니다.");
+          window.location.href="/book/review/page";
+      } else {
+          alert("삭제에 실패했습니다. 다시 시도해주세요");
+      }
+    })
+}
 function insertReviewProcess() {
     var orderNo = $("#insertOrderNo").val();
     var score = parseInt($("#insertScore").val());
