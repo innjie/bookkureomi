@@ -97,7 +97,7 @@ function insertReview(orderNo) {
     })
 }
 function deleteReview() {
-    var orderNo = $("#viewOrderNo");
+    var orderNo = parseInt($("#viewOrderNo"));
     $.ajax({
         url : "/book/review/delete",
         method : "PUT",

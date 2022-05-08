@@ -36,7 +36,7 @@
         INSERT INTO Review (orderNo, userNo, reviewtext, score)
         VALUES (#{orderNo}, #{userNo}, #{content}, #{score})
     </insert>
-    <delete id="deleteReview" parameterType="integer">
+    <delete id="deleteReview" parameterType="com.inyoon.bookkureomi.domain.Review">
         UPDATE Review
         SET isDelete = '1'
         WHERE orderNo = #{orderNo} AND userNo = #{userNo}

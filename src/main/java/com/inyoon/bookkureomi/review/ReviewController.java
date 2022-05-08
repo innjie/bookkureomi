@@ -113,10 +113,25 @@ public class ReviewController {
         map.put("review", review);
         return map;
     }
-//
-//    //delete review
-//    @RequestMapping(“/review/delete.do”)
-//    public String deleteReview(@RequestParam(“reviewNo”) int reviewNo) {
-//    }
+    @ResponseBody
+    @PutMapping("/review/delete")
+    public Map<String, Object> deleteReview(@AuthenticationPrincipal Login login,
+                                            @RequestParam int orderNo) {
+        Map<String, Object> map = new HashMap<>();
+
+        int userNo = login.getUserNo();
+        Review review = Review.builder()
+                .orderNo(orderNo)
+                .userNo(userNo)
+                .build();
+
+        try {
+            reviewService.deleteReview(review);
+            map.put("result", "success");
+        } catch(Exception e) {
+            map.put("result", "fail");
+        }
+        return map;
+    }
 
 }
