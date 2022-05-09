@@ -114,7 +114,7 @@ public class ReviewController {
         return map;
     }
     @ResponseBody
-    @PutMapping("/review/delete")
+    @PostMapping("/review/delete")
     public Map<String, Object> deleteReview(@AuthenticationPrincipal Login login,
                                             @RequestParam int orderNo) {
         Map<String, Object> map = new HashMap<>();

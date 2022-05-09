@@ -42,7 +42,7 @@ function listReview(pageNo) {
             result += "</tbody></table>";
 
         } else {
-            result = "<p class=\"find-nothing\">주문 내역이 없습니다.</p>";
+            result = "<p class=\"find-nothing\">리뷰 내역이 없습니다.</p>";
         }
 
         $('#result').append(result);
@@ -71,7 +71,8 @@ function reviewDetail(orderNo) {
 
 function insertReview(orderNo) {
     closeOrderDetailPopup();
-
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
     // already exist
     $.ajax({
         url: "/book/review/detail",
@@ -79,6 +80,9 @@ function insertReview(orderNo) {
         dataType: "json",
         data: {
             orderNo: orderNo
+        },
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
         }
     }).done(function (data, textStatus) {
         if (data.review != null) {
@@ -97,13 +101,20 @@ function insertReview(orderNo) {
     })
 }
 function deleteReview() {
-    var orderNo = parseInt($("#viewOrderNo"));
+    confirm("삭제하시겠습니까?");
+    var orderNo = parseInt($("#viewOrderNo").val());
+
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
     $.ajax({
         url : "/book/review/delete",
-        method : "PUT",
+        method : "POST",
         dataType: "json",
         data: {
             orderNo : orderNo
+        },
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
         }
     }).done(function(data) {
       if(data.result == 'success') {
