@@ -51,7 +51,20 @@ function listReview(pageNo) {
             alert("Request failed: " + textStatus);
         });
 }
+function viewOrderReview(typeNo, type) {
+    var typeNo = parseInt(typeNo);
+    $.ajax({
+        url : "/book/review/detailType",
+        method : "GET",
+        dataType : "json",
+        data: {
+            typeNo : typeNo,
+            type : type
+        }
+    }).done(function (data) {
 
+    })
+}
 function reviewDetail(orderNo) {
     createReviewDetailForm();
 
