@@ -87,6 +87,7 @@ public class ReviewController {
                 .userNo(userNo)
                 .build();
 
+        System.out.println(review);
         try {
             //insert review
             reviewService.insertReview(review);
@@ -139,11 +140,16 @@ public class ReviewController {
                                                @RequestParam int typeNo,
                                                @RequestParam String type) {
         Map<String, Object> map = new HashMap<>();
-
+        Map<String, Object> parameter = new HashMap<>();
+        parameter.put("typeNo", typeNo);
+        parameter.put("type", type);
         try {
-
+            Review review = reviewService.getReviewByType(parameter);
+            map.put("review", review);
+            map.put("result", "success");
         } catch(Exception e) {
-
+            map.put("result", "fail");
+            map.put("message", "정보를 불러오는데 오류가 발생했습니다.");
         }
         return map;
     }

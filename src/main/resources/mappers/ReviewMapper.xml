@@ -45,8 +45,8 @@
         WHERE userNo = #{userNo} AND isDelete = 0
     </select>
     <insert id="insertReview" parameterType="com.inyoon.bookkureomi.domain.Review">
-        INSERT INTO Review (orderNo, userNo, reviewtext, score)
-        VALUES (#{orderNo}, #{userNo}, #{content}, #{score})
+        INSERT INTO Review (orderNo, userNo, reviewText, score)
+        VALUES (#{orderNo}, #{userNo}, #{reviewText}, #{score})
     </insert>
     <delete id="deleteReview" parameterType="com.inyoon.bookkureomi.domain.Review">
         UPDATE Review

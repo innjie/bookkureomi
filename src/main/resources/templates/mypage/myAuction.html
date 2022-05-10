@@ -12,6 +12,7 @@
     <script type="text/javascript" th:src="@{/js/common/paging.js}" src="../../static/js/common/paging.js"></script>
     <script type="text/javascript" th:src="@{/js/mypage/auction.js}" src="../../static/js/mypage/auction.js"></script>
     <script type="text/javascript" th:src="@{/js/mypage/order.js}" src="../../static/js/mypage/order.js"></script>
+    <script type="text/javascript" th:src="@{/js/mypage/review.js}" src="../../static/js/mypage/review.js"></script>
     <script type="text/javascript" th:src="@{/js/delivery/delivery.js}"
             src="../../static/js/delivery/delivery.js"></script>
     <meta name="_csrf" th:content="${_csrf.token}"/>
@@ -71,6 +72,35 @@
                     <div id="bidUserInfo"></div>
                 </ul>
                 <div class="pop-btn-style" id="buttonResult"></div>
+            </div>
+        </div>
+        <!-- review -->
+        <div id="pop-mask-review-detail" class="pop-mask">
+            <div id="pop-review-detail" class="pop">
+                <h2>리뷰 확인</h2>
+                <ul class="pop-style1">
+                    <li class="pop-style1-list">
+                        <ul class="pop-style2">
+                            <li class="pop-style2-list">
+                                <ul class="pop-style3">
+                                    <li>
+                                        <input type="hidden" id="viewOrderNo"/>
+                                    </li>
+                                    <li>
+                                        점수 <input type="number" id="viewScore"/>
+                                    </li>
+                                    <li>
+                                        리뷰 내용 <br>
+                                        <textarea id="viewReviewText" rows="20" cols="80" style="resize: none"></textarea>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <div class="pop-btn-style">
+                        <button type="button" class="pop-btn" onClick="closeReviewDetail()">닫기</button>
+                    </div>
+                </ul>
             </div>
         </div>
     </div>
