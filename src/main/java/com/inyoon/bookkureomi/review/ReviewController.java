@@ -133,5 +133,19 @@ public class ReviewController {
         }
         return map;
     }
+    @ResponseBody
+    @GetMapping("/review/detailType")
+    public Map<String, Object> viewOrderReview(@AuthenticationPrincipal Login login,
+                                               @RequestParam int typeNo,
+                                               @RequestParam String type) {
+        Map<String, Object> map = new HashMap<>();
+
+        try {
+
+        } catch(Exception e) {
+
+        }
+        return map;
+    }
 
 }

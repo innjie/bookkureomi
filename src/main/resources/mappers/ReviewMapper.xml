@@ -27,6 +27,18 @@
         FROM Review
         WHERE orderNo = #{orderNo} AND userNo = #{userNo}
     </select>
+    <select id="getReviewByType" resultType="com.inyoon.bookkureomi.domain.Review">
+        <if test = "type.equals('auction')">
+            SELECT orderNo, userNo, reviewText, score, isDelete
+            FROM Review
+            WHERE orderNo = (SELECT orderNo FROM OrderDetail WHERE auctionNo = #{typeNo})
+        </if>
+        <if test = "type.equals('sale')">
+            SELECT orderNo, userNo, reviewText, score, isDelete
+            FROM Review
+            WHERE orderNo = (SELECT orderNo FROM OrderDetail WHERE saleNo = #{typeNo})
+        </if>
+    </select>
     <select id="getReviewCount" resultType="java.lang.Integer">
         SELECT COUNT(DISTINCT Review.orderNo)
         FROM Review
