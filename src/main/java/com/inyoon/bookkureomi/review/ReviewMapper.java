@@ -15,4 +15,5 @@ public interface ReviewMapper {
     public void deleteReview(Review review);
     public Review getReview(Review review);
     public int getReviewCount(int userNo);
+    public Review getReviewByType(Map<String, Object> parameter);
 }

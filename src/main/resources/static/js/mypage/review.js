@@ -51,7 +51,7 @@ function listReview(pageNo) {
             alert("Request failed: " + textStatus);
         });
 }
-function viewOrderReview(typeNo, type) {
+function viewOrderReview(typeNo) {
     var typeNo = parseInt(typeNo);
     $.ajax({
         url : "/book/review/detailType",
@@ -62,6 +62,19 @@ function viewOrderReview(typeNo, type) {
             type : type
         }
     }).done(function (data) {
+        if(data.result == "success") {
+            if(review == null) {
+                alert("리뷰가 존재하지 않습니다.");
+            } else {
+                createReviewDetailForm();
+                $("#viewOrderNo").val(data.review.orderNo);
+                $("#viewScore").val(data.review.score);
+                $("#viewReviewText").val(data.review.reviewText);
+            }
+
+        } else if(data.result == "fail") {
+            alert("message");
+        }
 
     })
 }
@@ -141,19 +154,17 @@ function deleteReview() {
 function insertReviewProcess() {
     var orderNo = $("#insertOrderNo").val();
     var score = parseInt($("#insertScore").val());
-    var reviewtext = $("#insertReviewText").val();
+    var reviewText = $("#insertReviewText").val();
 
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-
-    alert(content);
     // check score
     if (!checkScore(score)) {
         alert("점수는 0~10 사이여야 합니다");
         return;
     }
     // check textarea
-    if (!checkContent(reviewtext)) {
+    if (!checkContent(reviewText)) {
         alert("내용은 250자 이내여야 합니다.");
         return;
     }
@@ -166,7 +177,7 @@ function insertReviewProcess() {
         data: {
             orderNo: orderNo,
             score: score,
-            reviewtext: reviewtext
+            reviewText: reviewText
         },
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);

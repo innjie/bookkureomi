@@ -124,6 +124,7 @@ function detailAuction(auctionNo) {
             $('#viewInfo').prop('readonly', false);
             // $('#imageBtn').css("display","inline");
         }
+        type = 'auction';
 
         //버튼 세팅
         $('#buttonResult')[0].innerHTML = '';
@@ -139,7 +140,7 @@ function detailAuction(auctionNo) {
             }
         }
         resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"bidListByAuctionNo(" + data.auction.auctionNo + ")\">입찰 내역 보기</button>";
-        resultBtn += "<button type='button' class='pop-btn' onClick='viewOrderReview(" + data.auction.auctionNo + ",auction + )'> 리뷰 보기</button>";
+        resultBtn += "<button type='button' class='pop-btn' onClick='viewOrderReview(" + data.auction.auctionNo + ")'> 리뷰 보기</button>";
         resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeAuctionDetailPopup()\">닫기</button>";
 
         $('#buttonResult').append(resultBtn);

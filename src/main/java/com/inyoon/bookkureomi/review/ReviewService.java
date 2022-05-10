@@ -27,4 +27,6 @@ public class ReviewService {
     public int getReviewCount(int userNo) {return reviewMapper.getReviewCount(userNo);}
 
     public void deleteReview(Review review) { reviewMapper.deleteReview(review);}
+
+    public Review getReviewByType(Map<String, Object> parameter) { return reviewMapper.getReviewByType(parameter);}
 }
