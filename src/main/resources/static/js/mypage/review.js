@@ -63,7 +63,7 @@ function viewOrderReview(typeNo) {
         }
     }).done(function (data) {
         if(data.result == "success") {
-            if(review == null) {
+            if(data.review == null) {
                 alert("리뷰가 존재하지 않습니다.");
             } else {
                 createReviewDetailForm();
