@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.inyoon.bookkureomi.domain.Auction;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AuctionService {
@@ -16,8 +17,8 @@ public class AuctionService {
     public List<Auction> getAllAuctionList() {
         return auctionMapper.getAllAuctionList();
     }
-    public List<Auction> getAuctionListByUserNo(int userNo) {
-        return auctionMapper.getAuctionListByUserNo(userNo);
+    public List<Auction> getAuctionListByUserNo(Map<String, Object> paramMap) {
+        return auctionMapper.getAuctionListByUserNo(paramMap);
     }
     public Auction getAuctionListSchduled() {
         return auctionMapper.getAuctionListSchduled();
