@@ -20,7 +20,7 @@ public interface SaleMapper {
 	public void deleteSale(int saleNo);
 
 	public List<Sale> getMySaleList(Map<String, Object> paramMap);
-	public List<Sale> recommend(int genreNo);
+	public List<Sale> getRecommendSale(int genreNo);
 	
 	public int countSaleList();
 	public int countFindSaleList(Map<String, Object> paramMap);
