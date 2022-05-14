@@ -126,7 +126,7 @@ public class SaleService {
 	
 	
 	public List<Sale> getRecommendSale(int genreNo) {
-		return saleMapper.recommend(genreNo);
+		return saleMapper.getRecommendSale(genreNo);
 	}
 
 }

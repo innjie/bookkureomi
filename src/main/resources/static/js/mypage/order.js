@@ -291,6 +291,21 @@ function createSaleOrder() {
 	var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
 
+    if(pAddress == ''){
+    	alert('배송지 우편번호를 입력하세요.');
+    	return;
+    } else if(rName == ''){
+    	alert('배송지 주소를 입력하세요.');
+    	return;
+    } else if(rPhone == ''){
+    	alert('받는이를 입력하세요.');
+    	return;
+    } else if(rAddress == ''){
+    	alert('받는이 전화번호를 입력하세요.');
+    	return;
+    }
+    
+    
     if(confirm("중고 책을 구입하시겠습니까?")) {
     	$.ajax({
     		url: "/book/order/create", 
@@ -357,6 +372,20 @@ function createCartItemOrder() {
 	var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
 
+    if(pAddress == ''){
+    	alert('배송지 우편번호를 입력하세요.');
+    	return;
+    } else if(rName == ''){
+    	alert('배송지 주소를 입력하세요.');
+    	return;
+    } else if(rPhone == ''){
+    	alert('받는이를 입력하세요.');
+    	return;
+    } else if(rAddress == ''){
+    	alert('받는이 전화번호를 입력하세요.');
+    	return;
+    }
+    
     if(confirm("선택한 책을 구입하시겠습니까?")) {
     	$.ajax({
     		url: "/book/order/create", 
