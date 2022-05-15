@@ -62,6 +62,19 @@ function updateInfo() {
     }).done(function(data) {
         if(data.result == 'success') {
             window.alert("정보 수정이 완료되었습니다.\n 다시 로그인해주세요.");
+            $.ajax({
+                url:"/book/user/logout",
+                type:'POST',
+                dataType: "json",
+                async: false,
+                data: {
+                },
+                beforeSend:function(xhr) {
+                    xhr.setRequestHeader(header, token);
+                }
+            }).done(function( data ) {
+
+            })
             window.location = "/book/user/login";
         }
     }).fail(function(textStatus) {
