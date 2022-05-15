@@ -40,40 +40,6 @@ public class LogInOutController {
 
         return map;
     }
-
-    //login
-//    @PostMapping("/user/login")
-//    @ResponseBody
-//    public Map<String, Object> login(HttpServletRequest request,
-//                              @RequestParam("id") String id, @RequestParam("pw") String pw) throws Exception {
-//        System.out.println("in login Controller");
-//        User user = new User();
-//        user.setId(id);
-//        user.setPw(pw);
-//
-//        Map<String, Object> map = new HashMap<String, Object>();
-//        String loginResult = userService.login(user);
-//        map.put("result", "success");
-//
-//
-//        if(loginResult.equals("matched")) {
-//            HttpSession httpSession = request.getSession();
-//            user = userService.getUserById(id);
-//            httpSession.setAttribute("user", user);
-//            System.out.println("login Success");
-//
-//            map.put("username", user.getName());
-//            System.out.println(user.getName());
-//            map.put("result", "success");
-//
-//            return map;
-//        } else {
-//            map.put("result", "login failed");
-//            return map;
-//
-//        }
-//    }
-
     //logout
     @PostMapping("/user/logout")
     public String handleRequest(HttpSession session) throws Exception {
