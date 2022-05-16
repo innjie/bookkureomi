@@ -28,17 +28,6 @@
 		    ) Z WHERE ROWNUM <![CDATA[ <= ]]> #{end} 
 		) WHERE RNUM >= #{start} 
     </select>
-    <!--  
-        SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, regiDate, state, author,
-			Sale.genreNo AS "genre.genreNo", genreType AS "genre.genreType"  , 
-			Sale.userNo AS "user.userNo", name AS "user.name", id AS "user.id"
-		FROM 
-			Sale, Genre, Users 
-		where
-			Sale.userNo = Users.userNo
-			AND Sale.genreNo = Genre.genreNo
-		ORDER BY saleNo desc -->
     
  	<!-- 해당 판매 정보 확인  -->
     <select id="getSale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
@@ -158,11 +147,14 @@
 
 	<!-- 해당 장르만 가져오기 -->
     <select id="getRecommendSale" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Sale">
-        SELECT 
-			saleNo, publisher, title, costPrice, salePrice, image, info, userNo, regiDate, state, author, genreNo
-		FROM 
-			Sale
-		where
-			genreNo = #{genreNo}
+        SELECT *
+		FROM (
+		     SELECT S.*
+		     FROM Sale s, Users u
+		     WHERE s.genreNo in (u.firstGenre, u.secondGenre, u.thirdGenre)
+		     AND s.userNo != #{userNo}
+		     ORDER BY DBMS_RANDOM.RANDOM
+				 )
+		WHERE 4 > rownum
     </select>
 </mapper>
