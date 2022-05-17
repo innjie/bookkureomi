@@ -41,9 +41,7 @@ public class RecommendController {
         genreList.add(user.getThirdGenre());
 
         try {
-            for(int genreNo : genreList) {
-                saleList.addAll(saleService.getRecommendSale(genreNo));
-            }
+            saleList = saleService.getRecommendSale(user.getUserNo());
             for(Sale s : saleList) {
                 System.out.println(s);
             }
