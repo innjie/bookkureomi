@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -16,12 +17,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller("/book")
+@Controller
+@RequestMapping("/book")
 public class RecommendController {
     @Autowired
     SaleService saleService;
     @Autowired
     UserService userService;
+
+    @GetMapping("/recommend/page")
+    public String recommendPage() { return "sale/recommend"; }
 
     @GetMapping("/recommend/user")
     @ResponseBody
@@ -38,6 +43,9 @@ public class RecommendController {
         try {
             for(int genreNo : genreList) {
                 saleList.addAll(saleService.getRecommendSale(genreNo));
+            }
+            for(Sale s : saleList) {
+                System.out.println(s);
             }
             map.put("result", "success");
             map.put("saleList", saleList);
