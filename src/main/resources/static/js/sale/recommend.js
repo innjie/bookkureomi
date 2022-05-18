@@ -17,7 +17,6 @@ function getRecommendByUser() {
         window.scrollTo(0,0);
         $('#result')[0].innerHTML = '';
 
-        alert(data.saleList.length);
         if(data.saleList.length > 0) {
             var result = "<table class=\"table-list\">"
                 + "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
