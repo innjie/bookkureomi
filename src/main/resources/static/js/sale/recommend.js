@@ -17,6 +17,7 @@ function getRecommendByUser() {
         window.scrollTo(0,0);
         $('#result')[0].innerHTML = '';
 
+
         if(data.saleList.length > 0) {
             var result = "<table class=\"table-list\">"
                 + "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
@@ -31,7 +32,7 @@ function getRecommendByUser() {
                 result += "<td><ul class=\"list-style\">";
 
                 //image
-                if(data.saleList[i].imageList.length > 0){
+                /*if(data.saleList[i].imageList.length > 0){
                     result += "<li class=\"table-list-image\">"
                         + "<img src=\"" + "/book/image?path="+encodeURI(data.saleList[i].imageList[0].filePath) + "\" class=\"img-fit\"/>"
                         + "</li>";
@@ -39,7 +40,7 @@ function getRecommendByUser() {
                     result += "<li class=\"table-list-image\">"
                         + "<img src=\"/images/sale/0.png\" class=\"img-fit\"/>"
                         + "</li>";
-                }
+                }*/
 
                 //info
                 result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
