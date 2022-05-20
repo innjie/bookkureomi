@@ -18,7 +18,7 @@
 	                    <i class="fas fa-fw fa-tachometer-alt"></i>
 	                    <span>중고책 경매</span></a>
 	            </li>
-	            <li class="nav-item active">
+	            <li class="nav-item active" th:if="${#authorization.expr('isAuthenticated()')}">
 	                <a class="nav-link" href="/book/recommend/page">
 	                    <i class="fas fa-fw fa-tachometer-alt"></i>
 	                    <span>관심 장르 추천</span></a>
