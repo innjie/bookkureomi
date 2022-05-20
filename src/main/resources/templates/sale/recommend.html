@@ -10,8 +10,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/dist/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/common/paging.js}" src="../../static/js/common/paging.js"></script>
-    <script type="text/javascript" th:src="@{/js/sale/sale.js}" src="../../static/js/sale/sale.js"></script>
     <script type="text/javascript" th:src="@{/js/sale/recommend.js}" src="../../static/js/sale/recommend.js"></script>
+    <script type="text/javascript" th:src="@{/js/sale/sale.js}" src="../../static/js/sale/sale.js"></script>
+    <script type="text/javascript" th:src="@{/js/mypage/order.js}" src="../../static/js/mypage/order.js"></script>
+    <script type="text/javascript" th:src="@{/js/cart/cart.js}" src="../../static/js/cart/cart.js"></script>
+    <script type="text/javascript" th:src="@{/js/image/image.js}" src="../../static/js/image/image.js"></script>
+    <script type="text/javascript" th:src="@{/js/delivery/delivery.js}" src="../../static/js/delivery/delivery.js"></script>
+    <script type="text/javascript" th:src="@{/js/point/point.js}" src="../../static/js/point/point.js"></script>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
@@ -22,6 +27,130 @@
     <div class="container-section">
         <div class="div-list-result" id="result"></div>
         <div class="paging" id="paging"></div>
+
+        <div id="pop-mask-sale-detail" class="pop-mask">
+            <div id="pop-sale-detail" class="pop">
+                <h2>중고 서적 뷰</h2>
+                <input type="hidden" id="viewSaleNo" />
+                <ul class="pop-style1">
+                    <li class="pop-style1-list">
+                        <ul class="pop-style2">
+                            <li class="pop-style2-list">
+                                <ul class="pop-style3">
+                                    <li>
+                                        <div class="img-select">
+                                            <img src="" id="viewImage" class="pop-img"/>
+                                            <input type="hidden" id="imageNo" />
+                                            <input type="hidden" id="filePath" />
+                                        </div>
+                                    </li>
+                                    <li id="imageForm">
+                                        <form method="POST" enctype="multipart/form-data" id="updateImage">
+                                            <input type="file" name="file" id="updateImageFile" multiple="multiple" />
+
+                                        </form>
+                                    </li>
+                                    <li id="imageBtn">
+                                        <button id="btnUpdateImage" type="button" onclick="updateImage('sale')">사진 수정</button>
+                                        <button id="btnDeleteImage" type="button" onclick="deleteImage('sale')">사진 삭제</button>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="pop-style2-list">
+                                <ul class="pop-style3">
+                                    <li>
+                                        판매자 <input type="text" id="viewUser" readonly />
+                                    </li>
+                                    <li>
+                                        제목 <input type="text" id="viewTitle" readonly />
+                                    </li>
+                                    <li>
+                                        출판사 <input type="text" id="viewPublisher" readonly />
+                                    </li>
+                                    <li>
+                                        저자 <input type="text" id="viewAuthor" readonly />
+                                    </li>
+                                    <li>
+                                        원가 <input type="number" id="viewCostPrice" readonly />
+                                    </li>
+                                    <li>
+                                        판매가 <input type="number" id="viewSalePrice" />
+                                    </li>
+                                    <li>
+                                        등록일 <input type="text" id="viewRegiDate" readonly />
+                                    </li>
+                                    <li>
+                                        장르 <input type="text" id="viewGenre" readonly />
+                                    </li>
+                                    <li>
+                                        상태 <input type="text" id="viewState" readonly />
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="pop-style1-list">
+                        정보<br>
+                        <textarea id="viewInfo"></textarea>
+                    </li>
+                    <li class="pop-style1-list" id="deliveryInfo">
+                    </li>
+                </ul>
+                <div class="pop-btn-style" id="buttonResult"></div>
+            </div>
+        </div>
+
+        <div id="pop-mask-order-create" class="pop-mask">
+            <div id="pop-order-create" class="pop">
+                <h2>중고 서적 구매하기</h2>
+                <ul class="pop-style1">
+                    <li class="pop-style1-list">
+                        <ul class="pop-style2">
+                            <li class="pop-style2-list">
+                                <ul class="pop-style3">
+                                    <li>
+                                        제목 <input type="text" id="orderTitle" readonly />
+                                    </li>
+                                    <li>
+                                        가격 <input type="number" id="orderPrice" readonly />
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="pop-style1-list">
+                        <ul class="pop-style2">
+                            <li class="pop-style2-list">
+                                <ul class="pop-style3">
+                                    <li>
+                                        주소록 가져오기&nbsp;&nbsp;
+                                        <select class="find-select" id="findAddress" name="findAddress">
+                                            <option value="">-</option>
+                                        </select>
+                                    </li>
+                                    <li>
+                                        <!-- 주문자 주소 -->배송지 우편번호 <input type="text" id="orderPAddress" />
+                                    </li>
+                                    <li>
+                                        배송지 주소 <input type="text" id="orderRAddress" />
+                                    </li>
+                                    <li>
+                                        받는이 <input type="text" id="orderRName" />
+                                    </li>
+                                    <li>
+                                        받는이 전화번호 <input type="text" id="orderRPhone" />
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="pop-btn-style">
+                    <button type="button" class="pop-btn" onClick="createSaleOrder()">구매하기</button>
+                    <button type="button" class="pop-btn" onClick="closeOrderPopup()">닫기</button>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 </body>
