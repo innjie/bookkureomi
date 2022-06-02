@@ -226,10 +226,10 @@ function closeReviewDetail() {
     $("#pop-review-detail").css("display", "none");
     $("#pop-mask-review-detail").css("display", "none");
     $("#pop-mask-review-detail").css("overflow", "hidden");
-    $("body").css("overflow", "auto");
+    //$("body").css("overflow", "auto");
 
-    $(".pop").css("height", "800px");
-    $("#pop-style1-create").css("height", "500px");
+    //$(".pop").css("height", "800px");
+    //$("#pop-style1-create").css("height", "500px");
 }
 function createReviewDetailForm() {
     $("#pop-review-detail").css("display", "block");

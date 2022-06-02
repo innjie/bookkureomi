@@ -64,8 +64,9 @@ function listSale(pageNo){
 		
 		$('#result')[0].innerHTML = '';
 		
+		var result = '';
 		if(data.saleList.length > 0) {			
-			var result = "<table class=\"table-list\">"
+			result = "<table class=\"table-list\">"
 				+ "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
 	
 			for(var i=0; i<data.saleList.length; i++){

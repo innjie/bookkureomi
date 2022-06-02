@@ -51,52 +51,58 @@ function listMySale(pageNo){
 		
 		$('#result')[0].innerHTML = '';
 		
-		var result = "<table class=\"table-list\">"
-					+ "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
-		var sale;
-		
-		for(var i=0; i<data.saleList.length; i++){
-			if(i%3 == 0){
-				result += "</tr><tr>";
-			} else if(i == 0){
-				result += "<tr>";
-			}
+		var result = '';
+		if(data.saleList.length > 0) {			
+			result = "<table class=\"table-list\">"
+				+ "<colgroup><col width=\"33.333333%\" /><col width=\"33.333333%\" /><col width=\"33.333333%\" /></colgroup><tbody>";
+			var sale;
 			
-			result += "<td><ul class=\"list-style\">";
-			
-			//image
-			if(data.saleList[i].imageList.length > 0){
-				result += "<li class=\"table-list-image\">"
-						+ "<img src=\"" + "/book/image?path="+encodeURI(data.saleList[i].imageList[0].filePath) + "\" class=\"img-fit\"/>"
+			for(var i=0; i<data.saleList.length; i++){
+				if(i%3 == 0){
+					result += "</tr><tr>";
+				} else if(i == 0){
+					result += "<tr>";
+				}
+				
+				result += "<td><ul class=\"list-style\">";
+				
+				//image
+				if(data.saleList[i].imageList.length > 0){
+					result += "<li class=\"table-list-image\">"
+							+ "<img src=\"" + "/book/image?path="+encodeURI(data.saleList[i].imageList[0].filePath) + "\" class=\"img-fit\"/>"
+							+ "</li>";
+				} else{
+					result += "<li class=\"table-list-image\">"
+						+ "<img src=\"/images/sale/0.png\" class=\"img-fit\"/>"
 						+ "</li>";
-			} else{
-				result += "<li class=\"table-list-image\">"
-					+ "<img src=\"/images/sale/0.png\" class=\"img-fit\"/>"
-					+ "</li>";
+				}
+				
+				//info
+				result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
+							+ "<li class=\"table-list-content-list-style\"><strong>" + data.saleList[i].title + "</strong></li>"
+							+ "<li class=\"table-list-content-list-style\">" + data.saleList[i].author + " / " + data.saleList[i].publisher + "</li>"
+							+ "<li class=\"table-list-content-list-style\"> \\" + data.saleList[i].costPrice + " -> \\" + data.saleList[i].salePrice + "</li>"
+							+ "<li class=\"table-list-content-list-style\">" + data.saleList[i].state + "</li>"
+							+ "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale"+ data.saleList[i].saleNo +"\" class=\"view-btn\" onClick=\"detailMySale("+ data.saleList[i].saleNo +")\">상세보기</button><li>"
+							+ "</ul></li>";
+				
+				result += "</ul></td>";
+				
+				if (i==0 && data.saleList.length==1){
+					result += "<td></td><td></td>";
+				} else if (i==1 && data.saleList.length==2) {
+					result += "<td></td>";
+				}
+				
+				if(i == data.saleList.length-1){
+					result += "</tr>";
+				}
 			}
+			result += "</tbody></table>";
 			
-			//info
-			result += "<li class=\"table-list-content\"><ul class=\"table-list-content-style\">"
-						+ "<li class=\"table-list-content-list-style\"><strong>" + data.saleList[i].title + "</strong></li>"
-						+ "<li class=\"table-list-content-list-style\">" + data.saleList[i].author + " / " + data.saleList[i].publisher + "</li>"
-						+ "<li class=\"table-list-content-list-style\"> \\" + data.saleList[i].costPrice + " -> \\" + data.saleList[i].salePrice + "</li>"
-						+ "<li class=\"table-list-content-list-style\">" + data.saleList[i].state + "</li>"
-						+ "<li class=\"table-list-content-btn-style\"><button type=\"button\" id=\"btnSale"+ data.saleList[i].saleNo +"\" class=\"view-btn\" onClick=\"detailMySale("+ data.saleList[i].saleNo +")\">상세보기</button><li>"
-						+ "</ul></li>";
-			
-			result += "</ul></td>";
-			
-			if (i==0 && data.saleList.length==1){
-				result += "<td></td><td></td>";
-			} else if (i==1 && data.saleList.length==2) {
-				result += "<td></td>";
-			}
-			
-			if(i == data.saleList.length-1){
-				result += "</tr>";
-			}
+		} else {
+			result = "<p class=\"find-nothing\">판매내역이 없습니다.</p>";
 		}
-		result += "</tbody></table>";
 		
 		$('#result').append(result);
     })
@@ -222,6 +228,9 @@ function detailMySale(saleNo) {
 				resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"updateMySale()\">수정하기</button>";			
 				resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"deleteMySale()\">삭제하기</button>";
 			}	
+		} else{
+			type = 'sale';
+	        resultBtn += "<button type='button' class='pop-btn' onClick='viewOrderReview(" + data.sale.saleNo + ")'> 리뷰 보기</button>";
 		}
 		resultBtn += "<button type=\"button\" class=\"pop-btn\" onClick=\"closeMySaleDetailPopup()\">닫기</button>";
 		
