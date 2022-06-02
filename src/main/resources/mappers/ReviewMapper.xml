@@ -7,42 +7,42 @@
     <select id="getReviewList" resultType="com.inyoon.bookkureomi.domain.Review">
         SELECT *
         FROM (
-            SELECT ROWNUM AS RNUM, Z.*
-            FROM (
-                SELECT orderNo, userNo, reviewtext, score
-                FROM Review
-                where userNo = #{userNo} AND isDelete = 0
-                ORDER BY orderNo desc
-            ) Z WHERE ROWNUM <![CDATA[ <= ]]> #{end}
-        ) WHERE RNUM >= #{start}
-    </select>
-    <select id="receivedReviewList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Review">
-        SELECT *
-        FROM (
                  SELECT ROWNUM AS RNUM, Z.*
                  FROM (
                           SELECT orderNo, userNo, reviewtext, score
                           FROM Review
-                          where orderNo = (select userNo
-                                           from ORDERDETAIL o, auction a
-                                           where o.AUCTIONNO = a.AUCTIONNO)
+                          where userNo = #{userNo}
                             AND isDelete = 0
                           ORDER BY orderNo desc
-                      ) Z WHERE ROWNUM <![CDATA[ <= ]]> #{end}
-             ) WHERE RNUM >= #{start}
+                      ) Z
+                 WHERE ROWNUM <![CDATA[ <= ]]> #{end}
+             )
+        WHERE RNUM >= #{start}
+    </select>
+    <select id="receivedReviewList" parameterType="integer" resultType="com.inyoon.bookkureomi.domain.Review">
+        SELECT orderNo, userNo, reviewtext, score
+        FROM Review
+        where orderNo in (select o.orderNo
+                         from ORDERDETAIL o,
+                              auction a
+                         where o.AUCTIONNO = a.AUCTIONNO
+                         and userNo = #{userNo})
+          AND isDelete = 0
+        ORDER BY orderNo desc
     </select>
     <select id="getReview" resultType="com.inyoon.bookkureomi.domain.Review">
         SELECT orderNo, userNo, reviewText, score, isDelete
         FROM Review
-        WHERE orderNo = #{orderNo} AND userNo = #{userNo}
+        WHERE orderNo = #{orderNo}
+          AND userNo = #{userNo}
     </select>
     <select id="getReviewByType" resultType="com.inyoon.bookkureomi.domain.Review">
-        <if test = "type.equals('auction')">
+        <if test="type.equals('auction')">
             SELECT orderNo, userNo, reviewText, score, isDelete
             FROM Review
             WHERE orderNo = (SELECT orderNo FROM OrderDetail WHERE auctionNo = #{typeNo})
         </if>
-        <if test = "type.equals('sale')">
+        <if test="type.equals('sale')">
             SELECT orderNo, userNo, reviewText, score, isDelete
             FROM Review
             WHERE orderNo = (SELECT orderNo FROM OrderDetail WHERE saleNo = #{typeNo})
@@ -51,16 +51,18 @@
     <select id="getReviewCount" resultType="java.lang.Integer">
         SELECT COUNT(DISTINCT Review.orderNo)
         FROM Review
-        WHERE userNo = #{userNo} AND isDelete = 0
+        WHERE userNo = #{userNo}
+          AND isDelete = 0
     </select>
     <select id="getReceivedReviewCount" resultType="java.lang.Integer">
         SELECT COUNT(DISTINCT Review.orderNo)
         FROM Review
         where orderNo = (select userNo
-                         from ORDERDETAIL o, auction a
+                         from ORDERDETAIL o,
+                              auction a
                          where o.AUCTIONNO = a.AUCTIONNO
                            AND a.userNo = #{userNo})
-        AND isDelete = 0
+          AND isDelete = 0
     </select>
     <insert id="insertReview" parameterType="com.inyoon.bookkureomi.domain.Review">
         INSERT INTO Review (orderNo, userNo, reviewText, score)
@@ -69,6 +71,7 @@
     <delete id="deleteReview" parameterType="com.inyoon.bookkureomi.domain.Review">
         UPDATE Review
         SET isDelete = '1'
-        WHERE orderNo = #{orderNo} AND userNo = #{userNo}
+        WHERE orderNo = #{orderNo}
+          AND userNo = #{userNo}
     </delete>
 </mapper>
