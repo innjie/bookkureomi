@@ -102,6 +102,17 @@ function updateDelivery(){
     	return;
     } 
     
+    if(company.length > 50){
+    	alert("택배사는 50자까지 가능합니다.");
+    	return;
+    } else if(/[^0-9]/g.test(waybill)){
+    	alert("송장번호는 숫자로만 입력해주세요.");
+    	return;
+    } else if(waybill.length > 50){
+    	alert("송장번호는 100자까지 가능합니다.");
+    	return;
+    }
+    
     if(confirm("배송정보를 수정하시겠습니까?")) {
     	$.ajax({
     		url: "/book/delivery/update", 
