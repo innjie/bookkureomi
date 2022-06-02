@@ -5,6 +5,7 @@ import com.inyoon.bookkureomi.domain.Sale;
 import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.user.Login;
 import com.inyoon.bookkureomi.user.UserService;
+import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -51,14 +52,6 @@ public class RecommendController {
             map.put("result", "fail");
             map.put("message", "정보 수집에 오류가 발생했습니다.");
         }
-        return map;
-    }
-    @GetMapping("/recommend/sale")
-    @ResponseBody
-    public Map<String, Object> recommendSale() {
-        Map<String, Object> map = new HashMap<>();
-
-
         return map;
     }
 }

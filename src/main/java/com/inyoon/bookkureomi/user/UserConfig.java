@@ -108,31 +108,4 @@ public class UserConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
-    
-    
-    
- /*   
-    private UserService userService() {
-    	UserService userService = new UserService();
-    	userService.setEnableGroups(false);
-        return userService;
-    }
-    
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-   */ 
-    // logout 후 login할 때 정상동작을 위함
- /*   @Bean
-    public SessionRegistry sessionRegistry() {
-        return new SessionRegistryImpl();
-    }*/
 }

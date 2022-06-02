@@ -1,5 +1,6 @@
 package com.inyoon.bookkureomi.review;
 
+import com.inyoon.bookkureomi.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,8 @@ public class ReviewService {
     public List<Review> getReviewList(Map<String, Object> paramMap){
         return reviewMapper.getReviewList(paramMap);
     }
-    public List<Review> receivedReviewList (Map<String, Object> paramMap) {
-        return reviewMapper.receivedReviewList(paramMap);
+    public List<Review> receivedReviewList (long userNo) {
+        return reviewMapper.receivedReviewList(userNo);
     }
     public void insertReview(Review review) {
         reviewMapper.insertReview(review);

@@ -81,3 +81,17 @@ function updateInfo() {
         alert("페이지 오류: " + textStatus);
     });
 }
+function receivedReviewList() {
+    $.ajax({
+        url:"/book/review/receive",
+        type: "GET",
+        dataType: "json",
+    }).done(function(data) {
+        if(data.result == "fail") {
+            alert("로그인 후 이용하세요");
+            window.location = "/";
+        } else if(data.result == "success"){
+
+        }
+    })
+}
