@@ -93,9 +93,6 @@ public class KakaoPayService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("cid", "TC0ONETIME");
         params.add("tid", kakaoPayReadyVO.getTid());
-        //params.add("partner_order_id", recharge.getUser().getUserNo() + "-" + recharge.getRechargeNo());
-        //params.add("partner_user_id", recharge.getUser().getId());
-        //params.add("total_amount", String.valueOf(recharge.getRcPoint()));
         params.add("partner_order_id", (String) session.getAttribute("partner_order_id"));
         params.add("partner_user_id", (String) session.getAttribute("partner_user_id"));
         params.add("total_amount", (String) session.getAttribute("total_amount"));
