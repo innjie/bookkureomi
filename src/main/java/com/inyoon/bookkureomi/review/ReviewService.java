@@ -18,8 +18,8 @@ public class ReviewService {
     public List<Review> getReviewList(Map<String, Object> paramMap){
         return reviewMapper.getReviewList(paramMap);
     }
-    public List<Review> receivedReviewList (long userNo) {
-        return reviewMapper.receivedReviewList(userNo);
+    public List<Review> receivedReviewList (Map<String, Object> paramMap) {
+        return reviewMapper.receivedReviewList(paramMap);
     }
     public void insertReview(Review review) {
         reviewMapper.insertReview(review);
@@ -30,4 +30,7 @@ public class ReviewService {
     public void deleteReview(Review review) { reviewMapper.deleteReview(review);}
 
     public Review getReviewByType(Map<String, Object> parameter) { return reviewMapper.getReviewByType(parameter);}
+
+    public int getReceivedReviewCount(int userNo) { return reviewMapper.getReceivedReviewCount(userNo);
+    }
 }

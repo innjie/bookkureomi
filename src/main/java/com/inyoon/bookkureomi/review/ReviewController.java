@@ -48,7 +48,6 @@ public class ReviewController {
             int start = 1+(showCnt*(pageNo-1));
             int end = showCnt+(showCnt*(pageNo-1));
 
-            System.out.println("start: " + start + ", end: " + end);
             Map<String, Object> paramMap = new HashMap<String, Object>();
             paramMap.put("userNo", userNo);
             paramMap.put("start", start);
@@ -63,13 +62,28 @@ public class ReviewController {
     }
     @GetMapping("/review/receive")
     @ResponseBody
-    public Map<String, Object> receivedReview(@AuthenticationPrincipal Login login) {
-        Map<String, Object> map = new HashMap<>();
+    public Map<String, Object> receivedReview(@AuthenticationPrincipal Login login,
+                                              @RequestParam("pageNo") int pageNo) {
+        int showCnt = 10;	//보여주는 개수
+        int reviewCnt = 0;	//리스트 개수
+        int pageCnt = 0;
 
-        User user = userService.getUser(login.getUserNo());
+        Map<String, Object> map = new HashMap<>();
+        int userNo = login.getUserNo();
+        List<Review> reviewList = new ArrayList<>();
+        reviewCnt = reviewService.getReceivedReviewCount(userNo);
 
         try {
-            List<Review> reviewList = reviewService.receivedReviewList(user.getUserNo());
+            pageCnt = (reviewCnt % showCnt == 0) ? (reviewCnt / showCnt) : (reviewCnt / showCnt + 1);		//페이지 개수
+            int start = 1+(showCnt*(pageNo-1));
+            int end = showCnt+(showCnt*(pageNo-1));
+
+            Map<String, Object> paramMap = new HashMap<String, Object>();
+            paramMap.put("userNo", userNo);
+            paramMap.put("start", start);
+            paramMap.put("end", end);
+
+            reviewList = reviewService.receivedReviewList(paramMap);
             map.put("result", "success");
             map.put("reviewList", reviewList);
         } catch(Exception e) {

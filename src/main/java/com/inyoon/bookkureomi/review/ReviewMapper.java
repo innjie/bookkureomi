@@ -11,10 +11,12 @@ import java.util.Map;
 @Mapper
 public interface ReviewMapper {
     public List<Review> getReviewList(Map<String, Object> paramMap);
-    public List<Review> receivedReviewList (long userNo);
+    public List<Review> receivedReviewList (Map<String, Object> paramMap);
     public void insertReview(Review review);
     public void deleteReview(Review review);
     public Review getReview(Review review);
     public int getReviewCount(int userNo);
     public Review getReviewByType(Map<String, Object> parameter);
+
+    public int getReceivedReviewCount(int userNo);
 }

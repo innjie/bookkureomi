@@ -51,6 +51,27 @@ function listReview(pageNo) {
             alert("Request failed: " + textStatus);
         });
 }
+function receivedReviewList() {
+    nowPageNo = pageNo;
+
+    $.ajax({
+        url: "/book/review/receive",
+        method : "GET",
+        dataType : "json",
+        data: {
+            pageNo : pageNo
+        }
+    }).done(function (data) {
+        if(data.result == "success") {
+            //create form
+            createReceivedReviewForm();
+            //setting data
+        } else {
+            alert(data.message);
+            return;
+        }
+    })
+}
 function viewOrderReview(typeNo) {
     var typeNo = parseInt(typeNo);
     $.ajax({
@@ -222,14 +243,30 @@ function createReviewForm() {
     var offset = $("#pop-review-create").offset().top;
     $("html").animate({scrollTop: offset}, 400);
 }
+function createReceivedReviewForm() {
+    $("#pop-review-received-list").css("display", "block");
+
+    $("#pop-mask-review-received-list").css("display", "block");
+    $("#pop-mask-review-received-list").css("background-color", "rgba( 0, 0, 0, 0 )");
+    $("#pop-review-received-list").css({
+        "top": (window.screen.height / 2) - ($("#pop-review-received-list").outerHeight() / 2) - 50 + "px",
+        "left": (window.screen.width / 2) - ($("#pop-review-received-list").outerWidth() / 2) + "px"
+    });
+
+    $("#pop-review-received-list").css("display", "block");
+
+    var offset = $("#pop-review-received-list").offset().top;
+    $("html").animate({scrollTop: offset}, 400);
+}
+function closeReceivedReview() {
+    $("#pop-review-received-list").css("display", "none");
+    $("#pop-mask-review-received-list").css("display", "none");
+    $("#pop-mask-review-received-list").css("overflow", "hidden");
+}
 function closeReviewDetail() {
     $("#pop-review-detail").css("display", "none");
     $("#pop-mask-review-detail").css("display", "none");
     $("#pop-mask-review-detail").css("overflow", "hidden");
-    //$("body").css("overflow", "auto");
-
-    //$(".pop").css("height", "800px");
-    //$("#pop-style1-create").css("height", "500px");
 }
 function createReviewDetailForm() {
     $("#pop-review-detail").css("display", "block");
