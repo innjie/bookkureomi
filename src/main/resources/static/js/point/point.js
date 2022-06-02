@@ -56,13 +56,17 @@ function listRecharge(pageNo){
 
 				
 				if(data.rechargeList[i].rcMethod == 'kakao') {
-					result += "<td class=\"table-text\">카카오페이충전</td>";
+					result += "<td class=\"table-text\">카카오페이 충전</td>";
 				} else if(data.rechargeList[i].rcMethod == 'join') {
 					result += "<td class=\"table-text\">가입이벤트</td>";
 				} else if(data.rechargeList[i].rcMethod == 'selling') {
 					result += "<td class=\"table-text\">판매</td>";
+				} else if(data.rechargeList[i].rcMethod == 'card') {
+					result += "<td class=\"table-text\">신용카드 충전</td>";
+				} else if(data.rechargeList[i].rcMethod == 'deposit') {
+					result += "<td class=\"table-text\">무통장입금 충전</td>";
 				} else if(data.rechargeList[i].rcMethod == null) {
-					result += "<td class=\"table-text\"></td>";
+					result += "<td class=\"table-text\">-</td>";
 				}
 				
 					result += "<td class=\"table-text\">" + data.rechargeList[i].totalPoint + "</td>";
@@ -143,33 +147,35 @@ function createRecharge(){
 			}
 		}).done(function( data ) {
 			//alert(data.result);
-			window.open(data.result);
-			detailPoint();
-			listRecharge(1);
+			window.location = data.result;
+//			detailPoint();
+//			listRecharge(1);
 		})
 	    .fail( function( textStatus ) {
 	        alert( "Request failed: " + textStatus );
 	    });
 	} else if(rcMethod == 'card') {
-		//alert("신용카드 결제는 도입 예정입니다.");
-		$.ajax({
-			url: "/book/point/create", 
-			method: 'GET',
-			dataType: "json",
-			data: {
-				rcPoint:rcPoint
-			}
-		}).done(function( data ) {		
-			setPoint(data.totalPoint);
-			
-			alert(rcPoint + "포인트 충전 완료");
-			closeRechargeCreatePopup();
-			
-			location.reload();
-		})
-	    .fail( function( textStatus ) {
-	        alert( "Request failed: " + textStatus );
-	    });
+		alert("신용카드 결제는 도입 예정입니다.");
+		
+//		$.ajax({
+//			url: "/book/point/create", 
+//			method: 'GET',
+//			dataType: "json",
+//			data: {
+//				rcPoint:rcPoint
+//				, rcMethod:"card"
+//			}
+//		}).done(function( data ) {		
+//			setPoint(data.totalPoint);
+//			
+//			alert(rcPoint + "포인트 충전 완료");
+//			closeRechargeCreatePopup();
+//			
+//			location.reload();
+//		})
+//	    .fail( function( textStatus ) {
+//	        alert( "Request failed: " + textStatus );
+//	    });
 	} else if(rcMethod == 'deposit') {
 		alert("무통장 입금은 도입 예정입니다.");		
 	}

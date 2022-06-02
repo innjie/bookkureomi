@@ -72,6 +72,30 @@
     </select>
     
     
+	<!-- 카카오 충전 내역 저장  -->
+    <insert id="addKakaoOrder" parameterType="com.inyoon.bookkureomi.kakao.KakaoPayApprovalVO">
+    	Insert into KAKAOORDER (
+    		aId,
+    		orderID,
+    		userId,
+    		tId,
+    		itemName,
+    		total,
+    		paymentMethod,
+    		createdAt,
+    		approvedAt
+    	) Values (
+    		#{aid}, 
+    		#{partner_order_id}, 
+    		#{partner_user_id}, 
+    		#{tid}, 
+    		#{item_name}, 
+    		#{amount.total}, 
+    		#{payment_method_type}, 
+    		#{created_at}, 
+    		#{approved_at}
+    	)
+    </insert>
     
     
      <!--   <select id="checkHasPoint" parameterType="integer" resultType="integer">

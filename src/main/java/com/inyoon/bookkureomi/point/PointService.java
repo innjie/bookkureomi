@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inyoon.bookkureomi.domain.Recharge;
+import com.inyoon.bookkureomi.kakao.KakaoPayApprovalVO;
 import com.inyoon.bookkureomi.point.PointMapper;
 
 @Service
@@ -38,6 +39,13 @@ public class PointService {
 	//나의 충전/이용 카운트
 	public int countRechargeList(Map<String, Object> paramMap) {
 		return pointMapper.countRechargeList(paramMap);
+	}
+	
+	//kakao 포인트 충전
+	@Transactional
+	public void rechargeKakaoPoint(Recharge recharge, KakaoPayApprovalVO approvalVO){
+		pointMapper.rechargePoint(recharge);
+		pointMapper.addKakaoOrder(approvalVO);
 	}
 	
 

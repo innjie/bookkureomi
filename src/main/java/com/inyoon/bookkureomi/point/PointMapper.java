@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.inyoon.bookkureomi.domain.Recharge;
+import com.inyoon.bookkureomi.kakao.KakaoPayApprovalVO;
 
 @Mapper
 public interface PointMapper {
@@ -18,4 +19,6 @@ public interface PointMapper {
 	public List<Recharge> getRechargeList(Map<String, Object> paramMap);
 	
 	public int countRechargeList(Map<String, Object> paramMap);
+
+	public void addKakaoOrder(KakaoPayApprovalVO approvalVO);
 }
