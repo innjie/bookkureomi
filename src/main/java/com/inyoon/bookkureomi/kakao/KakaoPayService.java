@@ -2,7 +2,10 @@ package com.inyoon.bookkureomi.kakao;
  
 import java.net.URI;
 import java.net.URISyntaxException;
- 
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,7 +16,6 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.inyoon.bookkureomi.domain.Recharge;
-import com.inyoon.bookkureomi.domain.User;
  
  
 @Service
@@ -25,7 +27,7 @@ public class KakaoPayService {
     private KakaoPayApprovalVO kakaoPayApprovalVO;
     
     //public String kakaoPayReady(Sale sale, User user) {
-    public String kakaoPayReady(Recharge recharge) {
+    public String kakaoPayReady(Recharge recharge, HttpServletRequest request) {
     	
     	System.out.println("kakaoPayReady");
         RestTemplate restTemplate = new RestTemplate();
@@ -49,6 +51,11 @@ public class KakaoPayService {
         params.add("cancel_url", "http://localhost:8000/book/kakao/cancel");
         params.add("fail_url", "http://localhost:8000/book/kakao/fail");
  
+        HttpSession session = request.getSession();
+        session.setAttribute("partner_order_id", recharge.getUser().getUserNo() + "-" + recharge.getRechargeNo());
+        session.setAttribute("partner_user_id", recharge.getUser().getId());
+        session.setAttribute("total_amount", String.valueOf(recharge.getRcPoint()));
+        
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
  
         try {
@@ -69,7 +76,7 @@ public class KakaoPayService {
         return "/";
     }
     
-    public KakaoPayApprovalVO kakaoPayInfo(String pg_token) {
+    public KakaoPayApprovalVO kakaoPayInfo(String pg_token, HttpSession session) {
     	 
        // log.info("KakaoPayInfoVO............................................");
        // log.info("-----------------------------");
@@ -86,12 +93,9 @@ public class KakaoPayService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("cid", "TC0ONETIME");
         params.add("tid", kakaoPayReadyVO.getTid());
-        //params.add("partner_order_id", recharge.getUser().getUserNo() + "-" + recharge.getRechargeNo());
-        //params.add("partner_user_id", recharge.getUser().getId());
-        //params.add("total_amount", String.valueOf(recharge.getRcPoint()));
-        params.add("partner_order_id", "1-0");
-        params.add("partner_user_id", "im");
-        params.add("total_amount", "1000");
+        params.add("partner_order_id", (String) session.getAttribute("partner_order_id"));
+        params.add("partner_user_id", (String) session.getAttribute("partner_user_id"));
+        params.add("total_amount", (String) session.getAttribute("total_amount"));
         params.add("pg_token", pg_token);
         
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
@@ -104,7 +108,7 @@ public class KakaoPayService {
         
         } catch (RestClientException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+        	System.out.println("카카오페이 결제 오류 : 이미 거래완료된 내역입니다.");
         } catch (URISyntaxException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

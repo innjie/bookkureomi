@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.inyoon.bookkureomi.user.Login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.inyoon.bookkureomi.domain.Recharge;
 import com.inyoon.bookkureomi.domain.User;
+import com.inyoon.bookkureomi.kakao.KakaoPayApprovalVO;
 import com.inyoon.bookkureomi.kakao.KakaoPayService;
 import com.inyoon.bookkureomi.user.MyAuthentication;
 
@@ -138,6 +141,7 @@ public class PointController {
 	@GetMapping("/point/create")
 	public Map<String, Object> rechargePoint(
 			@RequestParam("rcPoint") String rcPoint,
+			@RequestParam("rcMethod") String rcMethod,
 			@AuthenticationPrincipal Login principal) throws Exception {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -150,7 +154,7 @@ public class PointController {
 		
 			Recharge recharge = new Recharge();
 			recharge.setRcType("recharging");
-			recharge.setRcMethod("kakao");	//수정필요 - 파라미터로 받아오기
+			recharge.setRcMethod(rcMethod);	
 			recharge.setRcPoint(Integer.parseInt(rcPoint));
 			recharge.setUser(user);
 			recharge.setRechargeNo(pointService.getRechargeNo(userNo));
@@ -168,10 +172,36 @@ public class PointController {
 	@GetMapping("/kakao/success")
     public ModelAndView kakaoPaySuccess(
     		@RequestParam("pg_token") String pg_token,
-    		ModelMap model) {
-		model.put("result", "success");
+    		ModelMap model,
+    		HttpSession session,
+			@AuthenticationPrincipal Login principal) {
 
-		model.put("info", kakaoPayService.kakaoPayInfo(pg_token));
+		KakaoPayApprovalVO result = kakaoPayService.kakaoPayInfo(pg_token, session);
+		model.put("info", result);
+		
+		if(result != null) {
+			model.put("result", "success");
+			if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+				//user
+				MyAuthentication authentication = (MyAuthentication) SecurityContextHolder.getContext().getAuthentication(); 
+				User user = principal.getUser();
+				int userNo = user.getUserNo();
+			
+				Recharge recharge = new Recharge();
+				recharge.setRcType("recharging");
+				recharge.setRcMethod("kakao");	
+				recharge.setRcPoint(Integer.parseInt((String) session.getAttribute("total_amount")));
+				recharge.setUser(user);
+				recharge.setRechargeNo(pointService.getRechargeNo(userNo));
+				recharge.setTotalPoint(pointService.checkPoint(userNo) + Integer.parseInt((String) session.getAttribute("total_amount")));
+				
+				pointService.rechargeKakaoPoint(recharge, result);
+				
+				authentication.setPoint(authentication.getPoint() + Integer.parseInt((String) session.getAttribute("total_amount")));
+			}
+		} else {
+			model.put("result", "done");
+		}
 		
 		return new ModelAndView("point/result", model);
 	}

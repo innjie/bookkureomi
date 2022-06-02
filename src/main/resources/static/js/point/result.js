@@ -12,6 +12,7 @@ function createRecharge(){
 		dataType: "json",
 		data: {
 			rcPoint:rcPoint
+			, rcMethod:"kakao"
 		}
 	}).done(function( data ) {
 		alert(data.result);

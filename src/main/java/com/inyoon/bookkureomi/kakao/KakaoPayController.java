@@ -56,7 +56,7 @@ public class KakaoPayController {
         //recharge.setRechargeNo(pointService.getRechargeNo(user.getUserNo()));
         recharge.setRechargeNo(pointService.getRechargeNo(1));
         
-        String result = kakaoPayService.kakaoPayReady(recharge);
+        String result = kakaoPayService.kakaoPayReady(recharge, request);
         System.out.println(result);
         map.put("result", result);
         
