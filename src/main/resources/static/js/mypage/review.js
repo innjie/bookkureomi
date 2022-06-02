@@ -6,13 +6,12 @@ $(document).ready(function () {
 
 function listReview(pageNo) {
     nowPageNo = pageNo;
-
     $.ajax({
         url: "/book/review/list",
         method: 'GET',
         dataType: "json",
-        data: {
-            pageNo: pageNo
+        data : {
+            pageNo : pageNo
         }
     }).done(function (data) {
         window.scrollTo(0, 0);
@@ -51,7 +50,7 @@ function listReview(pageNo) {
             alert("Request failed: " + textStatus);
         });
 }
-function receivedReviewList() {
+function receivedReviewList(pageNo) {
     nowPageNo = pageNo;
 
     $.ajax({
