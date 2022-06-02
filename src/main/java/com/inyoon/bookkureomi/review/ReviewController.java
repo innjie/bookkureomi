@@ -1,7 +1,9 @@
 package com.inyoon.bookkureomi.review;
 
 import com.inyoon.bookkureomi.domain.Review;
+import com.inyoon.bookkureomi.domain.User;
 import com.inyoon.bookkureomi.user.Login;
+import com.inyoon.bookkureomi.user.UserService;
 import org.codehaus.groovy.runtime.metaclass.ConcurrentReaderHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +24,9 @@ import java.util.Map;
 public class ReviewController {
     @Autowired
     ReviewService reviewService;
+    @Autowired
+    UserService userService;
+
 
     @GetMapping("/review/page")
     public String reviewPage() { return "mypage/review"; }
@@ -56,20 +61,24 @@ public class ReviewController {
 
         return map;
     }
-//
-//    //received review list
-//    @RequestMapping(“/review/receiveList.do”)
-//    public String receivedReviewList(@RequestParam(“userNo”) int userNo, ModelMap model,
-//                                     HttpServletRequest request) throws Exception {
-//    }
-//
-//    //received reviewList page
-//    @RequestMapping(“/review/receiveListPage.do”)
-//    public String receivedReviewListPage(
-//            @RequestParam("page") String page,
-//            @ModelAttribute("reivew") PagedListHolder<Review>
-//                    review, BindingResult result) throws Exception {
-//    }
+    @GetMapping("/review/receive")
+    @ResponseBody
+    public Map<String, Object> receivedReview(@AuthenticationPrincipal Login login) {
+        Map<String, Object> map = new HashMap<>();
+
+        User user = userService.getUser(login.getUserNo());
+
+        try {
+            List<Review> reviewList = reviewService.receivedReviewList(user.getUserNo());
+            map.put("result", "success");
+            map.put("reviewList", reviewList);
+        } catch(Exception e) {
+            map.put("result", "fail");
+            map.put("message", "오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+        return map;
+    }
     @PostMapping("/review/insert")
     @Transactional
     @ResponseBody
