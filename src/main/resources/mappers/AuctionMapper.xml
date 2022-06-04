@@ -64,6 +64,7 @@
         FROM Auction
         WHERE
             title LIKE '%' || #{title} || '%'
+        AND state='open'
     </select>
 
     <select id = "countAuctionList" resultType="integer">

@@ -153,6 +153,7 @@
 		     FROM Sale s, Users u
 		     WHERE s.genreNo in (u.firstGenre, u.secondGenre, u.thirdGenre)
 		     AND s.userNo != #{userNo}
+		     AND s.state = 'open'
 		     ORDER BY DBMS_RANDOM.RANDOM
 				 )
 		WHERE 4 > rownum
