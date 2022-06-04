@@ -172,7 +172,7 @@ function insertReview(orderNo) {
     })
 }
 function deleteReview() {
-    confirm("삭제하시겠습니까?");
+    confirm("삭제하시겠습니까? 삭제 시 취소  및 재작성이 불가능합니다");
     var orderNo = parseInt($("#viewOrderNo").val());
 
     var token = $("meta[name='_csrf']").attr("content");
