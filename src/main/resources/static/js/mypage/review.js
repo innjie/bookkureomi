@@ -65,6 +65,31 @@ function receivedReviewList(pageNo) {
             //create form
             createReceivedReviewForm();
             //setting data
+            var result = "";
+            $('#receivedList')[0].innerHTML = "";
+
+            if (data.reviewList.length > 0) {
+                result = "<table class=\"table-list\">"
+                    + "<colgroup><col width=\"10%\" /><col width=\"20%\" /><col width=\"60%\" /><col width='10%'/></colgroup>"
+                    + "<thead>"
+                    + "<th class=\"table-header\">주문 번호</th>"
+                    + "<th class=\"table-header\">내용</th>"
+                    + "<th class='table-header'>상세보기</th>"
+                    + "</tr></thead><tbody>";
+
+                for (var i = 0; i < data.reviewList.length; i++) {
+                    result += "<td class='table-text'>" + data.reviewList[i].orderNo + "</td>";
+                    result += "<td class='table-text'>" + data.reviewList[i].reviewText + "</td>"
+                    result += "<td class='table-text'><input type='button' class='insert-btn' onclick='reviewDetail(" + data.reviewList[i].orderNo + ")' value='상세보기'></td></tr>"
+                }
+                result += "</tbody></table>";
+
+            } else {
+                result = "<p class=\"find-nothing\">리뷰 내역이 없습니다.</p>";
+            }
+
+            $('#receivedList').append(result);
+
         } else {
             alert(data.message);
             return;

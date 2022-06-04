@@ -34,7 +34,6 @@
         SELECT orderNo, userNo, reviewText, score, isDelete
         FROM Review
         WHERE orderNo = #{orderNo}
-          AND userNo = #{userNo}
     </select>
     <select id="getReviewByType" resultType="com.inyoon.bookkureomi.domain.Review">
         <if test="type.equals('auction')">
