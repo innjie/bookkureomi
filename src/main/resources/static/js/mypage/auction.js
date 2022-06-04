@@ -64,6 +64,8 @@ function listAuction(pageNo) {
                 }
             }
             result += "</tbody></table>";
+        } else {
+            result = "<p class=\"find-nothing\">판매내역이 없습니다.</p>";
         }
 
 
